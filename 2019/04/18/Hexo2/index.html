@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="上一篇文章主要是介绍了Hexo的安装配置，以及NexT主题等第三方配置，本篇文章主要介绍了MWeb快速部署Hexo文章，Docker创建Nginx容器并配置SSL证书，七牛云图床申请及开启Https。">
+<meta name="keywords" content="Hexo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建个人博客（二）之 MWeb，服务器和全站Https">
+<meta property="og:url" content="https://mikecorden.com/2019/04/18/Hexo2/index.html">
+<meta property="og:site_name" content="Corden Web">
+<meta property="og:description" content="上一篇文章主要是介绍了Hexo的安装配置，以及NexT主题等第三方配置，本篇文章主要介绍了MWeb快速部署Hexo文章，Docker创建Nginx容器并配置SSL证书，七牛云图床申请及开启Https。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://qiniu.mikecorden.com/2019-04-18-15555671184924.jpg">
+<meta property="og:image" content="https://qiniu.mikecorden.com/2019-04-18-2019-04-18-14.18.40.png">
+<meta property="og:image" content="https://qiniu.mikecorden.com/2019-04-18-15555686877757.jpg">
+<meta property="og:image" content="https://qiniu.mikecorden.com/2019-04-18-2019-04-18-14.32.48.png">
+<meta property="og:image" content="https://qiniu.mikecorden.com/2019-04-18-2019-04-18%20-14.38.32.png">
+<meta property="og:image" content="https://qiniu.mikecorden.com/2019-04-18-2019-04-18-14.45.15.png">
+<meta property="og:image" content="https://mikecorden.com/2019/04/18/Hexo2/media/15555546464694/grid.gif">
+<meta property="og:image" content="https://qiniu.mikecorden.com/2019-04-18-15555763922278.jpg">
+<meta property="og:image" content="https://qiniu.mikecorden.com/2019-04-18-15555766640494.jpg">
+<meta property="og:image" content="https://qiniu.mikecorden.com/2019-04-18-2019-04-18-16.38.51.png">
+<meta property="og:image" content="https://qiniu.mikecorden.com/2019-04-18-2019-04-18-16.47.33.png">
+<meta property="og:image" content="https://qiniu.mikecorden.com/2019-04-18-15555773789153.jpg">
+<meta property="og:image" content="https://qiniu.mikecorden.com/2019-04-18-15555891380143.jpg">
+<meta property="og:updated_time" content="2019-04-18T12:34:17.612Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="搭建个人博客（二）之 MWeb，服务器和全站Https">
+<meta name="twitter:description" content="上一篇文章主要是介绍了Hexo的安装配置，以及NexT主题等第三方配置，本篇文章主要介绍了MWeb快速部署Hexo文章，Docker创建Nginx容器并配置SSL证书，七牛云图床申请及开启Https。">
+<meta name="twitter:image" content="https://qiniu.mikecorden.com/2019-04-18-15555671184924.jpg">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://mikecorden.com/2019/04/18/Hexo2/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>搭建个人博客（二）之 MWeb，服务器和全站Https | Corden Web</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a06cf922071486eff2b8bb52d0f71985";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Corden Web</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Web developer,lifelong learner.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://mikecorden.com/2019/04/18/Hexo2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MikeCorden">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="https://qiniu.mikecorden.com/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Corden Web">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">搭建个人博客（二）之 MWeb，服务器和全站Https
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-04-18 20:31:29" itemprop="dateCreated datePublished" datetime="2019-04-18T20:31:29+08:00">2019-04-18</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/其他/" itemprop="url" rel="index"><span itemprop="name">其他</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/04/18/Hexo2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/04/18/Hexo2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>上一篇文章主要是介绍了Hexo的安装配置，以及NexT主题等第三方配置，本篇文章主要介绍了MWeb快速部署Hexo文章，Docker创建Nginx容器并配置SSL证书，七牛云图床申请及开启Https。<br><a id="more"></a></p>
+<h2 id="MWeb使用"><a href="#MWeb使用" class="headerlink" title="MWeb使用"></a>MWeb使用</h2><p>在那么多md编辑器里之所以喜欢用MWeb有这几个原因：</p>
+<ul>
+<li>可以边编辑、预览同开（其实也不看预览，但是必须要开，哈哈～）</li>
+<li>可以复制图片到正在编辑的md文件，会在对应目录添加图片副本</li>
+<li>可以将图片上传到自己的图床</li>
+<li>可以快捷发布到各种服务商：印象，少数派……支持自定义脚本</li>
+<li>有外部引用模式</li>
+<li>操作简洁</li>
+</ul>
+<h3 id="配置七牛云"><a href="#配置七牛云" class="headerlink" title="配置七牛云"></a>配置七牛云</h3><p>在<code>偏好设置--&gt;发布服务</code>可以看到，对应的填入七牛的<code>空间名称</code>，<code>Access Key</code>，<code>Secret Key</code>，和<code>域名</code>即可。填写好后可以进行验证，上传一张图片看是否成功。</p>
+<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-15555671184924.jpg" alt></div></p>
+<h3 id="上传图片到七牛云"><a href="#上传图片到七牛云" class="headerlink" title="上传图片到七牛云"></a>上传图片到七牛云</h3><p>写文章时候直接复制图片粘到md中，文章全部写完后点击右上角分享按钮。</p>
+<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-2019-04-18-14.18.40.png" alt></div><br>选择<code>把本地图片传至图床</code>。</p>
+<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-15555686877757.jpg" alt></div><br>选择<code>复制 Markdown</code>，图片会上传到所选图床并会复制已经替换成对应域名地址的md文本，将md复制到需要部署的md文件中即可。</p>
+<h3 id="配置发布服务"><a href="#配置发布服务" class="headerlink" title="配置发布服务"></a>配置发布服务</h3><p>在<code>偏好设置--&gt;发布服务</code>可以看到<code>支持和运行脚本</code>,然后写下对应的hexo部署命令即可。</p>
+<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-2019-04-18-14.32.48.png" alt></div></p>
+<h3 id="发布文章到Hexo"><a href="#发布文章到Hexo" class="headerlink" title="发布文章到Hexo"></a>发布文章到Hexo</h3><p>在需要进行部署的md文件点击右上分享选择对应的发布服务。</p>
+<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-2019-04-18%20-14.38.32.png" alt></div><br>MWeb会复制命令到剪切板，直接在弹出的<code>终端</code>里<code>command + V</code>回车就可以运行已经写好的部署命令。</p>
+<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-2019-04-18-14.45.15.png" alt="2019-04-18-14.45.15"></div></p>
+<h2 id="Docker-Nginx"><a href="#Docker-Nginx" class="headerlink" title="Docker + Nginx"></a>Docker + Nginx</h2><p>Docker是一个虚拟化软件，你可以认为是类似：VMware、Virtualbox。对开发来讲总结一个最简单的说法：在 Maven 未产生的年代，jar 包要随着开发项目走到哪里跟到哪里。有了 Maven 写好 pom.xml 即可。此时的 Docker 就好比如 Maven，帮你省去了开发过程中的部署环境差异，你再也不能随便说：你的系统可以运行，我的系统就不行。现在别人连系统都帮你做好了~</p>
+<h3 id="Docker安装Nginx容器"><a href="#Docker安装Nginx容器" class="headerlink" title="Docker安装Nginx容器"></a>Docker安装Nginx容器</h3><p>安装启动Docker（<em>目前正在学习Docker，以后会更新Docker详细教程</em>）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install docker-ce //安装</span><br><span class="line">sudo systemctl start docker //启动</span><br></pre></td></tr></table></figure></p>
+<p>推荐一个替代<code>docker stats</code>的插件 <strong>ctop</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo wget https://github.com/bcicen/ctop/releases/download/v0.7.2/ctop-0.7.2-linux-amd64 -O /usr/local/bin/ctop</span><br><span class="line">sudo chmod +x /usr/local/bin/ctop</span><br></pre></td></tr></table></figure></p>
+<p><div align="center"><img src="media/15555546464694/grid.gif" alt></div><br>从Docker仓库拉取最新nginx镜像<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull nginx</span><br></pre></td></tr></table></figure></p>
+<p>创建Nginx容器<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">docker run </span><br><span class="line">-v /var/dfile/nginx/nginx.conf:/etc/nginx/nginx.conf  </span><br><span class="line">-v /var/dfile/nginx:/var/dfile/ </span><br><span class="line">-v /var/dfile/nginx/full_chain.pem:/etc/nginx/cert/full_chain.pem </span><br><span class="line">-v /var/dfile/nginx/private.key:/etc/nginx/cert/private.key   </span><br><span class="line">-d -p 80:80 </span><br><span class="line">-p 443:443 </span><br><span class="line">--name=ng -i -t </span><br><span class="line">--restart=always bb7  </span><br><span class="line">/bin/bash</span><br></pre></td></tr></table></figure></p>
+<p>进入容器<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it ng bash</span><br></pre></td></tr></table></figure></p>
+<h3 id="Nginx配置"><a href="#Nginx配置" class="headerlink" title="Nginx配置"></a>Nginx配置</h3><p>nginx的配置文件是<code>/etc/nginx/nginx.conf</code>，配置文件如下（ssl）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">		listen 443 ssl;</span><br><span class="line">	    server_name localhost;</span><br><span class="line">	    ssl_certificate  /etc/nginx/cert/full_chain.pem;#ssl配置</span><br><span class="line">	    ssl_certificate_key /etc/nginx/cert/private.key;#ssl配置</span><br><span class="line">	    ssl_session_timeout 5m;</span><br><span class="line">	    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</span><br><span class="line">	    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">	    ssl_prefer_server_ciphers on;</span><br><span class="line">	    location / &#123;</span><br><span class="line">	        root /var/dfile/hexo;#静态资源文件夹 </span><br><span class="line">			index index.html index.htm;#静态资源页面</span><br><span class="line">		&#125;</span><br><span class="line">	    error_page   500 502 503 504  /50x.html;</span><br><span class="line">	    location = /50x.html &#123;</span><br><span class="line">	        root /usr/share/nginx/html;</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	server &#123;</span><br><span class="line">		listen 80;#监听端口</span><br><span class="line">	    server_name www.mikecorden.com mikecorden.com;</span><br><span class="line">		rewrite ^(.*) https://$server_name$1 permanent;#301永久重定向</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+<p>启动nginx<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/sbin/nginx</span><br></pre></td></tr></table></figure></p>
+<p>修改配置文件要重启nginx<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/sbin/nginx -s reload</span><br></pre></td></tr></table></figure></p>
+<p>用vim修改nginx.conf太费劲，一般直接本地修改完，SFTP工具拖到服务器nginx容器挂在目录，然后重启。</p>
+<h2 id="阿里云"><a href="#阿里云" class="headerlink" title="阿里云"></a>阿里云</h2><p>本站的域名和服务器都是在阿里云购买。阿里云的交互还是很简单的，比较方便，app做的也还行，现在手机也有内置的控制台了。</p>
+<h3 id="域名及解析"><a href="#域名及解析" class="headerlink" title="域名及解析"></a>域名及解析</h3><p>我把博客部署到了github和自己的服务器上，在域名解析的时候，对于国内线路解析到自己的服务器，国外的线路解析到自己的GitHubPages上，来提高访问速度。</p>
+<h3 id="SSL证书申请，全站HTTPS"><a href="#SSL证书申请，全站HTTPS" class="headerlink" title="SSL证书申请，全站HTTPS"></a>SSL证书申请，全站HTTPS</h3><p>SSL证书是在阿里云申请的，下载的时候 选择nginx版本，在创建nginx容器的时候要映射宿主机的443端口用于ssl。具体配置看👆。全站Https需要本站所有的外链必须为Https，包括加载的js，css等，所有的图片链接也必须为Https。因为Hexo其实就是静态页面，实现起来也简单。下面介绍下七牛云图床开启https。</p>
+<h2 id="七牛云"><a href="#七牛云" class="headerlink" title="七牛云"></a>七牛云</h2><p>七牛云提供 10 G/月的标准存储 CDN 回源流量免费额度， 超过按0.15 元/GB 价格进行收费。每个月免费10G对于这种没人看的小博客很够用了，哈哈～</p>
+<h3 id="配置七牛云图床"><a href="#配置七牛云图床" class="headerlink" title="配置七牛云图床"></a>配置七牛云图床</h3><p>注册七牛云账号，申请对象存储空间（公开空间）。</p>
+<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-15555763922278.jpg" alt></div><br>进入所申请的空间，绑定域名（自动跳转域名管理）。</p>
+<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-15555766640494.jpg" alt></div><br>输入域名，先申请http，保存后进入域名管理，（保存成功后再改为https，这样可以免去手动配置ssl证书）。</p>
+<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-2019-04-18-16.38.51.png" alt></div><br>状态变为成功后（一般10分钟左右），选择对应的域名，进入配置界面。</p>
+<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-2019-04-18-16.47.33.png" alt></div><br>配置防盗链白名单，然后配置Https：选择免费证书（阿里云等其他网站申请，点击已有证书），七牛云会自动帮你申请一年有效的免费ssl证书并配置好，最后开启强制Https即可。</p>
+<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-15555773789153.jpg" alt></div><br>最后在域名管理找到域名对应的CNAME值，在阿里云上配置域名解析，类型为CNAME。</p>
+<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-15555891380143.jpg" alt></div></p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>到此，整个流程结束，现在在MWeb的资源库写笔记，需要发到博客上的直接上传图床复制到外部引用模式对应md中，直接部署生效。也不需要担心备份等突发情况，MWeb支持3个地方的备份，我在Mac本机有备份，在iCloud网盘也有备份，永远不会担心资料丢失了～</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/17/Hexo/" rel="next" title="搭建个人博客（一）之 Hexo基础">
+                <i class="fa fa-chevron-left"></i> 搭建个人博客（一）之 Hexo基础
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://qiniu.mikecorden.com/avatar.jpeg" alt="MikeCorden">
+            
+              <p class="site-author-name" itemprop="name">MikeCorden</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:wpjt1994@163.com" title="E-Mail &rarr; mailto:wpjt1994@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://instagram.com/MKCorden" title="Instagram &rarr; https://instagram.com/MKCorden" rel="noopener" target="_blank"><i class="fa fa-fw fa-instagram"></i>Instagram</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MWeb使用"><span class="nav-number">1.</span> <span class="nav-text">MWeb使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置七牛云"><span class="nav-number">1.1.</span> <span class="nav-text">配置七牛云</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上传图片到七牛云"><span class="nav-number">1.2.</span> <span class="nav-text">上传图片到七牛云</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置发布服务"><span class="nav-number">1.3.</span> <span class="nav-text">配置发布服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发布文章到Hexo"><span class="nav-number">1.4.</span> <span class="nav-text">发布文章到Hexo</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-Nginx"><span class="nav-number">2.</span> <span class="nav-text">Docker + Nginx</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker安装Nginx容器"><span class="nav-number">2.1.</span> <span class="nav-text">Docker安装Nginx容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx配置"><span class="nav-number">2.2.</span> <span class="nav-text">Nginx配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#阿里云"><span class="nav-number">3.</span> <span class="nav-text">阿里云</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#域名及解析"><span class="nav-number">3.1.</span> <span class="nav-text">域名及解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSL证书申请，全站HTTPS"><span class="nav-number">3.2.</span> <span class="nav-text">SSL证书申请，全站HTTPS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七牛云"><span class="nav-number">4.</span> <span class="nav-text">七牛云</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置七牛云图床"><span class="nav-number">4.1.</span> <span class="nav-text">配置七牛云图床</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">5.</span> <span class="nav-text">最后</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MikeCorden</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,0" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'GRwzuYTy6E0J2741XwrAureh-gzGzoHsz',
+    appKey: 'lfpg652D9IaVbz6QqLm3G3dJ',
+    placeholder: 'ヾﾉ≧∀≦)o 来呀！快活呀！~',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
