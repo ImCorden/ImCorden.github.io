@@ -96,19 +96,19 @@
 
 
 
-  <meta name="description" content="hostname命令查看自己的 hostname1$ hostname 返回类似如下信息1MacBook-Pro.local 修改host文件1sudo vim /etc/hosts 修改条目如下，注意分隔符是TAB！不是空格12127.0.0.1	localhost MacBook-Pro.local::1             localhost MacBook-Pro.local">
-<meta name="keywords" content="Mac,Java,IDEA">
+  <meta name="description" content="最近本地新起的SpringBoot项目运行非常慢，能有十几秒，最后通过以下方法进行解决，解决后运行在三四秒左右。">
+<meta name="keywords" content="Mac,IDEA">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mac IDEA启动SpringBoot项目过慢">
 <meta property="og:url" content="https://mikecorden.com/2019/05/06/IdeaSpringBoot/index.html">
 <meta property="og:site_name" content="Corden Web">
-<meta property="og:description" content="hostname命令查看自己的 hostname1$ hostname 返回类似如下信息1MacBook-Pro.local 修改host文件1sudo vim /etc/hosts 修改条目如下，注意分隔符是TAB！不是空格12127.0.0.1	localhost MacBook-Pro.local::1             localhost MacBook-Pro.local">
+<meta property="og:description" content="最近本地新起的SpringBoot项目运行非常慢，能有十几秒，最后通过以下方法进行解决，解决后运行在三四秒左右。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://qiniu.mikecorden.com/2019-05-06-15571539814663.jpg">
-<meta property="og:updated_time" content="2019-05-06T14:52:01.730Z">
+<meta property="og:updated_time" content="2019-05-07T02:06:28.169Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mac IDEA启动SpringBoot项目过慢">
-<meta name="twitter:description" content="hostname命令查看自己的 hostname1$ hostname 返回类似如下信息1MacBook-Pro.local 修改host文件1sudo vim /etc/hosts 修改条目如下，注意分隔符是TAB！不是空格12127.0.0.1	localhost MacBook-Pro.local::1             localhost MacBook-Pro.local">
+<meta name="twitter:description" content="最近本地新起的SpringBoot项目运行非常慢，能有十几秒，最后通过以下方法进行解决，解决后运行在三四秒左右。">
 <meta name="twitter:image" content="https://qiniu.mikecorden.com/2019-05-06-15571539814663.jpg">
 
 
@@ -466,10 +466,12 @@
       
 
       
-        <h2 id="hostname命令查看自己的-hostname"><a href="#hostname命令查看自己的-hostname" class="headerlink" title="hostname命令查看自己的 hostname"></a>hostname命令查看自己的 hostname</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hostname</span><br></pre></td></tr></table></figure>
-<p>返回类似如下信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MacBook-Pro.local</span><br></pre></td></tr></table></figure></p>
+        <p>最近本地新起的SpringBoot项目运行非常慢，能有十几秒，最后通过以下方法进行解决，解决后运行在三四秒左右。<br><a id="more"></a></p>
+<h2 id="通过hostname命令查看本机hostname"><a href="#通过hostname命令查看本机hostname" class="headerlink" title="通过hostname命令查看本机hostname"></a>通过hostname命令查看本机hostname</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hostname</span><br></pre></td></tr></table></figure>
+<p>得到如下信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MacBook-Pro.local</span><br></pre></td></tr></table></figure></p>
 <h2 id="修改host文件"><a href="#修改host文件" class="headerlink" title="修改host文件"></a>修改host文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/hosts</span><br></pre></td></tr></table></figure>
-<p>修改条目如下，注意分隔符是TAB！不是空格<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1	localhost MacBook-Pro.local</span><br><span class="line">::1             localhost MacBook-Pro.local</span><br></pre></td></tr></table></figure></p>
+<p>修改条目如下，注意分隔符是TAB，不是空格<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1	localhost MacBook-Pro.local</span><br><span class="line">::1     localhost MacBook-Pro.local</span><br></pre></td></tr></table></figure></p>
+<p>也可以通过软件进行修改</p>
 <p>   <img src="https://qiniu.mikecorden.com/2019-05-06-15571539814663.jpg" alt></p>
 
       
@@ -528,8 +530,6 @@
         <div class="post-tags">
           
             <a href="/tags/Mac/" rel="tag"># Mac</a>
-          
-            <a href="/tags/Java/" rel="tag"># Java</a>
           
             <a href="/tags/IDEA/" rel="tag"># IDEA</a>
           
@@ -737,7 +737,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#hostname命令查看自己的-hostname"><span class="nav-number">1.</span> <span class="nav-text">hostname命令查看自己的 hostname</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改host文件"><span class="nav-number">2.</span> <span class="nav-text">修改host文件</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#通过hostname命令查看本机hostname"><span class="nav-number">1.</span> <span class="nav-text">通过hostname命令查看本机hostname</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改host文件"><span class="nav-number">2.</span> <span class="nav-text">修改host文件</span></a></li></ol></div>
             
 
           </div>
