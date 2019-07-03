@@ -96,20 +96,22 @@
 
 
 
-  <meta name="description" content="最近本地新起的SpringBoot项目运行非常慢，能有十几秒，最后通过以下方法进行解决，解决后运行在三四秒左右。">
-<meta name="keywords" content="Mac,IDEA">
+  <meta name="description" content="Spring Cloud Busgithub上配置文件 Spring Cloud Bus 概述Spring Cloud Bus 使用轻量级的消息代理（RabbitMQ,Kafka……）连接分布式系统的节点（clients），这样可以广播传播状态的更改（更新配置文件操作）或其他管理指令。达到下图效果。例如上图，所有client都与消息总线想连，当configserver的/bus/refresh接收">
+<meta name="keywords" content="Java,Spring Cloud">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Mac IDEA启动SpringBoot项目过慢">
-<meta property="og:url" content="https://mikecorden.com/2019/05/06/IdeaSpringBoot/index.html">
+<meta property="og:title" content="SpringCloud消息总线">
+<meta property="og:url" content="https://mikecorden.com/2019/03/01/SpringCloudBus/index.html">
 <meta property="og:site_name" content="Corden Web">
-<meta property="og:description" content="最近本地新起的SpringBoot项目运行非常慢，能有十几秒，最后通过以下方法进行解决，解决后运行在三四秒左右。">
+<meta property="og:description" content="Spring Cloud Busgithub上配置文件 Spring Cloud Bus 概述Spring Cloud Bus 使用轻量级的消息代理（RabbitMQ,Kafka……）连接分布式系统的节点（clients），这样可以广播传播状态的更改（更新配置文件操作）或其他管理指令。达到下图效果。例如上图，所有client都与消息总线想连，当configserver的/bus/refresh接收">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://qiniu.mikecorden.com/2019-05-06-15571539814663.jpg">
-<meta property="og:updated_time" content="2019-05-07T02:07:12.507Z">
+<meta property="og:image" content="https://qiniu.mikecorden.com/2019-07-03-15604783583209.jpg">
+<meta property="og:image" content="https://qiniu.mikecorden.com/2019-07-03-15604736804790.jpg">
+<meta property="og:image" content="https://qiniu.mikecorden.com/2019-07-03-15604785148765.jpg">
+<meta property="og:updated_time" content="2019-07-03T02:03:30.309Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mac IDEA启动SpringBoot项目过慢">
-<meta name="twitter:description" content="最近本地新起的SpringBoot项目运行非常慢，能有十几秒，最后通过以下方法进行解决，解决后运行在三四秒左右。">
-<meta name="twitter:image" content="https://qiniu.mikecorden.com/2019-05-06-15571539814663.jpg">
+<meta name="twitter:title" content="SpringCloud消息总线">
+<meta name="twitter:description" content="Spring Cloud Busgithub上配置文件 Spring Cloud Bus 概述Spring Cloud Bus 使用轻量级的消息代理（RabbitMQ,Kafka……）连接分布式系统的节点（clients），这样可以广播传播状态的更改（更新配置文件操作）或其他管理指令。达到下图效果。例如上图，所有client都与消息总线想连，当configserver的/bus/refresh接收">
+<meta name="twitter:image" content="https://qiniu.mikecorden.com/2019-07-03-15604783583209.jpg">
 
 
 
@@ -117,7 +119,7 @@
 
   
   
-  <link rel="canonical" href="https://mikecorden.com/2019/05/06/IdeaSpringBoot/">
+  <link rel="canonical" href="https://mikecorden.com/2019/03/01/SpringCloudBus/">
 
 
 
@@ -127,7 +129,7 @@
   };
 </script>
 
-  <title>Mac IDEA启动SpringBoot项目过慢 | Corden Web</title>
+  <title>SpringCloud消息总线 | Corden Web</title>
   
 
 
@@ -357,7 +359,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://mikecorden.com/2019/05/06/IdeaSpringBoot/">
+    <link itemprop="mainEntityOfPage" href="https://mikecorden.com/2019/03/01/SpringCloudBus/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="MikeCorden">
@@ -374,7 +376,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Mac IDEA启动SpringBoot项目过慢
+          <h1 class="post-title" itemprop="name headline">SpringCloud消息总线
 
               
             
@@ -400,7 +402,7 @@
                 
               
 
-              <time title="创建时间：2019-05-06 22:45:00" itemprop="dateCreated datePublished" datetime="2019-05-06T22:45:00+08:00">2019-05-06</time>
+              <time title="创建时间：2019-03-01 10:32:00" itemprop="dateCreated datePublished" datetime="2019-03-01T10:32:00+08:00">2019-03-01</time>
             
 
             
@@ -418,7 +420,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/MacOS相关/" itemprop="url" rel="index"><span itemprop="name">MacOS相关</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
 
                 
                 
@@ -437,8 +439,8 @@
                 </span>
             
                 <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/05/06/IdeaSpringBoot/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/05/06/IdeaSpringBoot/" itemprop="commentCount"></span>
+                <a href="/2019/03/01/SpringCloudBus/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/03/01/SpringCloudBus/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -466,13 +468,19 @@
       
 
       
-        <p>最近本地新起的SpringBoot项目运行非常慢，能有十几秒，最后通过以下方法进行解决，解决后运行在三四秒左右。<br><a id="more"></a></p>
-<h2 id="通过hostname命令查看本机hostname"><a href="#通过hostname命令查看本机hostname" class="headerlink" title="通过hostname命令查看本机hostname"></a>通过hostname命令查看本机hostname</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hostname</span><br></pre></td></tr></table></figure>
-<p>得到如下信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MacBook-Pro.local</span><br></pre></td></tr></table></figure></p>
-<h2 id="修改host文件"><a href="#修改host文件" class="headerlink" title="修改host文件"></a>修改host文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/hosts</span><br></pre></td></tr></table></figure>
-<p>修改条目如下，注意分隔符是TAB，不是空格<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1	localhost MacBook-Pro.local</span><br><span class="line">::1     localhost MacBook-Pro.local</span><br></pre></td></tr></table></figure></p>
-<p>也可以通过软件进行修改</p>
-<p>   <img src="https://qiniu.mikecorden.com/2019-05-06-15571539814663.jpg" alt></p>
+        <h1 id="Spring-Cloud-Bus"><a href="#Spring-Cloud-Bus" class="headerlink" title="Spring Cloud Bus"></a>Spring Cloud Bus</h1><h2 id="github上配置文件"><a href="#github上配置文件" class="headerlink" title="github上配置文件"></a>github上配置文件</h2><p><img src="https://qiniu.mikecorden.com/2019-07-03-15604783583209.jpg" alt="-w542"></p>
+<h2 id="Spring-Cloud-Bus-概述"><a href="#Spring-Cloud-Bus-概述" class="headerlink" title="Spring Cloud Bus 概述"></a>Spring Cloud Bus 概述</h2><p>Spring Cloud Bus 使用轻量级的消息代理（RabbitMQ,Kafka……）连接分布式系统的节点（clients），这样可以广播传播状态的更改（更新配置文件操作）或其他管理指令。达到下图效果。<br><img src="https://qiniu.mikecorden.com/2019-07-03-15604736804790.jpg" alt><br>例如上图，所有client都与消息总线想连，当configserver的<code>/bus/refresh</code>接收到请求，会像消息总线发送一个配置更新的事件，通过消息总线广播，所有的client会去configServer拉最新的配置。</p>
+<h2 id="Client如何更新配置–-gt-refresh"><a href="#Client如何更新配置–-gt-refresh" class="headerlink" title="Client如何更新配置–&gt;refresh"></a>Client如何更新配置–&gt;refresh</h2><p>客户端如何去主动获取新的配置信息呢，springcloud已经给我们提供了解决方案，每个客户端通过POST方法触发各自的<code>/refresh</code></p>
+<h3 id="Client添加依赖"><a href="#Client添加依赖" class="headerlink" title="Client添加依赖"></a>Client添加依赖</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-actuator<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>spring-boot-starter-actuator</code>是一套监控的功能，可以监控程序在运行时状态，其中就包括<code>/refresh</code>的功能。</p>
+<h3 id="开启更新机制"><a href="#开启更新机制" class="headerlink" title="开启更新机制"></a>开启更新机制</h3><p>需要给加载变量的<strong>类</strong>上面加载<code>@RefreshScope</code>，在客户端执行<code>/refresh</code>的时候就会更新此类下面的变量值。</p>
+<h2 id="所有的客户端和服务端都需要的依赖"><a href="#所有的客户端和服务端都需要的依赖" class="headerlink" title="所有的客户端和服务端都需要的依赖"></a>所有的客户端和服务端都需要的依赖</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-bus-amqp<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>    </span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">``` </span><br><span class="line">## configServer配置文件</span><br><span class="line">在configServer配置文件增加：</span><br><span class="line">```yaml</span><br><span class="line">spring:</span><br><span class="line">  rabbitmq:</span><br><span class="line">    host: 0.0.0.0 # RabbitMQ服务地址</span><br><span class="line">    port: 5672 </span><br><span class="line">    username: ***</span><br><span class="line">    password: ***</span><br><span class="line">    </span><br><span class="line">management:</span><br><span class="line">  endpoints:</span><br><span class="line">    web:</span><br><span class="line">      exposure:</span><br><span class="line">        include: bus-refresh # 暴露/bus/refresh端点</span><br></pre></td></tr></table></figure>
+<p>可以把所有端点都暴露，用<code>*</code>就可以，但yml中的<code>*</code>需要用双引号括起–&gt;<code>&quot;*&quot;</code>,SpringBoot 2.0.x暴露端点方式：<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启用端点 env</span></span><br><span class="line"><span class="string">management.endpoint.env.enabled=true</span></span><br><span class="line"><span class="comment"># 暴露端点 env 配置多个,隔开</span></span><br><span class="line"><span class="string">management.endpoints.web.exposure.include=env</span></span><br></pre></td></tr></table></figure></p>
+<p>已经弃用：<code>management.security.enabled=false</code></p>
+<h2 id="client配置文件"><a href="#client配置文件" class="headerlink" title="client配置文件"></a>client配置文件</h2><p>在bootstrap.yml中增加：<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  cloud:</span></span><br><span class="line"><span class="attr">    config:</span></span><br><span class="line"><span class="attr">      name:</span> <span class="string">test</span> <span class="comment"># application</span></span><br><span class="line"><span class="attr">      profile:</span> <span class="string">dev</span> <span class="comment"># profile</span></span><br><span class="line"><span class="attr">      label:</span> <span class="string">master</span> <span class="comment"># git分支</span></span><br><span class="line"><span class="attr">      discovery:</span></span><br><span class="line"><span class="attr">        service-id:</span> <span class="string">EUR-SERVER2</span> <span class="comment"># 指定server端的name,也就是server端spring.application.name的值</span></span><br><span class="line"><span class="attr">        enabled:</span> <span class="literal">true</span> <span class="comment"># 开启Config服务发现支持</span></span><br><span class="line"><span class="attr">    bus:</span></span><br><span class="line"><span class="attr">      trace:</span></span><br><span class="line"><span class="attr">        enabled:</span> <span class="literal">true</span> <span class="comment"># 开启消息跟踪</span></span><br><span class="line"><span class="attr">  rabbitmq:</span></span><br><span class="line"><span class="attr">    host:</span> <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span></span><br><span class="line"><span class="attr">    port:</span> <span class="number">5672</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">***</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">***</span></span><br></pre></td></tr></table></figure></p>
+<p>其中<code>spring.cloud.config.discovery.*</code>下的配置是为了实现配置中心高可用，也可以指定configServer的地址(此方式不是高可用)：<code>spring.cloud.config.uri: http://peer2:8882</code></p>
+<h2 id="WebHook"><a href="#WebHook" class="headerlink" title="WebHook"></a>WebHook</h2><p>可以在github上设置，码云也可以，push后可以发送一个Post请求。本地验证可以用HTTP工具自己发<code>http://peer1:8881/actuator/bus-refresh</code>（其中actuator别忘了，经常忘写）<br><img src="https://qiniu.mikecorden.com/2019-07-03-15604785148765.jpg" alt="-w1027"></p>
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>当更新github上的文件后，手动发送一个post请求<code>http://peer1:8881/actuator/bus-refresh</code><br>，这时候再验证client中对应的属性值就会发现已经更改了。</p>
 
       
     </div>
@@ -529,9 +537,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Mac/" rel="tag"># Mac</a>
+            <a href="/tags/Java/" rel="tag"># Java</a>
           
-            <a href="/tags/IDEA/" rel="tag"># IDEA</a>
+            <a href="/tags/Spring-Cloud/" rel="tag"># Spring Cloud</a>
           
         </div>
       
@@ -544,8 +552,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/03/18/Hexo2/" rel="next" title="搭建个人博客 之 MWeb，服务器和全站Https">
-                <i class="fa fa-chevron-left"></i> 搭建个人博客 之 MWeb，服务器和全站Https
+              <a href="/2018/07/16/MacJDK/" rel="next" title="MacOS JDK，使用Jenv管理本地JDK版本">
+                <i class="fa fa-chevron-left"></i> MacOS JDK，使用Jenv管理本地JDK版本
               </a>
             
           </div>
@@ -554,8 +562,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/06/05/LaunchpadIcon/" rel="prev" title="Launchpad图标修改">
-                Launchpad图标修改 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/03/17/Hexo/" rel="prev" title="搭建个人博客 之 Hexo基础">
+                搭建个人博客 之 Hexo基础 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -745,7 +753,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#通过hostname命令查看本机hostname"><span class="nav-number">1.</span> <span class="nav-text">通过hostname命令查看本机hostname</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改host文件"><span class="nav-number">2.</span> <span class="nav-text">修改host文件</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Cloud-Bus"><span class="nav-number">1.</span> <span class="nav-text">Spring Cloud Bus</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#github上配置文件"><span class="nav-number">1.1.</span> <span class="nav-text">github上配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Cloud-Bus-概述"><span class="nav-number">1.2.</span> <span class="nav-text">Spring Cloud Bus 概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Client如何更新配置–-gt-refresh"><span class="nav-number">1.3.</span> <span class="nav-text">Client如何更新配置–&gt;refresh</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Client添加依赖"><span class="nav-number">1.3.1.</span> <span class="nav-text">Client添加依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开启更新机制"><span class="nav-number">1.3.2.</span> <span class="nav-text">开启更新机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#所有的客户端和服务端都需要的依赖"><span class="nav-number">1.4.</span> <span class="nav-text">所有的客户端和服务端都需要的依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#client配置文件"><span class="nav-number">1.5.</span> <span class="nav-text">client配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WebHook"><span class="nav-number">1.6.</span> <span class="nav-text">WebHook</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证"><span class="nav-number">1.7.</span> <span class="nav-text">验证</span></a></li></ol></li></ol></div>
             
 
           </div>
