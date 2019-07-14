@@ -96,20 +96,20 @@
 
 
 
-  <meta name="description" content="Spring Cloud Eureka本文主要介绍Eureka相关内容">
+  <meta name="description" content="本文主要介绍Eureka相关内容">
 <meta name="keywords" content="Java,Spring Cloud">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring Cloud Eureka">
 <meta property="og:url" content="https://mikecorden.com/2019/02/05/SpringCloudEureka/index.html">
 <meta property="og:site_name" content="Corden Web">
-<meta property="og:description" content="Spring Cloud Eureka本文主要介绍Eureka相关内容">
+<meta property="og:description" content="本文主要介绍Eureka相关内容">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://qiniu.mikecorden.com/2019-07-14-15631027822524.jpg">
 <meta property="og:image" content="https://qiniu.mikecorden.com/2019-07-14-15631048020749.jpg">
-<meta property="og:updated_time" content="2019-07-14T12:31:04.735Z">
+<meta property="og:updated_time" content="2019-07-14T12:58:11.442Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring Cloud Eureka">
-<meta name="twitter:description" content="Spring Cloud Eureka本文主要介绍Eureka相关内容">
+<meta name="twitter:description" content="本文主要介绍Eureka相关内容">
 <meta name="twitter:image" content="https://qiniu.mikecorden.com/2019-07-14-15631027822524.jpg">
 
 
@@ -467,7 +467,7 @@
       
 
       
-        <h1 id="Spring-Cloud-Eureka"><a href="#Spring-Cloud-Eureka" class="headerlink" title="Spring Cloud Eureka"></a>Spring Cloud Eureka</h1><p>本文主要介绍Eureka相关内容<br><a id="more"></a></p>
+        <p>本文主要介绍Eureka相关内容<br><a id="more"></a></p>
 <h2 id="服务发现组件概述"><a href="#服务发现组件概述" class="headerlink" title="服务发现组件概述"></a>服务发现组件概述</h2><ul>
 <li>各个服务启动时候，将自己注册到注册中心，服务发现组件（Eureka Server）会记录这些信息。</li>
 <li>服务消费之可以到服务发现组件（Eureka Server）的注册表查询服务提供者的信息（地址等……），并使用该信息调用提供者的接口</li>
@@ -792,7 +792,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Cloud-Eureka"><span class="nav-number">1.</span> <span class="nav-text">Spring Cloud Eureka</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#服务发现组件概述"><span class="nav-number">1.1.</span> <span class="nav-text">服务发现组件概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Eureka概述"><span class="nav-number">1.2.</span> <span class="nav-text">Eureka概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Eureka原理概述"><span class="nav-number">1.3.</span> <span class="nav-text">Eureka原理概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建Eureka-Server"><span class="nav-number">1.4.</span> <span class="nav-text">创建Eureka Server</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#pom-xml"><span class="nav-number">1.4.1.</span> <span class="nav-text">pom.xml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动类"><span class="nav-number">1.4.2.</span> <span class="nav-text">启动类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置文件application-yml"><span class="nav-number">1.4.3.</span> <span class="nav-text">配置文件application.yml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#高可用Eureka-Server"><span class="nav-number">1.4.4.</span> <span class="nav-text">高可用Eureka Server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加用户认证"><span class="nav-number">1.4.5.</span> <span class="nav-text">添加用户认证</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#引入依赖"><span class="nav-number">1.4.5.1.</span> <span class="nav-text">引入依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置文件"><span class="nav-number">1.4.5.2.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关闭crsf验证"><span class="nav-number">1.4.5.3.</span> <span class="nav-text">关闭crsf验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户认证下Eureka-Client的配置"><span class="nav-number">1.4.5.4.</span> <span class="nav-text">用户认证下Eureka Client的配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number">1.4.6.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建Eureka-Client"><span class="nav-number">1.5.</span> <span class="nav-text">创建Eureka Client</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#pom-xml-1"><span class="nav-number">1.5.1.</span> <span class="nav-text">pom.xml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动类-1"><span class="nav-number">1.5.2.</span> <span class="nav-text">启动类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置文件-1"><span class="nav-number">1.5.3.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动Eureka-Client"><span class="nav-number">1.5.4.</span> <span class="nav-text">启动Eureka Client</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#服务发现组件概述"><span class="nav-number">1.</span> <span class="nav-text">服务发现组件概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Eureka概述"><span class="nav-number">2.</span> <span class="nav-text">Eureka概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Eureka原理概述"><span class="nav-number">3.</span> <span class="nav-text">Eureka原理概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建Eureka-Server"><span class="nav-number">4.</span> <span class="nav-text">创建Eureka Server</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#pom-xml"><span class="nav-number">4.1.</span> <span class="nav-text">pom.xml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动类"><span class="nav-number">4.2.</span> <span class="nav-text">启动类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置文件application-yml"><span class="nav-number">4.3.</span> <span class="nav-text">配置文件application.yml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#高可用Eureka-Server"><span class="nav-number">4.4.</span> <span class="nav-text">高可用Eureka Server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加用户认证"><span class="nav-number">4.5.</span> <span class="nav-text">添加用户认证</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#引入依赖"><span class="nav-number">4.5.1.</span> <span class="nav-text">引入依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置文件"><span class="nav-number">4.5.2.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关闭crsf验证"><span class="nav-number">4.5.3.</span> <span class="nav-text">关闭crsf验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用户认证下Eureka-Client的配置"><span class="nav-number">4.5.4.</span> <span class="nav-text">用户认证下Eureka Client的配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number">4.6.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建Eureka-Client"><span class="nav-number">5.</span> <span class="nav-text">创建Eureka Client</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#pom-xml-1"><span class="nav-number">5.1.</span> <span class="nav-text">pom.xml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动类-1"><span class="nav-number">5.2.</span> <span class="nav-text">启动类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置文件-1"><span class="nav-number">5.3.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动Eureka-Client"><span class="nav-number">5.4.</span> <span class="nav-text">启动Eureka Client</span></a></li></ol></li></ol></div>
             
 
           </div>
