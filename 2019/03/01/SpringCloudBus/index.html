@@ -7,19 +7,19 @@
 
 
 
-    <meta name="description" content="github上配置文件 Spring Cloud Bus 概述Spring Cloud Bus 使用轻量级的消息代理（RabbitMQ,Kafka……）连接分布式系统的节点（clients），这样可以广播传播状态的更改（更新配置文件操作）或其他管理指令。达到下图效果。例如上图，所有client都与消息总线想连，当configserver的/bus/refresh接收到请求，会像消息总线发送一个配置">
+    <meta name="description" content="主要介绍Spring Cloud Bus">
 <meta name="keywords" content="Java,Spring Cloud">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring Cloud Bus">
 <meta property="og:url" content="https://mikecorden.com/2019/03/01/SpringCloudBus/index.html">
 <meta property="og:site_name" content="MkCorden|个人博客">
-<meta property="og:description" content="github上配置文件 Spring Cloud Bus 概述Spring Cloud Bus 使用轻量级的消息代理（RabbitMQ,Kafka……）连接分布式系统的节点（clients），这样可以广播传播状态的更改（更新配置文件操作）或其他管理指令。达到下图效果。例如上图，所有client都与消息总线想连，当configserver的/bus/refresh接收到请求，会像消息总线发送一个配置">
+<meta property="og:description" content="主要介绍Spring Cloud Bus">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://mikecorden.com/images/og_image.png">
-<meta property="og:updated_time" content="2019-07-17T02:34:49.671Z">
+<meta property="og:updated_time" content="2019-07-25T08:04:37.403Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring Cloud Bus">
-<meta name="twitter:description" content="github上配置文件 Spring Cloud Bus 概述Spring Cloud Bus 使用轻量级的消息代理（RabbitMQ,Kafka……）连接分布式系统的节点（clients），这样可以广播传播状态的更改（更新配置文件操作）或其他管理指令。达到下图效果。例如上图，所有client都与消息总线想连，当configserver的/bus/refresh接收到请求，会像消息总线发送一个配置">
+<meta name="twitter:description" content="主要介绍Spring Cloud Bus">
 <meta name="twitter:image" content="https://mikecorden.com/images/og_image.png">
 
 
@@ -144,7 +144,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    5 分钟 读完 (大约 720 个字)
+                    5 分钟 读完 (大约 728 个字)
                 </span>
                 
                 
@@ -157,7 +157,8 @@
             
         </h1>
         <div class="content">
-            <h2 id="github上配置文件"><a href="#github上配置文件" class="headerlink" title="github上配置文件"></a>github上配置文件</h2><p><img src="https://qiniu.mikecorden.com/2019-07-03-15604783583209.jpg" alt="-w542"></p>
+            <p>主要介绍Spring Cloud Bus<br><a id="more"></a></p>
+<h2 id="github上配置文件"><a href="#github上配置文件" class="headerlink" title="github上配置文件"></a>github上配置文件</h2><p><img src="https://qiniu.mikecorden.com/2019-07-03-15604783583209.jpg" alt="-w542"></p>
 <h2 id="Spring-Cloud-Bus-概述"><a href="#Spring-Cloud-Bus-概述" class="headerlink" title="Spring Cloud Bus 概述"></a>Spring Cloud Bus 概述</h2><p>Spring Cloud Bus 使用轻量级的消息代理（RabbitMQ,Kafka……）连接分布式系统的节点（clients），这样可以广播传播状态的更改（更新配置文件操作）或其他管理指令。达到下图效果。<br><img src="https://qiniu.mikecorden.com/2019-07-03-15604736804790.jpg" alt><br>例如上图，所有client都与消息总线想连，当configserver的<code>/bus/refresh</code>接收到请求，会像消息总线发送一个配置更新的事件，通过消息总线广播，所有的client会去configServer拉最新的配置。</p>
 <h2 id="Client如何更新配置–-gt-refresh"><a href="#Client如何更新配置–-gt-refresh" class="headerlink" title="Client如何更新配置–&gt;refresh"></a>Client如何更新配置–&gt;refresh</h2><p>客户端如何去主动获取新的配置信息呢，springcloud已经给我们提供了解决方案，每个客户端通过POST方法触发各自的<code>/refresh</code></p>
 <h3 id="Client添加依赖"><a href="#Client添加依赖" class="headerlink" title="Client添加依赖"></a>Client添加依赖</h3><figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-actuator<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
@@ -337,45 +338,6 @@
         
     
         
-
-<div class="card widget">
-    <div class="card-content">
-        <div class="menu">
-        <h3 class="menu-label">
-            链接
-        </h3>
-        <ul class="menu-list">
-        
-            <li>
-                <a class="level is-mobile" href="https://hexo.io" target="_blank">
-                    <span class="level-left">
-                        <span class="level-item">Hexo</span>
-                    </span>
-                    <span class="level-right">
-                        <span class="level-item tag">hexo.io</span>
-                    </span>
-                </a>
-            </li>
-        
-            <li>
-                <a class="level is-mobile" href="https://github.com/ppoffice" target="_blank">
-                    <span class="level-left">
-                        <span class="level-item">PPOffice</span>
-                    </span>
-                    <span class="level-right">
-                        <span class="level-item tag">github.com</span>
-                    </span>
-                </a>
-            </li>
-        
-        </ul>
-        </div>
-    </div>
-</div>
-
-
-    
-        
 <div class="card widget">
     <div class="card-content">
         <div class="menu">
@@ -413,7 +375,10 @@
     </div>
 </div>
     
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
         
+            
 <div class="card widget">
     <div class="card-content">
         <h3 class="menu-label">
@@ -423,9 +388,6 @@
     </div>
 </div>
 
-    
-    
-        <div class="column-right-shadow is-hidden-widescreen ">
         
             
 <div class="card widget">
@@ -436,7 +398,7 @@
         
         <article class="media">
             
-            <a href="/2019/06/05/LaunchpadIcon/" class="media-left">
+            <a href="/2019/06/05/LaunchpadIcon/" class="media-left" style="display: none">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="Launchpad图标修改">
                 </p>
@@ -455,7 +417,7 @@
         
         <article class="media">
             
-            <a href="/2019/05/06/IdeaSpringBoot/" class="media-left">
+            <a href="/2019/05/06/IdeaSpringBoot/" class="media-left" style="display: none">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="Mac IDEA启动SpringBoot项目过慢">
                 </p>
@@ -474,7 +436,7 @@
         
         <article class="media">
             
-            <a href="/2019/03/18/Hexo2/" class="media-left">
+            <a href="/2019/03/18/Hexo2/" class="media-left" style="display: none">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="搭建个人博客 之 MWeb，服务器和全站Https">
                 </p>
@@ -493,7 +455,7 @@
         
         <article class="media">
             
-            <a href="/2019/03/17/Hexo/" class="media-left">
+            <a href="/2019/03/17/Hexo/" class="media-left" style="display: none">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="搭建个人博客 之 Hexo基础">
                 </p>
@@ -512,7 +474,7 @@
         
         <article class="media">
             
-            <a href="/2019/03/01/SpringCloudBus/" class="media-left">
+            <a href="/2019/03/01/SpringCloudBus/" class="media-left" style="display: none">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="Spring Cloud Bus">
                 </p>
@@ -597,54 +559,6 @@
         </li>
         
         </ul>
-        </div>
-    </div>
-</div>
-        
-            <div class="card widget">
-    <div class="card-content">
-        <div class="menu">
-            <h3 class="menu-label">
-                标签
-            </h3>
-            <div class="field is-grouped is-grouped-multiline">
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Hexo/">
-                        <span class="tag">Hexo</span>
-                        <span class="tag is-grey">2</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/IDEA/">
-                        <span class="tag">IDEA</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Java/">
-                        <span class="tag">Java</span>
-                        <span class="tag is-grey">4</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Mac/">
-                        <span class="tag">Mac</span>
-                        <span class="tag is-grey">3</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Spring-Cloud/">
-                        <span class="tag">Spring Cloud</span>
-                        <span class="tag is-grey">3</span>
-                    </a>
-                </div>
-                
-            </div>
         </div>
     </div>
 </div>
@@ -664,12 +578,23 @@
 <div class="card widget">
     <div class="card-content">
         <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/Hexo/" style="font-size: 13.33px;">Hexo</a> <a href="/tags/IDEA/" style="font-size: 10px;">IDEA</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Mac/" style="font-size: 16.67px;">Mac</a> <a href="/tags/Spring-Cloud/" style="font-size: 16.67px;">Spring Cloud</a>
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
             最新文章
         </h3>
         
         <article class="media">
             
-            <a href="/2019/06/05/LaunchpadIcon/" class="media-left">
+            <a href="/2019/06/05/LaunchpadIcon/" class="media-left" style="display: none">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="Launchpad图标修改">
                 </p>
@@ -688,7 +613,7 @@
         
         <article class="media">
             
-            <a href="/2019/05/06/IdeaSpringBoot/" class="media-left">
+            <a href="/2019/05/06/IdeaSpringBoot/" class="media-left" style="display: none">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="Mac IDEA启动SpringBoot项目过慢">
                 </p>
@@ -707,7 +632,7 @@
         
         <article class="media">
             
-            <a href="/2019/03/18/Hexo2/" class="media-left">
+            <a href="/2019/03/18/Hexo2/" class="media-left" style="display: none">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="搭建个人博客 之 MWeb，服务器和全站Https">
                 </p>
@@ -726,7 +651,7 @@
         
         <article class="media">
             
-            <a href="/2019/03/17/Hexo/" class="media-left">
+            <a href="/2019/03/17/Hexo/" class="media-left" style="display: none">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="搭建个人博客 之 Hexo基础">
                 </p>
@@ -745,7 +670,7 @@
         
         <article class="media">
             
-            <a href="/2019/03/01/SpringCloudBus/" class="media-left">
+            <a href="/2019/03/01/SpringCloudBus/" class="media-left" style="display: none">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="Spring Cloud Bus">
                 </p>
@@ -830,54 +755,6 @@
         </li>
         
         </ul>
-        </div>
-    </div>
-</div>
-    
-        <div class="card widget">
-    <div class="card-content">
-        <div class="menu">
-            <h3 class="menu-label">
-                标签
-            </h3>
-            <div class="field is-grouped is-grouped-multiline">
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Hexo/">
-                        <span class="tag">Hexo</span>
-                        <span class="tag is-grey">2</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/IDEA/">
-                        <span class="tag">IDEA</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Java/">
-                        <span class="tag">Java</span>
-                        <span class="tag is-grey">4</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Mac/">
-                        <span class="tag">Mac</span>
-                        <span class="tag is-grey">3</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Spring-Cloud/">
-                        <span class="tag">Spring Cloud</span>
-                        <span class="tag is-grey">3</span>
-                    </a>
-                </div>
-                
-            </div>
         </div>
     </div>
 </div>
