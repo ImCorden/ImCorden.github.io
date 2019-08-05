@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+<title>FreeMarker指令常用标签及语法 - MkCorden|个人博客</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="注意：使用freemaker，要求所有标签必须闭合，否则会导致freemaker无法解析。 freemaker注释:&amp;lt;#– 注释内容 –&amp;gt;格式部分,不会输出">
+<meta name="keywords" content="Java,Spring Boot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FreeMarker指令常用标签及语法">
+<meta property="og:url" content="https://mikecorden.com/2019/02/01/FreeMarker/index.html">
+<meta property="og:site_name" content="MkCorden|个人博客">
+<meta property="og:description" content="注意：使用freemaker，要求所有标签必须闭合，否则会导致freemaker无法解析。 freemaker注释:&amp;lt;#– 注释内容 –&amp;gt;格式部分,不会输出">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://mikecorden.com/images/og_image.png">
+<meta property="og:updated_time" content="2019-08-05T15:21:05.685Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="FreeMarker指令常用标签及语法">
+<meta name="twitter:description" content="注意：使用freemaker，要求所有标签必须闭合，否则会导致freemaker无法解析。 freemaker注释:&amp;lt;#– 注释内容 –&amp;gt;格式部分,不会输出">
+<meta name="twitter:image" content="https://mikecorden.com/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="https://qiniu.mikecorden.com/avatar.jpeg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/5.10.0-11/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+<script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?a06cf922071486eff2b8bb52d0f71985";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                MkCorden | 个人博客
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/archives">归档</a>
+                
+                <a class="navbar-item" href="/categories">分类</a>
+                
+                <a class="navbar-item" href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-02-01T11:50:23.000Z">2019-02-01</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Java/">Java</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/Java/备忘/">备忘</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    17 分钟 读完 (大约 2547 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                FreeMarker指令常用标签及语法
+            
+        </h1>
+        <div class="content">
+            <p>注意：使用freemaker，要求所有标签必须闭合，否则会导致freemaker无法解析。</p>
+<p>freemaker注释:&lt;#– 注释内容 –&gt;格式部分,不会输出<br><a id="more"></a></p>
+<h2 id="基础语法"><a href="#基础语法" class="headerlink" title="基础语法"></a>基础语法</h2><ol>
+<li><p>字符输出</p>
+ <figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$&#123;emp.name?if_exists&#125;　　　　　  　// 变量存在，输出该变量，否则不输出</span><br><span class="line">$&#123;emp.name!&#125;　　　　　　　　　　    // 变量存在，输出该变量，否则不输出</span><br><span class="line">$&#123;emp.name?default(&quot;xxx&quot;)&#125;        // 变量不存在，取默认值xxx  </span><br><span class="line">$&#123;emp.name!&quot;xxx&quot;&#125;    　　　　　　  // 变量不存在，取默认值xxx</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>常用内部函数：</p>
+ <figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$&#123;&quot;123&lt;br&gt;456&quot;?html&#125;    　　// 对字符串进行HTML编码，对html中特殊字符进行转义    </span><br><span class="line">$&#123;&quot;str&quot;?cap_first&#125;    　　  // 使字符串第一个字母大写     </span><br><span class="line">$&#123;&quot;Str&quot;?lower_case&#125;        // 将字符串转换成小写     </span><br><span class="line">$&#123;&quot;Str&quot;?upper_case&#125;        // 将字符串转换成大写    </span><br><span class="line">$&#123;&quot;str&quot;?trim&#125;              // 去掉字符串前后的空白字符</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>字符串的两种拼接方式拼接：</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ &#123; “你好$ &#123;emp.name！&#125;”&#125; //输出你好+变量名  </span><br><span class="line">$ &#123;“hello”+ emp.name！&#125; //使用+号来连接，输出你好+变量名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可以通过如下语法来截取子串：</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;#assign str =“abcdefghijklmn”/&gt;</span><br><span class="line">//方法1</span><br><span class="line">$ &#123;str?substring（0,4）&#125; //输出abcd</span><br><span class="line">//方法2 </span><br><span class="line">$ &#123;str[0]&#125;$&#123;str[4]&#125; //结果是ae</span><br><span class="line">$ &#123;str [1..4]&#125; //结果是bcde</span><br><span class="line">//返回指定字符的索引</span><br><span class="line">$ &#123;str?index_of（&quot;n&quot;）&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>日期输出</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ &#123;emp.date?string（&apos;yyyy -MM-dd&apos;）&#125; //日期格式</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>数字输出（以数字20为例）</p>
+ <figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">$ &#123;emp.name?string.number&#125; //输出20  </span><br><span class="line">$ &#123;emp.name?string.currency&#125; //¥20.00  </span><br><span class="line">$ &#123;emp.name?string.percent&#125; // 20％  </span><br><span class="line">$ &#123;1.222？int&#125; //将小数转为int，输出1  </span><br><span class="line"></span><br><span class="line">&lt;#setting number_format =“percent”/&gt; //设置数字默认输出方式（&apos;percent&apos;，百分比） </span><br><span class="line">&lt;#assign answer = 42 /&gt; //声明变量回答42  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#&#123;answer&#125; //输出4,200％</span><br><span class="line">$ &#123;answer？string&#125; //输出4,200％</span><br><span class="line">$ &#123;answer？string.number&#125; //输出42</span><br><span class="line">$ &#123;answer？string.currency&#125; //输出¥42.00 </span><br><span class="line">$ &#123;answer？string.percent&#125; //输出4,200％</span><br><span class="line">#&#123;answer&#125; //输出42 </span><br><span class="line"></span><br><span class="line">数字格式化插值可采用＃&#123;expr; format&#125;形式来格式化数字，其中格式可以是：</span><br><span class="line">mX：小数部分最小X位</span><br><span class="line">MX：小数部分最大X位</span><br><span class="line">如下面的例子：</span><br><span class="line">&lt;#assign x = 2.582 /&gt; &lt;#assign y = 4 /&gt; </span><br><span class="line">＃ &#123;x; M2&#125; //输出2.58 </span><br><span class="line">＃ &#123;y; M2&#125; //输出4 </span><br><span class="line">＃ &#123;x; m2&#125; //输出2.58 </span><br><span class="line">＃&#123;Y; m2&#125; //输出4.0</span><br><span class="line">＃ &#123;x; m1M2&#125; //输出2.58 </span><br><span class="line">＃ &#123;x; m1M2&#125; //输出4.0</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>申明变量</p>
+ <figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;#assign foo = false /&gt; //声明变量，插入布尔值进行显示，注意不要用引号</span><br><span class="line">$ &#123;foo？string（“yes”，“no”）&#125; //当为真时输出“yes”，否则输出“no”</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>申明变量的几种方式</p>
+ <figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;#assign name = value&gt; </span><br><span class="line">&lt;#assign name1 = value1 name2 = value2 ... nameN = valueN&gt; </span><br><span class="line">&lt;#assign same as above... in namespacehash&gt; </span><br><span class="line"></span><br><span class="line">&lt;#assign name&gt;</span><br><span class="line"> capture this </span><br><span class="line">&lt;/＃assign&gt; </span><br><span class="line"></span><br><span class="line">&lt;#assign name in namespacehash&gt; </span><br><span class="line">capture this </span><br><span class="line">&lt;/＃assign&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>比较运算算符</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">表达式中支持的比较运算符符如下几个：</span><br><span class="line">=或==：判断两个值是否相等。</span><br><span class="line">！=：判断两个值是否不等。</span><br><span class="line">&gt;或gt：判断左边值是否大于右边值&gt;</span><br><span class="line">&lt;=或lte：判断左边值是否小于等于右边值</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>算术运算符</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">FreeMarker表达式中完全支持算术运算，</span><br><span class="line">FreeMarker支持的算术运算符包括：+， - ，*，/，％</span><br><span class="line">注意：</span><br><span class="line">（1）运算符两边必须是数字</span><br><span class="line">（2）使用+运算符时，如果一边是数字，一边是字符串，就会自动将数字转换为字符串再连接，</span><br><span class="line">     如：$ &#123;3 +“5”&#125;，结果是：35</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>逻辑运算符</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">逻辑运算符有如下几个：</span><br><span class="line">逻辑与：&amp;&amp; </span><br><span class="line">逻辑或：|| </span><br><span class="line">逻辑非：！</span><br><span class="line">逻辑运算符只能作用于布尔值，否则将产生错误</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>FreeMarker中的运算符优先级如下（由高到低排列）：</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">①，一元运算符：！</span><br><span class="line">②，内建函数：</span><br><span class="line">③，乘除法：*，/，％</span><br><span class="line">④，加减法： - ，+ </span><br><span class="line">⑤，比较：&gt;，&lt;，&gt; =，&lt;=（lt，lte，gt，gte）</span><br><span class="line">⑥，相等：==，=， ！= </span><br><span class="line">⑦，逻辑与：&amp;&amp; </span><br><span class="line">⑧，逻辑或：|| </span><br><span class="line">⑨，数字范围：.. 实际上，我们在开发过程中应该使用括号来严格区分，这样的可读性好，出错少</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>if逻辑判断（注意：elseif不加空格）</p>
+ <figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;#if condition&gt;</span><br><span class="line">...</span><br><span class="line">&lt;#elseif condition2&gt;</span><br><span class="line">...</span><br><span class="line">&lt;#elseif condition3&gt;</span><br><span class="line">...</span><br><span class="line">&lt;#else&gt;</span><br><span class="line">...</span><br><span class="line">&lt;/#if&gt;</span><br><span class="line">if 空值判断</span><br><span class="line"></span><br><span class="line">// 当 photoList 不为空时</span><br><span class="line">&lt;#if photoList??&gt;...&lt;/#if&gt; </span><br><span class="line"></span><br><span class="line">值得注意的是,$&#123;..&#125;只能用于文本部分,不能用于表达式,下面的代码是错误的:</span><br><span class="line">&lt;#if $&#123;isBig&#125;&gt;Wow!&lt;/#if&gt;</span><br><span class="line">&lt;#if &quot;$&#123;isBig&#125;&quot;&gt;Wow!&lt;/#if&gt;</span><br><span class="line"></span><br><span class="line">// 正确写法</span><br><span class="line">&lt;#if isBig&gt;Wow!&lt;/#if&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>switch (条件可为数字，可为字符串)</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;#switch value&gt; </span><br><span class="line">&lt;#case refValue1&gt; </span><br><span class="line">....</span><br><span class="line">&lt;#break&gt; </span><br><span class="line">&lt;#case refValue2&gt; </span><br><span class="line">....</span><br><span class="line">&lt;#break&gt; </span><br><span class="line">&lt;#case refValueN&gt; </span><br><span class="line">....</span><br><span class="line">&lt;#break&gt; </span><br><span class="line">&lt;#default&gt; </span><br><span class="line">.... </span><br><span class="line">&lt;/#switch&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>集合 &amp; 循环</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">// 遍历集合:</span><br><span class="line">&lt;#list empList! as emp&gt; </span><br><span class="line">    $&#123;emp.name!&#125;</span><br><span class="line">&lt;/#list&gt;</span><br><span class="line"></span><br><span class="line">// 可以这样遍历集合:</span><br><span class="line">&lt;#list 0..(empList!?size-1) as i&gt;</span><br><span class="line">    $&#123;empList[i].name!&#125;</span><br><span class="line">&lt;/#list&gt;</span><br><span class="line"></span><br><span class="line">// 与jstl循环类似,也可以访问循环的状态。</span><br><span class="line"></span><br><span class="line">empList?size 　　　// 取集合的长度</span><br><span class="line">emp_index: 　　　　// int类型，当前对象的索引值 </span><br><span class="line">emp_has_next:     // boolean类型，是否存在下一个对象</span><br><span class="line"></span><br><span class="line">// 使用&lt;#break&gt;跳出循环</span><br><span class="line">&lt;#if emp_index = 0&gt;&lt;#break&gt;&lt;/#if&gt;</span><br><span class="line"></span><br><span class="line">// 集合长度判断 </span><br><span class="line">&lt;#if empList?size != 0&gt;&lt;/#if&gt; // 判断=的时候,注意只要一个=符号,而不是==</span><br><span class="line"></span><br><span class="line">&lt;#assign l=0..100/&gt;    // 定义一个int区间的0~100的集合，数字范围也支持反递增,如100..2</span><br><span class="line">&lt;#list 0..100 as i&gt; 　　// 等效于java for(int i=0; i &lt;= 100; i++)</span><br><span class="line">　　$&#123;i&#125;</span><br><span class="line">&lt;/#list&gt;</span><br><span class="line"></span><br><span class="line">// 截取子集合：</span><br><span class="line">empList[3..5] //返回empList集合的子集合,子集合中的元素是empList集合中的第4-6个元素</span><br><span class="line"></span><br><span class="line">// 创建集合：</span><br><span class="line">&lt;#list [&quot;星期一&quot;, &quot;星期二&quot;, &quot;星期三&quot;, &quot;星期四&quot;, &quot;星期五&quot;, &quot;星期六&quot;, &quot;星期天&quot;] as x&gt;</span><br><span class="line"></span><br><span class="line">// 集合连接运算,将两个集合连接成一个新的集合</span><br><span class="line">&lt;#list [&quot;星期一&quot;,&quot;星期二&quot;,&quot;星期三&quot;] + [&quot;星期四&quot;,&quot;星期五&quot;,&quot;星期六&quot;,&quot;星期天&quot;] as x&gt;</span><br><span class="line"></span><br><span class="line">// 除此之外,集合元素也可以是表达式,例子如下:</span><br><span class="line">[2 + 2, [1, 2, 3, 4], &quot;whatnot&quot;]</span><br><span class="line"></span><br><span class="line">// seq_contains：判断序列中的元素是否存在</span><br><span class="line">&lt;#assign x = [&quot;red&quot;, 16, &quot;blue&quot;, &quot;cyan&quot;]&gt; </span><br><span class="line">$&#123;x?seq_contains(&quot;blue&quot;)?string(&quot;yes&quot;, &quot;no&quot;)&#125;    // yes</span><br><span class="line">$&#123;x?seq_contains(&quot;yellow&quot;)?string(&quot;yes&quot;, &quot;no&quot;)&#125;  // no</span><br><span class="line">$&#123;x?seq_contains(16)?string(&quot;yes&quot;, &quot;no&quot;)&#125;        // yes</span><br><span class="line">$&#123;x?seq_contains(&quot;16&quot;)?string(&quot;yes&quot;, &quot;no&quot;)&#125;      // no</span><br><span class="line"></span><br><span class="line">// seq_index_of：第一次出现的索引</span><br><span class="line">&lt;#assign x = [&quot;red&quot;, 16, &quot;blue&quot;, &quot;cyan&quot;, &quot;blue&quot;]&gt; </span><br><span class="line">$&#123;x?seq_index_of(&quot;blue&quot;)&#125;  // 2</span><br><span class="line"></span><br><span class="line">// sort_by：排序（升序）</span><br><span class="line">&lt;#list movies?sort_by(&quot;showtime&quot;) as movie&gt;&lt;/#list&gt;</span><br><span class="line"></span><br><span class="line">// sort_by：排序（降序）</span><br><span class="line">&lt;#list movies?sort_by(&quot;showtime&quot;)?reverse as movie&gt;&lt;/#list&gt;</span><br><span class="line"></span><br><span class="line">// 具体介绍：</span><br><span class="line">// 不排序的情况：</span><br><span class="line">&lt;#list movies as moive&gt;</span><br><span class="line">　　&lt;a href=&quot;$&#123;moive.url&#125;&quot;&gt;$&#123;moive.name&#125;&lt;/a&gt;</span><br><span class="line">&lt;/#list&gt;</span><br><span class="line"></span><br><span class="line">//要是排序，则用</span><br><span class="line">&lt;#list movies?sort as movie&gt;</span><br><span class="line">　　&lt;a href=&quot;$&#123;movie.url&#125;&quot;&gt;$&#123;movie.name&#125;&lt;/a&gt;</span><br><span class="line">&lt;/#list&gt;</span><br><span class="line"></span><br><span class="line">// 这是按元素的首字母排序。若要按list中对象元素的某一属性排序的话，则用</span><br><span class="line">&lt;#list moives?sort_by([&quot;name&quot;]) as movie&gt;</span><br><span class="line">　　&lt;a href=&quot;$&#123;movie.url&#125;&quot;&gt;$&#123;movie.name&#125;&lt;/a&gt;</span><br><span class="line">&lt;/#list&gt;</span><br><span class="line"></span><br><span class="line">//这个是按list中对象元素的[name]属性排序的，是升序，如果需要降序的话，如下所示：</span><br><span class="line">&lt;#list movies?sort_by([&quot;name&quot;])?reverse as movie&gt;</span><br><span class="line">　　&lt;a href=&quot;$&#123;movie.url&#125;&quot;&gt;$&#123;movie.name&#125;&lt;/a&gt;</span><br><span class="line">&lt;/#list&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Map对象</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 创建map</span><br><span class="line">&lt;#assign scores = &#123;&quot;语文&quot;:86,&quot;数学&quot;:78&#125;&gt;</span><br><span class="line"></span><br><span class="line">// Map连接运算符</span><br><span class="line">&lt;#assign scores = &#123;&quot;语文&quot;:86,&quot;数学&quot;:78&#125; + &#123;&quot;数学&quot;:87,&quot;Java&quot;:93&#125;&gt;</span><br><span class="line"></span><br><span class="line">// Map元素输出</span><br><span class="line">emp.name       // 全部使用点语法</span><br><span class="line">emp[&quot;name&quot;]    // 使用方括号</span><br><span class="line">循环//遍历集合：&lt;＃list empList！as emp&gt;     $ &#123;emp.name！&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>FreeMarker支持如下转义字符:</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">\&quot; ：双引号(u0022)</span><br><span class="line">\&apos; ：单引号(u0027)</span><br><span class="line">\\ ：反斜杠(u005C)</span><br><span class="line">\n ：换行(u000A)</span><br><span class="line">\r ：回车(u000D)</span><br><span class="line">\t ：Tab(u0009)</span><br><span class="line">\b ：退格键(u0008)</span><br><span class="line">\f ：Form feed(u000C)</span><br><span class="line">\l ：&lt;</span><br><span class="line">\g ：&gt;</span><br><span class="line">\a ：&amp;</span><br><span class="line">\&#123; ：&#123;</span><br><span class="line">\xCode ：直接通过4位的16进制数来指定Unicode码,输出该unicode码对应的字符.</span><br><span class="line"></span><br><span class="line">如果某段文本中包含大量的特殊符号,FreeMarker提供了另一种特殊格式:可以在指定字符串内容的引号前增加r标记,在r标记后的文件将会直接输出.看如下代码:</span><br><span class="line">$&#123;r&quot;$&#123;foo&#125;&quot;&#125; // 输出 $&#123;foo&#125;</span><br><span class="line">$&#123;r&quot;C:/foo/bar&quot;&#125; // 输出 C:/foo/bar</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>include指令</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// include指令的作用类似于JSP的包含指令:</span><br><span class="line">&lt;#include &quot;/test.ftl&quot; encoding=&quot;UTF-8&quot; parse=true&gt;</span><br><span class="line"></span><br><span class="line">// 在上面的语法格式中,两个参数的解释如下:</span><br><span class="line">encoding=&quot;GBK&quot;  // 编码格式</span><br><span class="line">parse=true 　　 // 是否作为ftl语法解析,默认是true，false就是以文本方式引入</span><br><span class="line">注意:在ftl文件里布尔值都是直接赋值的如parse=true,而不是parse=&quot;true&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>import指令</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// 类似于jsp里的import,它导入文件，然后就可以在当前文件里使用被导入文件里的宏组件</span><br><span class="line">&lt;#import &quot;/libs/mylib.ftl&quot; as my&gt;</span><br><span class="line">// 上面的代码将导入/lib/common.ftl模板文件中的所有变量,交将这些变量放置在一个名为com的Map对象中，&quot;my&quot;在freemarker里被称作namespace</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>compress 压缩</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 用来压缩空白空间和空白的行 </span><br><span class="line">&lt;#compress&gt; </span><br><span class="line">    ... </span><br><span class="line">&lt;/#compress&gt;</span><br><span class="line">&lt;#t&gt; // 去掉左右空白和回车换行 </span><br><span class="line"></span><br><span class="line">&lt;#lt&gt;// 去掉左边空白和回车换行 </span><br><span class="line"></span><br><span class="line">&lt;#rt&gt;// 去掉右边空白和回车换行 </span><br><span class="line"></span><br><span class="line">&lt;#nt&gt;// 取消上面的效果</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>escape,noescape 对字符串进行HTML编码</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// escape指令导致body区的插值都会被自动加上escape表达式,但不会影响字符串内的插值,</span><br><span class="line">    只会影响到body内出现的插值,使用escape指令的语法格式如下:</span><br><span class="line">&lt;#escape x as x?html&gt; </span><br><span class="line">　　First name: $&#123;firstName&#125; </span><br><span class="line">&lt;#noescape&gt;Last name: $&#123;lastName&#125;&lt;/#noescape&gt; </span><br><span class="line">　　Maiden name: $&#123;maidenName&#125; </span><br><span class="line">&lt;/#escape&gt;</span><br><span class="line"></span><br><span class="line">// 相同表达式</span><br><span class="line">First name: $&#123;firstName?html&#125; </span><br><span class="line">Last name: $&#123;lastName&#125; </span><br><span class="line">Maiden name: $&#123;maidenName?html&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">spring.freemarker.allow-request-override</span><br><span class="line">指定HttpServletRequest的属性是否可以覆盖controller的model的同名项</span><br><span class="line"></span><br><span class="line">spring.freemarker.allow-session-override</span><br><span class="line">指定HttpSession的属性是否可以覆盖controller的model的同名项</span><br><span class="line"></span><br><span class="line">spring.freemarker.cache</span><br><span class="line">是否开启template caching.</span><br><span class="line"></span><br><span class="line">spring.freemarker.charset</span><br><span class="line">设定Template的编码.</span><br><span class="line"></span><br><span class="line">spring.freemarker.check-template-location</span><br><span class="line">是否检查templates路径是否存在.</span><br><span class="line"></span><br><span class="line">spring.freemarker.content-type</span><br><span class="line">设定Content-Type.</span><br><span class="line"></span><br><span class="line">spring.freemarker.enabled</span><br><span class="line">是否允许mvc使用freemarker.</span><br><span class="line"></span><br><span class="line">spring.freemarker.expose-request-attributes</span><br><span class="line">设定所有request的属性在merge到模板的时候，是否要都添加到model中.</span><br><span class="line"></span><br><span class="line">spring.freemarker.expose-session-attributes</span><br><span class="line">设定所有HttpSession的属性在merge到模板的时候，是否要都添加到model中.</span><br><span class="line"></span><br><span class="line">spring.freemarker.expose-spring-macro-helpers</span><br><span class="line">设定是否以springMacroRequestContext的形式暴露RequestContext给Spring’s macro library使用</span><br><span class="line"></span><br><span class="line">spring.freemarker.prefer-file-system-access</span><br><span class="line">是否优先从文件系统加载template，以支持热加载，默认为true</span><br><span class="line"></span><br><span class="line">spring.freemarker.prefix</span><br><span class="line">设定freemarker模板的前缀.</span><br><span class="line"></span><br><span class="line">spring.freemarker.request-context-attribute</span><br><span class="line">指定RequestContext属性的名.</span><br><span class="line"></span><br><span class="line">spring.freemarker.settings</span><br><span class="line">设定FreeMarker keys.</span><br><span class="line"></span><br><span class="line">spring.freemarker.suffix</span><br><span class="line">设定模板的后缀.</span><br><span class="line"></span><br><span class="line">spring.freemarker.template-loader-path</span><br><span class="line">设定模板的加载路径，多个以逗号分隔，默认: [&quot;classpath:/templates/&quot;]</span><br><span class="line"></span><br><span class="line">spring.freemarker.view-names</span><br><span class="line">指定使用模板的视图列表.</span><br></pre></td></tr></table></figure>
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/Java/">Java</a>, <a class="has-link-grey -link" href="/tags/Spring-Boot/">Spring Boot</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/02/01/MicroServices/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">微服务概念类知识</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2018/07/16/MacJDK/">
+                <span class="level-item">MacOS JDK，使用Jenv管理本地JDK版本</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                        <figure class="image is-128x128 has-mb-6">
+                            <img class="is-rounded" src="https://qiniu.mikecorden.com/avatar.jpeg" alt="MkCorden">
+                        </figure>
+                    
+                    
+                    <p class="is-size-4 is-block">
+                        MkCorden
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        software engineer
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>中国,大连</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        9
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        4
+                    </p>
+                </div>
+            </div>
+            <!--<div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        6
+                    </p>
+                </div>
+            </div>-->
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/ImCorden" target="_blank">
+                关注我</a>
+        </div>
+        
+        
+    </div>
+</div>
+    
+        
+<div class="card widget" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                目录
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#基础语法">
+        <span class="has-mr-6">1</span>
+        <span>基础语法</span>
+        </a></li><li>
+        <a class="is-flex" href="#配置文件">
+        <span class="has-mr-6">2</span>
+        <span>配置文件</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/Hexo/" style="font-size: 13.33px;">Hexo</a> <a href="/tags/IDEA/" style="font-size: 10px;">IDEA</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Mac/" style="font-size: 16.67px;">Mac</a> <a href="/tags/Spring-Boot/" style="font-size: 10px;">Spring Boot</a> <a href="/tags/Spring-Cloud/" style="font-size: 16.67px;">Spring Cloud</a>
+    </div>
+</div>
+
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+            
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2019/06/05/LaunchpadIcon/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Launchpad图标修改">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-05T02:32:40.000Z">2019-06-05</time></div>
+                    <a href="/2019/06/05/LaunchpadIcon/" class="has-link-black-ter is-size-6">Launchpad图标修改</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/MacOS相关/">MacOS相关</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/05/06/IdeaSpringBoot/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Mac IDEA启动SpringBoot项目过慢">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-06T14:45:00.000Z">2019-05-06</time></div>
+                    <a href="/2019/05/06/IdeaSpringBoot/" class="has-link-black-ter is-size-6">Mac IDEA启动SpringBoot项目过慢</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/MacOS相关/">MacOS相关</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/03/18/Hexo2/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="搭建个人博客 之 MWeb，服务器和全站Https">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-03-18T12:31:29.000Z">2019-03-18</time></div>
+                    <a href="/2019/03/18/Hexo2/" class="has-link-black-ter is-size-6">搭建个人博客 之 MWeb，服务器和全站Https</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/其他/">其他</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/03/17/Hexo/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="搭建个人博客 之 Hexo基础">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-03-17T08:43:13.000Z">2019-03-17</time></div>
+                    <a href="/2019/03/17/Hexo/" class="has-link-black-ter is-size-6">搭建个人博客 之 Hexo基础</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/其他/">其他</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/03/01/SpringCloudBus/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Spring Cloud Bus">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-03-01T02:32:00.000Z">2019-03-01</time></div>
+                    <a href="/2019/03/01/SpringCloudBus/" class="has-link-black-ter is-size-6">Spring Cloud Bus</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Java/">Java</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+
+        
+            
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/Java/">
+            <span class="level-start">
+                <span class="level-item">Java</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">4</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/Java/备忘/">
+            <span class="level-start">
+                <span class="level-item">备忘</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/MacOS相关/">
+            <span class="level-start">
+                <span class="level-item">MacOS相关</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">3</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/其他/">
+            <span class="level-start">
+                <span class="level-item">其他</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+        
+            <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/06/">
+                <span class="level-start">
+                    <span class="level-item">六月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/05/">
+                <span class="level-start">
+                    <span class="level-item">五月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/03/">
+                <span class="level-start">
+                    <span class="level-item">三月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/02/">
+                <span class="level-start">
+                    <span class="level-item">二月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/07/">
+                <span class="level-start">
+                    <span class="level-item">七月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+        
+        </div>
+    
+</div>
+
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2019/06/05/LaunchpadIcon/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Launchpad图标修改">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-05T02:32:40.000Z">2019-06-05</time></div>
+                    <a href="/2019/06/05/LaunchpadIcon/" class="has-link-black-ter is-size-6">Launchpad图标修改</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/MacOS相关/">MacOS相关</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/05/06/IdeaSpringBoot/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Mac IDEA启动SpringBoot项目过慢">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-06T14:45:00.000Z">2019-05-06</time></div>
+                    <a href="/2019/05/06/IdeaSpringBoot/" class="has-link-black-ter is-size-6">Mac IDEA启动SpringBoot项目过慢</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/MacOS相关/">MacOS相关</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/03/18/Hexo2/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="搭建个人博客 之 MWeb，服务器和全站Https">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-03-18T12:31:29.000Z">2019-03-18</time></div>
+                    <a href="/2019/03/18/Hexo2/" class="has-link-black-ter is-size-6">搭建个人博客 之 MWeb，服务器和全站Https</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/其他/">其他</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/03/17/Hexo/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="搭建个人博客 之 Hexo基础">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-03-17T08:43:13.000Z">2019-03-17</time></div>
+                    <a href="/2019/03/17/Hexo/" class="has-link-black-ter is-size-6">搭建个人博客 之 Hexo基础</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/其他/">其他</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/03/01/SpringCloudBus/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Spring Cloud Bus">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-03-01T02:32:00.000Z">2019-03-01</time></div>
+                    <a href="/2019/03/01/SpringCloudBus/" class="has-link-black-ter is-size-6">Spring Cloud Bus</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Java/">Java</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/Java/">
+            <span class="level-start">
+                <span class="level-item">Java</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">4</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/Java/备忘/">
+            <span class="level-start">
+                <span class="level-item">备忘</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/MacOS相关/">
+            <span class="level-start">
+                <span class="level-item">MacOS相关</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">3</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/其他/">
+            <span class="level-start">
+                <span class="level-item">其他</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/06/">
+                <span class="level-start">
+                    <span class="level-item">六月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/05/">
+                <span class="level-start">
+                    <span class="level-item">五月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/03/">
+                <span class="level-start">
+                    <span class="level-item">三月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/02/">
+                <span class="level-start">
+                    <span class="level-item">二月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/07/">
+                <span class="level-start">
+                    <span class="level-item">七月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    MkCorden | 个人博客
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2019 MikeCorden&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Download on GitHub" href="https://github.com/ImCorden/imcorden.github.io">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
