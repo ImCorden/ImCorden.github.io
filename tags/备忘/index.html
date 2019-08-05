@@ -2,24 +2,20 @@
 <html lang="zh">
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-<title>MacOS JDK，使用Jenv管理本地JDK版本 - MkCorden|个人博客</title>
+<title>标签: 备忘 - MkCorden|个人博客</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-    <meta name="description" content="MacOS上配置JDK环境（附带下载地址），并使用Jenv快速高效的管理本地环境变量JDK版本。">
-<meta name="keywords" content="Mac,Java">
-<meta property="og:type" content="article">
-<meta property="og:title" content="MacOS JDK，使用Jenv管理本地JDK版本">
-<meta property="og:url" content="https://mikecorden.com/2018/07/16/MacJDK/index.html">
+    <meta name="keywords" content="Mike | mikecorden | Corden | blog | java | scala | Corden Web">
+<meta property="og:type" content="website">
+<meta property="og:title" content="MkCorden|个人博客">
+<meta property="og:url" content="https://mikecorden.com/tags/备忘/index.html">
 <meta property="og:site_name" content="MkCorden|个人博客">
-<meta property="og:description" content="MacOS上配置JDK环境（附带下载地址），并使用Jenv快速高效的管理本地环境变量JDK版本。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://mikecorden.com/images/og_image.png">
-<meta property="og:updated_time" content="2019-07-26T08:07:56.208Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MacOS JDK，使用Jenv管理本地JDK版本">
-<meta name="twitter:description" content="MacOS上配置JDK环境（附带下载地址），并使用Jenv快速高效的管理本地环境变量JDK版本。">
+<meta name="twitter:title" content="MkCorden|个人博客">
 <meta name="twitter:image" content="https://mikecorden.com/images/og_image.png">
 
 
@@ -123,10 +119,6 @@ var _hmt = _hmt || [];
             <div class="navbar-end">
                 
                 
-                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
-                    <i class="fas fa-list-ul"></i>
-                </a>
-                
                 
                 <a class="navbar-item search" title="搜索" href="javascript:;">
                     <i class="fas fa-search"></i>
@@ -141,22 +133,33 @@ var _hmt = _hmt || [];
         <div class="container">
             <div class="columns">
                 <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main"><div class="card">
+    <div class="card-content">
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="/tags">标签</a></li>
+            <li class="is-active"><a href="#" aria-current="page">备忘</a></li>
+        </ul>
+        </nav>
+    </div>
+</div>
+
+    <div class="card">
     
     <div class="card-content article ">
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-07-16T08:35:04.000Z">2018-07-16</time>
+                <time class="level-item has-text-grey" datetime="2019-03-03T12:50:23.000Z">2019-03-03</time>
                 
                 <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/MacOS相关/">MacOS相关</a>
+                <a class="has-link-grey -link" href="/categories/Spring-Boot/">Spring Boot</a>
                 </div>
                 
                 
                 <span class="level-item has-text-grey">
                     
                     
-                    3 分钟 读完 (大约 448 个字)
+                    17 分钟 读完 (大约 2547 个字)
                 </span>
                 
                 
@@ -165,44 +168,24 @@ var _hmt = _hmt || [];
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                MacOS JDK，使用Jenv管理本地JDK版本
+                <a class="has-link-black-ter" href="/2019/03/03/FreeMarker/">FreeMarker指令常用标签及语法</a>
             
         </h1>
         <div class="content">
-            <p>MacOS上配置JDK环境（附带下载地址），并使用Jenv快速高效的管理本地环境变量JDK版本。<br><a id="more"></a></p>
-<h2 id="Mac-JDK下载"><a href="#Mac-JDK下载" class="headerlink" title="Mac JDK下载"></a>Mac JDK下载</h2><ul>
-<li>mac版本 <a href="https://pan.baidu.com/s/1dIzkgbl4Judyagfu_g-AeA" target="_blank" rel="noopener">jdk 1.6</a> 需要到苹果开发者网站下载</li>
-<li>mac版本 <a href="https://pan.baidu.com/s/105__iGgZE_zWQ9wVO83CtQ" target="_blank" rel="noopener">jdk 1.7</a> 需要到网上找资源，官方已经停止jdk 1.7的下载链接</li>
-<li>mac版本 <a href="https://pan.baidu.com/s/1Yg84IDt06-LXSKhIqBh1wA" target="_blank" rel="noopener">jdk 1.8</a> 直接到官方网站下载即可</li>
-<li>homebrew 使用<code>brew install java</code> 安装会直接安装jdk 10（最新版本）</li>
-</ul>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install java</span><br></pre></td></tr></table></figure>
-<h2 id="JDK安装目录"><a href="#JDK安装目录" class="headerlink" title="JDK安装目录"></a>JDK安装目录</h2><h3 id="命令查询"><a href="#命令查询" class="headerlink" title="命令查询"></a>命令查询</h3><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/libexec/java_home -V</span><br></pre></td></tr></table></figure>
-<p>   <img src="https://qiniu.mikecorden.com/2019-04-15-15553173937106.jpg" alt></p>
-<h3 id="卸载JDK"><a href="#卸载JDK" class="headerlink" title="卸载JDK"></a>卸载JDK</h3><p>执行命令：<br><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo rm -fr ~/Library/Application\ Support/Java</span><br><span class="line">sudo rm -rf /Library/Java/JavaVirtualMachines/jdk&lt;version&gt;.jdk</span><br><span class="line">sudo rm -rf /Library/PreferencePanes/JavaControlPanel.prefPane</span><br><span class="line">sudo rm -fr /Library/PreferencesPanes/JavaControlPanel.prefpane</span><br><span class="line">sudo rm -rf /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin</span><br><span class="line">sudo rm -rf /Library/LaunchAgents/com.oracle.java.Java-Updater.plist</span><br><span class="line">sudo rm -rf /Library/PrivilegedHelperTools/com.oracle.java.JavaUpdateHelper</span><br><span class="line">sudo rm -rf /Library/LaunchDaemons/com.oracle.java.Helper-Tool.plist</span><br><span class="line">sudo rm -rf /Library/Preferences/com.oracle.java.Helper-Tool.plist</span><br></pre></td></tr></table></figure></p>
-<h2 id="使用Jevn管理MacOS-JDK"><a href="#使用Jevn管理MacOS-JDK" class="headerlink" title="使用Jevn管理MacOS JDK"></a>使用Jevn管理MacOS JDK</h2><h3 id="Jenv概述"><a href="#Jenv概述" class="headerlink" title="Jenv概述"></a>Jenv概述</h3><p><a href="http://www.jenv.be" target="_blank" rel="noopener">jEnv</a> is a command line tool to help you forget how to set the JAVA_HOME environment variable</p>
-<h3 id="安装（zsh下）"><a href="#安装（zsh下）" class="headerlink" title="安装（zsh下）"></a>安装（zsh下）</h3><h4 id="使用homebrew安装"><a href="#使用homebrew安装" class="headerlink" title="使用homebrew安装"></a>使用homebrew安装</h4><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install jenv</span><br></pre></td></tr></table></figure>
-<h4 id="添加环境变量"><a href="#添加环境变量" class="headerlink" title="添加环境变量"></a>添加环境变量</h4><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &apos;export PATH=&quot;$HOME/.jenv/bin:$PATH&quot;&apos; &gt;&gt; ~/.zshrc</span><br><span class="line">echo &apos;eval &quot;$(jenv init -)&quot;&apos; &gt;&gt; ~/.zshrc</span><br></pre></td></tr></table></figure>
-<h4 id="添加jdk版本"><a href="#添加jdk版本" class="headerlink" title="添加jdk版本"></a>添加jdk版本</h4><p>使用<code>jevn add jdk安装路径</code>，例如：<br><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jenv add /System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home</span><br></pre></td></tr></table></figure></p>
-<h3 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h3><h4 id="查看所有本地jdk版本"><a href="#查看所有本地jdk版本" class="headerlink" title="查看所有本地jdk版本"></a>查看所有本地jdk版本</h4><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ jenv versions</span><br></pre></td></tr></table></figure>
-<p><img src="https://qiniu.mikecorden.com/2019-05-07-15336153395825.jpg" alt></p>
-<h4 id="设置全局jdk版本"><a href="#设置全局jdk版本" class="headerlink" title="设置全局jdk版本"></a>设置全局jdk版本</h4><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ jenv global 1.7</span><br></pre></td></tr></table></figure>
-<h4 id="设置本地jdk版本-可以为每个文件夹单独设置版本"><a href="#设置本地jdk版本-可以为每个文件夹单独设置版本" class="headerlink" title="设置本地jdk版本 (可以为每个文件夹单独设置版本)"></a>设置本地jdk版本 (可以为每个文件夹单独设置版本)</h4><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ jenv local 1.8</span><br></pre></td></tr></table></figure>
-<h4 id="设置shell中的jdk版本"><a href="#设置shell中的jdk版本" class="headerlink" title="设置shell中的jdk版本"></a>设置shell中的jdk版本</h4><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ jenv shell 1.8</span><br></pre></td></tr></table></figure>
-<h4 id="配置JVM-Options（全局，本地，shell）"><a href="#配置JVM-Options（全局，本地，shell）" class="headerlink" title="配置JVM Options（全局，本地，shell）"></a>配置JVM Options（全局，本地，shell）</h4><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">jenv global-options &quot;-Xmx512m&quot;</span><br><span class="line">jenv local-options &quot;-Xmx512m&quot;</span><br><span class="line">jenv shell-options &quot;-Xmx512m&quot;</span><br></pre></td></tr></table></figure>
+            <p>注意：使用freemaker，要求所有标签必须闭合，否则会导致freemaker无法解析。</p>
+<p>freemaker注释:&lt;#– 注释内容 –&gt;格式部分,不会输出<br></p>
         </div>
         
-        <div class="level is-size-7 is-uppercase">
+        
+        <div class="level is-mobile">
             <div class="level-start">
                 <div class="level-item">
-                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
-                    <a class="has-link-grey -link" href="/tags/Java/">Java</a>, <a class="has-link-grey -link" href="/tags/Mac/">Mac</a>
+                <a class="button is-size-7 is-light" href="/2019/03/03/FreeMarker/#more">阅读更多</a>
                 </div>
             </div>
         </div>
         
         
-        
     </div>
 </div>
 
@@ -210,19 +193,7 @@ var _hmt = _hmt || [];
 
 
 
-<div class="card card-transparent">
-    <div class="level post-navigation is-flex-wrap is-mobile">
-        
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/02/01/MicroServices/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">微服务概念类知识</span>
-            </a>
-        </div>
-        
-        
-    </div>
-</div>
+
 
 
 </div>
@@ -305,81 +276,6 @@ var _hmt = _hmt || [];
 </div>
     
         
-<div class="card widget" id="toc">
-    <div class="card-content">
-        <div class="menu">
-            <h3 class="menu-label">
-                目录
-            </h3>
-            <ul class="menu-list"><li>
-        <a class="is-flex" href="#Mac-JDK下载">
-        <span class="has-mr-6">1</span>
-        <span>Mac JDK下载</span>
-        </a></li><li>
-        <a class="is-flex" href="#JDK安装目录">
-        <span class="has-mr-6">2</span>
-        <span>JDK安装目录</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#命令查询">
-        <span class="has-mr-6">2.1</span>
-        <span>命令查询</span>
-        </a></li><li>
-        <a class="is-flex" href="#卸载JDK">
-        <span class="has-mr-6">2.2</span>
-        <span>卸载JDK</span>
-        </a></li></ul></li><li>
-        <a class="is-flex" href="#使用Jevn管理MacOS-JDK">
-        <span class="has-mr-6">3</span>
-        <span>使用Jevn管理MacOS JDK</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#Jenv概述">
-        <span class="has-mr-6">3.1</span>
-        <span>Jenv概述</span>
-        </a></li><li>
-        <a class="is-flex" href="#安装（zsh下）">
-        <span class="has-mr-6">3.2</span>
-        <span>安装（zsh下）</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#使用homebrew安装">
-        <span class="has-mr-6">3.2.1</span>
-        <span>使用homebrew安装</span>
-        </a></li><li>
-        <a class="is-flex" href="#添加环境变量">
-        <span class="has-mr-6">3.2.2</span>
-        <span>添加环境变量</span>
-        </a></li><li>
-        <a class="is-flex" href="#添加jdk版本">
-        <span class="has-mr-6">3.2.3</span>
-        <span>添加jdk版本</span>
-        </a></li></ul></li><li>
-        <a class="is-flex" href="#常用操作">
-        <span class="has-mr-6">3.3</span>
-        <span>常用操作</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#查看所有本地jdk版本">
-        <span class="has-mr-6">3.3.1</span>
-        <span>查看所有本地jdk版本</span>
-        </a></li><li>
-        <a class="is-flex" href="#设置全局jdk版本">
-        <span class="has-mr-6">3.3.2</span>
-        <span>设置全局jdk版本</span>
-        </a></li><li>
-        <a class="is-flex" href="#设置本地jdk版本-可以为每个文件夹单独设置版本">
-        <span class="has-mr-6">3.3.3</span>
-        <span>设置本地jdk版本 (可以为每个文件夹单独设置版本)</span>
-        </a></li><li>
-        <a class="is-flex" href="#设置shell中的jdk版本">
-        <span class="has-mr-6">3.3.4</span>
-        <span>设置shell中的jdk版本</span>
-        </a></li><li>
-        <a class="is-flex" href="#配置JVM-Options（全局，本地，shell）">
-        <span class="has-mr-6">3.3.5</span>
-        <span>配置JVM Options（全局，本地，shell）</span>
-        </a></li></ul></li></ul></li></ul>
-        </div>
-    </div>
-</div>
-
     
         
 <div class="card widget">
