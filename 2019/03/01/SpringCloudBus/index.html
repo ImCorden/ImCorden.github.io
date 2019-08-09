@@ -16,7 +16,7 @@
 <meta property="og:description" content="主要介绍Spring Cloud Bus">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://mikecorden.com/images/og_image.png">
-<meta property="og:updated_time" content="2019-08-05T15:25:14.860Z">
+<meta property="og:updated_time" content="2019-08-09T00:24:03.383Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring Cloud Bus">
 <meta name="twitter:description" content="主要介绍Spring Cloud Bus">
@@ -156,7 +156,7 @@ var _hmt = _hmt || [];
                 <span class="level-item has-text-grey">
                     
                     
-                    5 分钟 读完 (大约 728 个字)
+                    5 分钟 读完 (大约 727 个字)
                 </span>
                 
                 
@@ -170,7 +170,7 @@ var _hmt = _hmt || [];
         </h1>
         <div class="content">
             <p>主要介绍Spring Cloud Bus<br><a id="more"></a></p>
-<h2 id="github上配置文件"><a href="#github上配置文件" class="headerlink" title="github上配置文件"></a>github上配置文件</h2><p><img src="https://qiniu.mikecorden.com/2019-07-03-15604783583209.jpg" alt="-w542"></p>
+<h2 id="github上配置文件"><a href="#github上配置文件" class="headerlink" title="github上配置文件"></a>github上配置文件</h2><p><img src="https://qiniu.mikecorden.com/2019-07-03-15604783583209.jpg" alt></p>
 <h2 id="Spring-Cloud-Bus-概述"><a href="#Spring-Cloud-Bus-概述" class="headerlink" title="Spring Cloud Bus 概述"></a>Spring Cloud Bus 概述</h2><p>Spring Cloud Bus 使用轻量级的消息代理（RabbitMQ,Kafka……）连接分布式系统的节点（clients），这样可以广播传播状态的更改（更新配置文件操作）或其他管理指令。达到下图效果。<br><img src="https://qiniu.mikecorden.com/2019-07-03-15604736804790.jpg" alt><br>例如上图，所有client都与消息总线想连，当configserver的<code>/bus/refresh</code>接收到请求，会像消息总线发送一个配置更新的事件，通过消息总线广播，所有的client会去configServer拉最新的配置。</p>
 <h2 id="Client如何更新配置–-gt-refresh"><a href="#Client如何更新配置–-gt-refresh" class="headerlink" title="Client如何更新配置–&gt;refresh"></a>Client如何更新配置–&gt;refresh</h2><p>客户端如何去主动获取新的配置信息呢，springcloud已经给我们提供了解决方案，每个客户端通过POST方法触发各自的<code>/refresh</code></p>
 <h3 id="Client添加依赖"><a href="#Client添加依赖" class="headerlink" title="Client添加依赖"></a>Client添加依赖</h3><figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-actuator<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
