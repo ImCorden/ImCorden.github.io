@@ -2,24 +2,24 @@
 <html lang="zh">
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-<title>搭建个人博客 之 MWeb，服务器和全站Https - MkCorden|个人博客</title>
+<title>MyBatis-Plus - MkCorden|个人博客</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-    <meta name="description" content="MWeb界面简洁和高性能，支持发布协议，可以快速发布写好的文章，MWeb备份配合Docker及七牛，防止数据丢失，重新部署也不会太麻烦，下面介绍MWeb快速部署Hexo文章，Docker创建Nginx容器并配置SSL证书，七牛云图床申请及开启Https。">
-<meta name="keywords" content="Hexo">
+    <meta name="description" content="在整理MyBatis时候，Mybatis的逆向工程的xml实在懒得写，找代码生成器的时候听说了MyBatis-Plus，看了看官方文档，代码生成器深得我心，对照文档学习了下，感觉效率比MyBatis提升不少。 简介MyBatis-Plus（以下简称MP）是一个MyBatis的增强工具，在MyBatis的基础上只做增强不做改变，为简化开发、提高效率而生。">
+<meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="搭建个人博客 之 MWeb，服务器和全站Https">
-<meta property="og:url" content="https://mikecorden.com/2019/03/18/Hexo2/index.html">
+<meta property="og:title" content="MyBatis-Plus">
+<meta property="og:url" content="https://mikecorden.com/2019/08/13/MabtisPlus/index.html">
 <meta property="og:site_name" content="MkCorden|个人博客">
-<meta property="og:description" content="MWeb界面简洁和高性能，支持发布协议，可以快速发布写好的文章，MWeb备份配合Docker及七牛，防止数据丢失，重新部署也不会太麻烦，下面介绍MWeb快速部署Hexo文章，Docker创建Nginx容器并配置SSL证书，七牛云图床申请及开启Https。">
+<meta property="og:description" content="在整理MyBatis时候，Mybatis的逆向工程的xml实在懒得写，找代码生成器的时候听说了MyBatis-Plus，看了看官方文档，代码生成器深得我心，对照文档学习了下，感觉效率比MyBatis提升不少。 简介MyBatis-Plus（以下简称MP）是一个MyBatis的增强工具，在MyBatis的基础上只做增强不做改变，为简化开发、提高效率而生。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://mikecorden.com/images/og_image.png">
-<meta property="og:updated_time" content="2019-08-05T15:25:13.760Z">
+<meta property="og:updated_time" content="2019-08-13T05:54:53.559Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="搭建个人博客 之 MWeb，服务器和全站Https">
-<meta name="twitter:description" content="MWeb界面简洁和高性能，支持发布协议，可以快速发布写好的文章，MWeb备份配合Docker及七牛，防止数据丢失，重新部署也不会太麻烦，下面介绍MWeb快速部署Hexo文章，Docker创建Nginx容器并配置SSL证书，七牛云图床申请及开启Https。">
+<meta name="twitter:title" content="MyBatis-Plus">
+<meta name="twitter:description" content="在整理MyBatis时候，Mybatis的逆向工程的xml实在懒得写，找代码生成器的时候听说了MyBatis-Plus，看了看官方文档，代码生成器深得我心，对照文档学习了下，感觉效率比MyBatis提升不少。 简介MyBatis-Plus（以下简称MP）是一个MyBatis的增强工具，在MyBatis的基础上只做增强不做改变，为简化开发、提高效率而生。">
 <meta name="twitter:image" content="https://mikecorden.com/images/og_image.png">
 
 
@@ -146,17 +146,17 @@ var _hmt = _hmt || [];
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-03-18T12:31:29.000Z">2019-03-18</time>
+                <time class="level-item has-text-grey" datetime="2019-08-13T05:54:00.000Z">2019-08-13</time>
                 
                 <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Hexo/">Hexo</a>
+                <a class="has-link-grey -link" href="/categories/Java/">Java</a>
                 </div>
                 
                 
                 <span class="level-item has-text-grey">
                     
                     
-                    12 分钟 读完 (大约 1791 个字)
+                    11 分钟 读完 (大约 1647 个字)
                 </span>
                 
                 
@@ -165,63 +165,66 @@ var _hmt = _hmt || [];
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                搭建个人博客 之 MWeb，服务器和全站Https
+                MyBatis-Plus
             
         </h1>
         <div class="content">
-            <p>MWeb界面简洁和高性能，支持发布协议，可以快速发布写好的文章，MWeb备份配合Docker及七牛，防止数据丢失，重新部署也不会太麻烦，下面介绍MWeb快速部署Hexo文章，Docker创建Nginx容器并配置SSL证书，七牛云图床申请及开启Https。<a id="more"></a></p>
-<h2 id="MWeb使用"><a href="#MWeb使用" class="headerlink" title="MWeb使用"></a>MWeb使用</h2><p>在那么多md编辑器里之所以喜欢用MWeb有这几个原因：</p>
+            <p>在整理MyBatis时候，Mybatis的逆向工程的xml实在懒得写，找代码生成器的时候听说了MyBatis-Plus，看了看官方文档，代码生成器深得我心，对照文档学习了下，感觉效率比MyBatis提升不少。</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><a href="https://mybatis.plus" target="_blank" rel="noopener">MyBatis-Plus</a>（以下简称MP）是一个<a href="http://www.mybatis.org/mybatis-3/" target="_blank" rel="noopener">MyBatis</a>的增强工具，在MyBatis的基础上只做增强不做改变，为简化开发、提高效率而生。<br><a id="more"></a></p>
 <ul>
-<li>可以边编辑、预览同开（其实也不看预览，但是必须要开，哈哈～）</li>
-<li>可以复制图片到正在编辑的md文件，会在对应目录添加图片副本</li>
-<li>可以将图片上传到自己的图床</li>
-<li>可以快捷发布到各种服务商：印象，少数派……支持自定义脚本</li>
-<li>有外部引用模式</li>
-<li>操作简洁</li>
+<li>特性<ul>
+<li><strong>无侵入</strong>：只做增强不做改变，引入它不会对现有工程产生影响，如丝般顺滑</li>
+<li><strong>损耗小</strong>：启动即会自动注入基本 CURD，性能基本无损耗，直接面向对象操作</li>
+<li><strong>强大的 CRUD 操作</strong>：内置通用 Mapper、通用 Service，仅仅通过少量配置即可实现单表大部分 CRUD 操作，更有强大的条件构造器，满足各类使用需求</li>
+<li><strong>支持 Lambda 形式调用</strong>：通过 Lambda 表达式，方便的编写各类查询条件，无需再担心字段写错</li>
+<li><strong>支持主键自动生成</strong>：支持多达 4 种主键策略（内含分布式唯一 ID 生成器 - Sequence），可自由配置，完美解决主键问题</li>
+<li><strong>支持 ActiveRecord 模式</strong>：支持 ActiveRecord 形式调用，实体类只需继承 Model 类即可进行强大的 CRUD 操作</li>
+<li><strong>支持自定义全局通用操作</strong>：支持全局通用方法注入（ Write once, use anywhere ）</li>
+<li><strong>内置代码生成器</strong>：采用代码或者 Maven 插件可快速生成 Mapper 、 Model 、 Service 、 Controller 层代码，支持模板引擎，更有超多自定义配置等您来使用</li>
+<li><strong>内置分页插件</strong>：基于 MyBatis 物理分页，开发者无需关心具体操作，配置好插件之后，写分页等同于普通 List 查询</li>
+<li><strong>分页插件支持多种数据库</strong>：支持 MySQL、MariaDB、Oracle、DB2、H2、HSQL、SQLite、Postgre、SQLServer2005、SQLServer 等多种数据库</li>
+<li><strong>内置性能分析插件</strong>：可输出 Sql 语句以及其执行时间，建议开发测试时启用该功能，能快速揪出慢查询</li>
+<li><strong>内置全局拦截插件</strong>：提供全表 delete 、 update 操作智能分析阻断，也可自定义拦截规则，预防误操作</li>
 </ul>
-<h3 id="配置七牛云"><a href="#配置七牛云" class="headerlink" title="配置七牛云"></a>配置七牛云</h3><p>在<code>偏好设置--&gt;发布服务</code>可以看到，对应的填入七牛的<code>空间名称</code>，<code>Access Key</code>，<code>Secret Key</code>，和<code>域名</code>即可。填写好后可以进行验证，上传一张图片看是否成功。</p>
-<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-15555671184924.jpg" alt></div></p>
-<h3 id="上传图片到七牛云"><a href="#上传图片到七牛云" class="headerlink" title="上传图片到七牛云"></a>上传图片到七牛云</h3><p>写文章时候直接复制图片粘到md中，文章全部写完后点击右上角分享按钮。</p>
-<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-2019-04-18-14.18.40.png" alt></div><br>选择<code>把本地图片传至图床</code>。</p>
-<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-15555686877757.jpg" alt></div><br>选择<code>复制 Markdown</code>，图片会上传到所选图床并会复制已经替换成对应域名地址的md文本，将md复制到需要部署的md文件中即可。</p>
+</li>
+</ul>
+<p><img src="https://qiniu.mikecorden.com/2019-08-13-15656616710058.jpg" alt></p>
+<h2 id="代码生成器"><a href="#代码生成器" class="headerlink" title="代码生成器"></a>代码生成器</h2><p>详细配置参数详见<a href="https://mybatis.plus/config/generator-config.html#数据源-datasourceconfig-配置" target="_blank" rel="noopener">代码生成器配置</a>，以下为我的 常用的配置。</p>
+<h3 id="六种Config"><a href="#六种Config" class="headerlink" title="六种Config"></a>六种Config</h3><h4 id="DataSourceConfig-数据源配置"><a href="#DataSourceConfig-数据源配置" class="headerlink" title="DataSourceConfig 数据源配置"></a>DataSourceConfig 数据源配置</h4><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">DataSourceConfig dataSource = <span class="hljs-keyword">new</span> DataSourceConfig();</span><br><span class="line">dataSource.setUrl(<span class="hljs-string">"jdbc:mysql://**:**/***?useUnicode=true&amp;characterEncoding=utf-8"</span>)</span><br><span class="line">    .setDriverName(<span class="hljs-string">"com.mysql.jdbc.Driver"</span>)</span><br><span class="line">    .setUsername(<span class="hljs-string">"**"</span>)</span><br><span class="line">    .setPassword(<span class="hljs-string">"**"</span>)</span><br><span class="line">    <span class="hljs-comment">//.setSchemaName("public")//可以在Url中设置</span></span><br><span class="line">    <span class="hljs-comment">//.setTypeConvert()//自定义类型转换（决定对应数据库内置实现）</span></span><br><span class="line">    .setDbType(DbType.MYSQL);<span class="hljs-comment">//数据库类型</span></span><br></pre></td></tr></table></figure>
+<p>MP内置的类型转换在：<code>com.baomidou.mybatisplus.generator.config.converts</code>，默认提供5种数据库：<br><img src="https://qiniu.mikecorden.com/2019-08-13-15656635545117.jpg" alt><br>以MySql为例可以看到数据库对应类型与Java类型的对应：<br><img src="https://qiniu.mikecorden.com/2019-08-13-%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-08-13%20%E4%B8%8A%E5%8D%8810.39.12.png" alt><br>因为<code>jdk1.8</code>引入<code>java.time.*</code>新api，在日期的转换上有个通过GlobalConfig(全局配置)的参数，可以指定数据库日期类型对应的java类型转换。</p>
+<h4 id="StrategyConfig-策略配置"><a href="#StrategyConfig-策略配置" class="headerlink" title="StrategyConfig 策略配置"></a>StrategyConfig 策略配置</h4><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">StrategyConfig strategy = <span class="hljs-keyword">new</span> StrategyConfig();</span><br><span class="line">strategy.setNaming(NamingStrategy.underline_to_camel)<span class="hljs-comment">//表名映射规则</span></span><br><span class="line">    .setColumnNaming(NamingStrategy.underline_to_camel)<span class="hljs-comment">//字段名映射规则</span></span><br><span class="line">    .setEntityLombokModel(<span class="hljs-keyword">false</span>)<span class="hljs-comment">//【实体】是否为lombok模型（默认 false)</span></span><br><span class="line">    .setEntityTableFieldAnnotationEnable(<span class="hljs-keyword">true</span>)<span class="hljs-comment">//实体生成字段注解</span></span><br><span class="line">    .setTablePrefix(<span class="hljs-string">"test_"</span>)<span class="hljs-comment">//表名前缀</span></span><br><span class="line">    .setRestControllerStyle(<span class="hljs-keyword">true</span>)<span class="hljs-comment">//生成 @RestController 控制器</span></span><br><span class="line">    <span class="hljs-comment">//.setExclude()</span></span><br><span class="line">    .setInclude(tableNames);<span class="hljs-comment">//需要包含的表名，允许正则表达式（与exclude二选一配置)，参数String...tablename</span></span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>注：git要手动上传复制外链</p>
+<p><code>NamingStrategy.underline_to_camel</code>下划线转驼峰，<code>NamingStrategy.no_change</code>不做任何改变，原样输出。详细配置见<a href="https://mybatis.plus/config/generator-config.html#数据库表配置" target="_blank" rel="noopener">这里</a></p>
 </blockquote>
-<h3 id="配置发布服务"><a href="#配置发布服务" class="headerlink" title="配置发布服务"></a>配置发布服务</h3><p>在<code>偏好设置--&gt;发布服务</code>可以看到<code>支持和运行脚本</code>,然后写下对应的hexo部署命令即可。</p>
-<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-2019-04-18-14.32.48.png" alt></div></p>
-<h3 id="发布文章到Hexo"><a href="#发布文章到Hexo" class="headerlink" title="发布文章到Hexo"></a>发布文章到Hexo</h3><p>在需要进行部署的md文件点击右上分享选择对应的发布服务。</p>
-<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-2019-04-18%20-14.38.32.png" alt></div><br>MWeb会复制命令到剪切板，直接在弹出的<code>终端</code>里<code>command + V</code>回车就可以运行已经写好的部署命令。</p>
-<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-2019-04-18-14.45.15.png" alt="2019-04-18-14.45.15"></div></p>
-<h2 id="Docker-Nginx"><a href="#Docker-Nginx" class="headerlink" title="Docker + Nginx"></a>Docker + Nginx</h2><p>Docker是一个虚拟化软件，你可以认为是类似：VMware、Virtualbox。对开发来讲总结一个最简单的说法：在 Maven 未产生的年代，jar 包要随着开发项目走到哪里跟到哪里。有了 Maven 写好 pom.xml 即可。此时的 Docker 就好比如 Maven，帮你省去了开发过程中的部署环境差异，你再也不能随便说：你的系统可以运行，我的系统就不行。现在别人连系统都帮你做好了~</p>
-<h3 id="Docker安装Nginx容器"><a href="#Docker安装Nginx容器" class="headerlink" title="Docker安装Nginx容器"></a>Docker安装Nginx容器</h3><p>安装启动Docker（<em>以后会更新Docker详细教程</em>）<br><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install docker-ce //安装</span><br><span class="line">sudo systemctl start docker //启动</span><br></pre></td></tr></table></figure></p>
-<p>推荐一个替代<code>docker stats</code>的插件 <strong>ctop</strong><br><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo wget https://github.com/bcicen/ctop/releases/download/v0.7.2/ctop-0.7.2-linux-amd64 -O /usr/local/bin/ctop</span><br><span class="line">sudo chmod +x /usr/local/bin/ctop</span><br></pre></td></tr></table></figure></p>
-<p><div align="center"><img src="https://qiniu.mikecorden.com/grid.gif" alt></div><br>从Docker仓库拉取最新nginx镜像<br><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull nginx</span><br></pre></td></tr></table></figure></p>
-<p>创建Nginx容器<br><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">docker run </span><br><span class="line">-v /var/dfile/nginx/nginx.conf:/etc/nginx/nginx.conf  </span><br><span class="line">-v /var/dfile/nginx:/var/dfile/ </span><br><span class="line">-v /var/dfile/nginx/full_chain.pem:/etc/nginx/cert/full_chain.pem </span><br><span class="line">-v /var/dfile/nginx/private.key:/etc/nginx/cert/private.key   </span><br><span class="line">-d -p 80:80 </span><br><span class="line">-p 443:443 </span><br><span class="line">--name=ng -i -t </span><br><span class="line">--restart=always bb7  </span><br><span class="line">/bin/bash</span><br></pre></td></tr></table></figure></p>
-<p>进入容器<br><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it ng bash</span><br></pre></td></tr></table></figure></p>
-<h3 id="Nginx配置"><a href="#Nginx配置" class="headerlink" title="Nginx配置"></a>Nginx配置</h3><p>nginx的配置文件是<code>/etc/nginx/nginx.conf</code>，配置文件如下（ssl）：<br><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">		 listen 443 ssl;</span><br><span class="line">	    server_name localhost;</span><br><span class="line">	    ssl_certificate  /etc/nginx/cert/full_chain.pem;#ssl配置</span><br><span class="line">	    ssl_certificate_key /etc/nginx/cert/private.key;#ssl配置</span><br><span class="line">	    ssl_session_timeout 5m;</span><br><span class="line">	    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</span><br><span class="line">	    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">	    ssl_prefer_server_ciphers on;</span><br><span class="line">	    location / &#123;</span><br><span class="line">	        root /var/dfile/hexo;#静态资源文件夹 </span><br><span class="line">			  index index.html index.htm;#静态资源页面</span><br><span class="line">		&#125;</span><br><span class="line">	    error_page   500 502 503 504  /50x.html;</span><br><span class="line">	    location = /50x.html &#123;</span><br><span class="line">	        root /usr/share/nginx/html;</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	server &#123;</span><br><span class="line">		 listen 80;#监听端口</span><br><span class="line">	    server_name www.mikecorden.com mikecorden.com;</span><br><span class="line">		 rewrite ^(.*) https://$server_name$1 permanent;#301永久重定向</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
-<p>启动nginx<br><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/sbin/nginx</span><br></pre></td></tr></table></figure></p>
-<p>修改配置文件要重启nginx<br><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/sbin/nginx -s reload</span><br></pre></td></tr></table></figure></p>
-<p>用vim修改nginx.conf太费劲，一般直接本地修改完，SFTP工具拖到服务器nginx容器挂在目录，然后重启。</p>
-<h2 id="阿里云"><a href="#阿里云" class="headerlink" title="阿里云"></a>阿里云</h2><p>本站的域名和服务器都是在阿里云购买。阿里云的交互还是很简单的，比较方便，app做的也还行，现在手机也有内置的控制台了。</p>
-<h3 id="域名及解析"><a href="#域名及解析" class="headerlink" title="域名及解析"></a>域名及解析</h3><p>我把博客部署到了github和自己的服务器上，在域名解析的时候，对于国内线路解析到自己的服务器，国外的线路解析到自己的GitHubPages上，来提高访问速度。</p>
-<h3 id="SSL证书申请，全站HTTPS"><a href="#SSL证书申请，全站HTTPS" class="headerlink" title="SSL证书申请，全站HTTPS"></a>SSL证书申请，全站HTTPS</h3><p>SSL证书是在阿里云申请的，下载的时候 选择nginx版本，在创建nginx容器的时候要映射宿主机的443端口用于ssl。具体配置看👆。全站Https需要本站所有的外链必须为Https，包括加载的js，css等，所有的图片链接也必须为Https。因为Hexo其实就是静态页面，实现起来也简单。下面介绍下七牛云图床开启https。</p>
-<h2 id="七牛云"><a href="#七牛云" class="headerlink" title="七牛云"></a>七牛云</h2><p>七牛云提供 10 G/月的标准存储 CDN 回源流量免费额度， 超过按0.15 元/GB 价格进行收费。每个月免费10G对于这种没人看的小博客很够用了，哈哈～</p>
-<h3 id="配置七牛云图床"><a href="#配置七牛云图床" class="headerlink" title="配置七牛云图床"></a>配置七牛云图床</h3><p>注册七牛云账号，申请对象存储空间（公开空间）。</p>
-<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-15555763922278.jpg" alt></div><br>进入所申请的空间，绑定域名（自动跳转域名管理）。</p>
-<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-15555766640494.jpg" alt></div><br>输入域名，先申请http，保存后进入域名管理，（保存成功后再改为https，这样可以免去手动配置ssl证书）。</p>
-<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-2019-04-18-16.38.51.png" alt></div><br>状态变为成功后（一般10分钟左右），选择对应的域名，进入配置界面。</p>
-<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-2019-04-18-16.47.33.png" alt></div><br>配置防盗链白名单，然后配置Https：选择免费证书（阿里云等其他网站申请，点击已有证书），七牛云会自动帮你申请一年有效的免费ssl证书并配置好，最后开启强制Https即可。</p>
-<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-15555773789153.jpg" alt></div><br>最后在域名管理找到域名对应的CNAME值，在阿里云上配置域名解析，类型为CNAME。</p>
-<p><div align="center"><img src="https://qiniu.mikecorden.com/2019-04-18-15555891380143.jpg" alt></div></p>
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>到此，整个流程结束，现在在MWeb的资源库写笔记，需要发到博客上的直接上传图床复制到外部引用模式对应md中，直接部署生效。也不需要担心备份等突发情况，MWeb支持3个地方的备份，我在Mac本机有备份，在iCloud网盘也有备份，永远不会担心资料丢失了～</p>
-
+<h4 id="PackageConfig-包配置"><a href="#PackageConfig-包配置" class="headerlink" title="PackageConfig 包配置"></a>PackageConfig 包配置</h4><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">PackageConfig pac = <span class="hljs-keyword">new</span> PackageConfig();</span><br><span class="line">pac.setModuleName(modelName)<span class="hljs-comment">//modelName</span></span><br><span class="line">    .setParent(<span class="hljs-string">"com.mkcorden.bootmybatisplus"</span>)<span class="hljs-comment">//父包名。如果为空，将下面子包名必须写全部， 否则就只需写子包名</span></span><br><span class="line">    .setController(<span class="hljs-string">"controller"</span>)</span><br><span class="line">    .setService(<span class="hljs-string">"service"</span>)</span><br><span class="line">    .setServiceImpl(<span class="hljs-string">"service.impl"</span>)</span><br><span class="line">    .setMapper(<span class="hljs-string">"mapper"</span>)</span><br><span class="line">    .setEntity(<span class="hljs-string">"domain"</span>)</span><br><span class="line">    .setXml(<span class="hljs-string">"mapper"</span>);</span><br></pre></td></tr></table></figure>
+<p>包配置时候如果要按照模块进行生成区分，一定设置modelName。ServiceImpl设置二级的目录需要注意。</p>
+<h4 id="TemplateConfig-模版配置"><a href="#TemplateConfig-模版配置" class="headerlink" title="TemplateConfig 模版配置"></a>TemplateConfig 模版配置</h4><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">TemplateConfig templateConfig = <span class="hljs-keyword">new</span> TemplateConfig();</span><br><span class="line"><span class="hljs-comment">// 配置自定义输出模板</span></span><br><span class="line"><span class="hljs-comment">// 指定自定义模板路径，注意不要带上.ftl/.vm, 会根据使用的模板引擎自动识别</span></span><br><span class="line"><span class="hljs-comment">// templateConfig.setEntity("templates/entity2.java");</span></span><br><span class="line"><span class="hljs-comment">// templateConfig.setService();</span></span><br><span class="line"><span class="hljs-comment">// templateConfig.setController();</span></span><br><span class="line">templateConfig.setXml(<span class="hljs-keyword">null</span>);</span><br></pre></td></tr></table></figure>
+<p>因为静态的xml文件一般生成在resources目录下，但是按上面的包配置，<code>.xml</code>的mapper会直接生成在<code>modelName/mapper/*</code>下，在TemplateConfig下设置xml为null，则可以不输出xml文件，然后用自定义配置进行对应输出。</p>
+<p>设置Null不输出：</p>
+<ol>
+<li><p><code>com.baomidou.mybatisplus.generator.config.builder.ConfigBuilder</code>中，<code>template.getXml()</code>为<code>Null</code>，不会设置<code>pathInfo(HashMap)</code>中<code>Key:xml_path</code>的value。<br> <img src="https://qiniu.mikecorden.com/2019-08-13-%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-08-13%20%E4%B8%8B%E5%8D%881.31.00.png" alt></p>
+</li>
+<li><p>在<code>com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine</code>的<code>batchOutput()</code>方法,<code>pathInfo.get(ConstVal.XML_PATH)</code>为null，所以不进行xml文件的输出。<br> <img src="https://qiniu.mikecorden.com/2019-08-13-%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-08-13%20%E4%B8%8B%E5%8D%881.36.38.png" alt></p>
+</li>
+</ol>
+<h4 id="GlobalConfig-全局配置"><a href="#GlobalConfig-全局配置" class="headerlink" title="GlobalConfig 全局配置"></a>GlobalConfig 全局配置</h4><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">GlobalConfig gc = <span class="hljs-keyword">new</span> GlobalConfig();</span><br><span class="line">gc.setFileOverride(<span class="hljs-keyword">false</span>)<span class="hljs-comment">//文件是否覆盖上一次</span></span><br><span class="line">    .setActiveRecord(<span class="hljs-keyword">false</span>)<span class="hljs-comment">// 开启 activeRecord 模式</span></span><br><span class="line">    .setEnableCache(<span class="hljs-keyword">true</span>)<span class="hljs-comment">// XML 二级缓存</span></span><br><span class="line">    .setBaseResultMap(<span class="hljs-keyword">true</span>)<span class="hljs-comment">// XML ResultMap</span></span><br><span class="line">    .setBaseColumnList(<span class="hljs-keyword">true</span>)<span class="hljs-comment">// XML columList基本的Sql片段</span></span><br><span class="line">    .setOutputDir(System.getProperty(<span class="hljs-string">"user.dir"</span>)+<span class="hljs-string">"/src/main/java"</span>)</span><br><span class="line">    .setAuthor(<span class="hljs-string">"MkCorden"</span>)</span><br><span class="line">    .setServiceName(<span class="hljs-string">"%sService"</span>)</span><br><span class="line">    .setServiceImplName(<span class="hljs-string">"%sServiceImpl"</span>)</span><br><span class="line">    .setControllerName(<span class="hljs-string">"%sController"</span>)</span><br><span class="line">    .setMapperName(<span class="hljs-string">"%sDao"</span>)</span><br><span class="line">    .setXmlName(<span class="hljs-string">"%sDao"</span>)</span><br><span class="line">    .setIdType(IdType.UUID)</span><br><span class="line">    .setOpen(<span class="hljs-keyword">false</span>)</span><br><span class="line">    .setDateType(DateType.ONLY_DATE);<span class="hljs-comment">//日期类型字段对应的转换模式</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>%s</code>是占位符<br>DateType有三种</p>
+<ol>
+<li>ONLY_DATE 只使用 java.util.date 代替</li>
+<li>SQL_PACK 使用 java.sql 包下的</li>
+<li>TIME_PACK  使用 java.time 包下的</li>
+</ol>
+</blockquote>
+<h4 id="InjectionConfig-自定义配置"><a href="#InjectionConfig-自定义配置" class="headerlink" title="InjectionConfig 自定义配置"></a>InjectionConfig 自定义配置</h4><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">InjectionConfig cfg = <span class="hljs-keyword">new</span> InjectionConfig() &#123;</span><br><span class="line">    <span class="hljs-meta">@Override</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">initMap</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">        <span class="hljs-comment">//TODO</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">    </span><br><span class="line"><span class="hljs-comment">// 自定义输出配置</span></span><br><span class="line">List&lt;FileOutConfig&gt; focList = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"><span class="hljs-comment">//String projectPath = System.getProperty("user.dir");</span></span><br><span class="line"><span class="hljs-comment">// 自定义配置会被优先输出</span></span><br><span class="line">focList.add(<span class="hljs-keyword">new</span> FileOutConfig(<span class="hljs-string">"/templates/mapper.xml.ftl"</span>) &#123;</span><br><span class="line">    <span class="hljs-meta">@Override</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">outputFile</span><span class="hljs-params">(TableInfo tableInfo)</span> </span>&#123;</span><br><span class="line">        <span class="hljs-comment">//首字母小写</span></span><br><span class="line">        <span class="hljs-keyword">char</span>[] cs = tableInfo.getEntityName().toCharArray();</span><br><span class="line">        cs[<span class="hljs-number">0</span>] += <span class="hljs-number">32</span>;</span><br><span class="line">        <span class="hljs-comment">// 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！</span></span><br><span class="line">        <span class="hljs-keyword">return</span> System.getProperty(<span class="hljs-string">"user.dir"</span>) + <span class="hljs-string">"/src/main/resources/mapper/"</span> + String.valueOf(cs)</span><br><span class="line">                + <span class="hljs-string">"/"</span> + tableInfo.getEntityName() + <span class="hljs-string">"Dao"</span> + StringPool.DOT_XML;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">cfg.setFileOutConfigList(focList);</span><br></pre></td></tr></table></figure>
+<h3 id="与Druid集成问题"><a href="#与Druid集成问题" class="headerlink" title="与Druid集成问题"></a>与Druid集成问题</h3><h2 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h2><h3 id="默认填充"><a href="#默认填充" class="headerlink" title="默认填充"></a>默认填充</h3><h2 id="分页插件"><a href="#分页插件" class="headerlink" title="分页插件"></a>分页插件</h2><h2 id="性能分析器"><a href="#性能分析器" class="headerlink" title="性能分析器"></a>性能分析器</h2><h2 id="默认接口CURD"><a href="#默认接口CURD" class="headerlink" title="默认接口CURD"></a>默认接口CURD</h2><h2 id="条件构造器"><a href="#条件构造器" class="headerlink" title="条件构造器"></a>条件构造器</h2><h2 id="SQL注入器"><a href="#SQL注入器" class="headerlink" title="SQL注入器"></a>SQL注入器</h2>
         </div>
         
         <div class="level is-size-7 is-uppercase">
             <div class="level-start">
                 <div class="level-item">
                     <span class="is-size-6 has-text-grey has-mr-7">#</span>
-                    <a class="has-link-grey -link" href="/tags/Hexo/">Hexo</a>
+                    <a class="has-link-grey -link" href="/tags/Java/">Java</a>
                 </div>
             </div>
         </div>
@@ -238,17 +241,10 @@ var _hmt = _hmt || [];
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
         
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/05/06/IdeaSpringBoot/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">Mac IDEA启动SpringBoot项目过慢</span>
-            </a>
-        </div>
-        
         
         <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2019/03/17/Hexo/">
-                <span class="level-item">搭建个人博客 之 Hexo基础</span>
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/06/05/LaunchpadIcon/">
+                <span class="level-item">Launchpad图标修改</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -344,61 +340,73 @@ var _hmt = _hmt || [];
                 目录
             </h3>
             <ul class="menu-list"><li>
-        <a class="is-flex" href="#MWeb使用">
+        <a class="is-flex" href="#简介">
         <span class="has-mr-6">1</span>
-        <span>MWeb使用</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#配置七牛云">
-        <span class="has-mr-6">1.1</span>
-        <span>配置七牛云</span>
+        <span>简介</span>
         </a></li><li>
-        <a class="is-flex" href="#上传图片到七牛云">
-        <span class="has-mr-6">1.2</span>
-        <span>上传图片到七牛云</span>
-        </a></li><li>
-        <a class="is-flex" href="#配置发布服务">
-        <span class="has-mr-6">1.3</span>
-        <span>配置发布服务</span>
-        </a></li><li>
-        <a class="is-flex" href="#发布文章到Hexo">
-        <span class="has-mr-6">1.4</span>
-        <span>发布文章到Hexo</span>
-        </a></li></ul></li><li>
-        <a class="is-flex" href="#Docker-Nginx">
+        <a class="is-flex" href="#代码生成器">
         <span class="has-mr-6">2</span>
-        <span>Docker + Nginx</span>
+        <span>代码生成器</span>
         </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#Docker安装Nginx容器">
+        <a class="is-flex" href="#六种Config">
         <span class="has-mr-6">2.1</span>
-        <span>Docker安装Nginx容器</span>
+        <span>六种Config</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#DataSourceConfig-数据源配置">
+        <span class="has-mr-6">2.1.1</span>
+        <span>DataSourceConfig 数据源配置</span>
         </a></li><li>
-        <a class="is-flex" href="#Nginx配置">
+        <a class="is-flex" href="#StrategyConfig-策略配置">
+        <span class="has-mr-6">2.1.2</span>
+        <span>StrategyConfig 策略配置</span>
+        </a></li><li>
+        <a class="is-flex" href="#PackageConfig-包配置">
+        <span class="has-mr-6">2.1.3</span>
+        <span>PackageConfig 包配置</span>
+        </a></li><li>
+        <a class="is-flex" href="#TemplateConfig-模版配置">
+        <span class="has-mr-6">2.1.4</span>
+        <span>TemplateConfig 模版配置</span>
+        </a></li><li>
+        <a class="is-flex" href="#GlobalConfig-全局配置">
+        <span class="has-mr-6">2.1.5</span>
+        <span>GlobalConfig 全局配置</span>
+        </a></li><li>
+        <a class="is-flex" href="#InjectionConfig-自定义配置">
+        <span class="has-mr-6">2.1.6</span>
+        <span>InjectionConfig 自定义配置</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#与Druid集成问题">
         <span class="has-mr-6">2.2</span>
-        <span>Nginx配置</span>
+        <span>与Druid集成问题</span>
         </a></li></ul></li><li>
-        <a class="is-flex" href="#阿里云">
+        <a class="is-flex" href="#注解">
         <span class="has-mr-6">3</span>
-        <span>阿里云</span>
+        <span>注解</span>
         </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#域名及解析">
+        <a class="is-flex" href="#默认填充">
         <span class="has-mr-6">3.1</span>
-        <span>域名及解析</span>
-        </a></li><li>
-        <a class="is-flex" href="#SSL证书申请，全站HTTPS">
-        <span class="has-mr-6">3.2</span>
-        <span>SSL证书申请，全站HTTPS</span>
+        <span>默认填充</span>
         </a></li></ul></li><li>
-        <a class="is-flex" href="#七牛云">
+        <a class="is-flex" href="#分页插件">
         <span class="has-mr-6">4</span>
-        <span>七牛云</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#配置七牛云图床">
-        <span class="has-mr-6">4.1</span>
-        <span>配置七牛云图床</span>
-        </a></li></ul></li><li>
-        <a class="is-flex" href="#最后">
+        <span>分页插件</span>
+        </a></li><li>
+        <a class="is-flex" href="#性能分析器">
         <span class="has-mr-6">5</span>
-        <span>最后</span>
+        <span>性能分析器</span>
+        </a></li><li>
+        <a class="is-flex" href="#默认接口CURD">
+        <span class="has-mr-6">6</span>
+        <span>默认接口CURD</span>
+        </a></li><li>
+        <a class="is-flex" href="#条件构造器">
+        <span class="has-mr-6">7</span>
+        <span>条件构造器</span>
+        </a></li><li>
+        <a class="is-flex" href="#SQL注入器">
+        <span class="has-mr-6">8</span>
+        <span>SQL注入器</span>
         </a></li></ul>
         </div>
     </div>
