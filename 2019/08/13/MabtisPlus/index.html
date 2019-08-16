@@ -16,7 +16,7 @@
 <meta property="og:description" content="在整理MyBatis时候，Mybatis的逆向工程的xml实在懒得写，找代码生成器的时候听说了MyBatis-Plus，看了看官方文档，代码生成器深得我心，对照文档学习了下，感觉效率比MyBatis提升不少。 简介MyBatis-Plus（以下简称MP）是一个MyBatis的增强工具，在MyBatis的基础上只做增强不做改变，为简化开发、提高效率而生。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://mikecorden.com/images/og_image.png">
-<meta property="og:updated_time" content="2019-08-13T05:54:53.559Z">
+<meta property="og:updated_time" content="2019-08-16T02:29:49.131Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MyBatis-Plus">
 <meta name="twitter:description" content="在整理MyBatis时候，Mybatis的逆向工程的xml实在懒得写，找代码生成器的时候听说了MyBatis-Plus，看了看官方文档，代码生成器深得我心，对照文档学习了下，感觉效率比MyBatis提升不少。 简介MyBatis-Plus（以下简称MP）是一个MyBatis的增强工具，在MyBatis的基础上只做增强不做改变，为简化开发、提高效率而生。">
@@ -156,7 +156,7 @@ var _hmt = _hmt || [];
                 <span class="level-item has-text-grey">
                     
                     
-                    11 分钟 读完 (大约 1647 个字)
+                    20 分钟 读完 (大约 2940 个字)
                 </span>
                 
                 
@@ -208,16 +208,86 @@ var _hmt = _hmt || [];
 </li>
 </ol>
 <h4 id="GlobalConfig-全局配置"><a href="#GlobalConfig-全局配置" class="headerlink" title="GlobalConfig 全局配置"></a>GlobalConfig 全局配置</h4><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">GlobalConfig gc = <span class="hljs-keyword">new</span> GlobalConfig();</span><br><span class="line">gc.setFileOverride(<span class="hljs-keyword">false</span>)<span class="hljs-comment">//文件是否覆盖上一次</span></span><br><span class="line">    .setActiveRecord(<span class="hljs-keyword">false</span>)<span class="hljs-comment">// 开启 activeRecord 模式</span></span><br><span class="line">    .setEnableCache(<span class="hljs-keyword">true</span>)<span class="hljs-comment">// XML 二级缓存</span></span><br><span class="line">    .setBaseResultMap(<span class="hljs-keyword">true</span>)<span class="hljs-comment">// XML ResultMap</span></span><br><span class="line">    .setBaseColumnList(<span class="hljs-keyword">true</span>)<span class="hljs-comment">// XML columList基本的Sql片段</span></span><br><span class="line">    .setOutputDir(System.getProperty(<span class="hljs-string">"user.dir"</span>)+<span class="hljs-string">"/src/main/java"</span>)</span><br><span class="line">    .setAuthor(<span class="hljs-string">"MkCorden"</span>)</span><br><span class="line">    .setServiceName(<span class="hljs-string">"%sService"</span>)</span><br><span class="line">    .setServiceImplName(<span class="hljs-string">"%sServiceImpl"</span>)</span><br><span class="line">    .setControllerName(<span class="hljs-string">"%sController"</span>)</span><br><span class="line">    .setMapperName(<span class="hljs-string">"%sDao"</span>)</span><br><span class="line">    .setXmlName(<span class="hljs-string">"%sDao"</span>)</span><br><span class="line">    .setIdType(IdType.UUID)</span><br><span class="line">    .setOpen(<span class="hljs-keyword">false</span>)</span><br><span class="line">    .setDateType(DateType.ONLY_DATE);<span class="hljs-comment">//日期类型字段对应的转换模式</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><code>%s</code>是占位符<br>DateType有三种</p>
-<ol>
+<ul>
+<li><code>%s</code>是占位符</li>
+<li>DateType有三种<ul>
 <li>ONLY_DATE 只使用 java.util.date 代替</li>
 <li>SQL_PACK 使用 java.sql 包下的</li>
 <li>TIME_PACK  使用 java.time 包下的</li>
-</ol>
-</blockquote>
+</ul>
+</li>
+</ul>
 <h4 id="InjectionConfig-自定义配置"><a href="#InjectionConfig-自定义配置" class="headerlink" title="InjectionConfig 自定义配置"></a>InjectionConfig 自定义配置</h4><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">InjectionConfig cfg = <span class="hljs-keyword">new</span> InjectionConfig() &#123;</span><br><span class="line">    <span class="hljs-meta">@Override</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">initMap</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">        <span class="hljs-comment">//TODO</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">    </span><br><span class="line"><span class="hljs-comment">// 自定义输出配置</span></span><br><span class="line">List&lt;FileOutConfig&gt; focList = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"><span class="hljs-comment">//String projectPath = System.getProperty("user.dir");</span></span><br><span class="line"><span class="hljs-comment">// 自定义配置会被优先输出</span></span><br><span class="line">focList.add(<span class="hljs-keyword">new</span> FileOutConfig(<span class="hljs-string">"/templates/mapper.xml.ftl"</span>) &#123;</span><br><span class="line">    <span class="hljs-meta">@Override</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">outputFile</span><span class="hljs-params">(TableInfo tableInfo)</span> </span>&#123;</span><br><span class="line">        <span class="hljs-comment">//首字母小写</span></span><br><span class="line">        <span class="hljs-keyword">char</span>[] cs = tableInfo.getEntityName().toCharArray();</span><br><span class="line">        cs[<span class="hljs-number">0</span>] += <span class="hljs-number">32</span>;</span><br><span class="line">        <span class="hljs-comment">// 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！</span></span><br><span class="line">        <span class="hljs-keyword">return</span> System.getProperty(<span class="hljs-string">"user.dir"</span>) + <span class="hljs-string">"/src/main/resources/mapper/"</span> + String.valueOf(cs)</span><br><span class="line">                + <span class="hljs-string">"/"</span> + tableInfo.getEntityName() + <span class="hljs-string">"Dao"</span> + StringPool.DOT_XML;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">cfg.setFileOutConfigList(focList);</span><br></pre></td></tr></table></figure>
-<h3 id="与Druid集成问题"><a href="#与Druid集成问题" class="headerlink" title="与Druid集成问题"></a>与Druid集成问题</h3><h2 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h2><h3 id="默认填充"><a href="#默认填充" class="headerlink" title="默认填充"></a>默认填充</h3><h2 id="分页插件"><a href="#分页插件" class="headerlink" title="分页插件"></a>分页插件</h2><h2 id="性能分析器"><a href="#性能分析器" class="headerlink" title="性能分析器"></a>性能分析器</h2><h2 id="默认接口CURD"><a href="#默认接口CURD" class="headerlink" title="默认接口CURD"></a>默认接口CURD</h2><h2 id="条件构造器"><a href="#条件构造器" class="headerlink" title="条件构造器"></a>条件构造器</h2><h2 id="SQL注入器"><a href="#SQL注入器" class="headerlink" title="SQL注入器"></a>SQL注入器</h2>
+<p><code>/templates/mapper.xml.ftl</code>默认模版路径<br><img src="https://qiniu.mikecorden.com/2019-08-16-15658761602627.jpg" alt></p>
+<h3 id="与Druid集成问题"><a href="#与Druid集成问题" class="headerlink" title="与Druid集成问题"></a>与Druid集成问题</h3><blockquote>
+<p>在Druid 1.1.19版本已经解决</p>
+</blockquote>
+<p>使用Druid旧版本连接池，在使用MP代码生成器将时间类型字段映射到jdk1.8的<code>java.time.*</code>时，进行数据库操作对应字段会报<code>java.sql.SQLFeatureNotSupportedException</code>，原因具体issue见 <a href="https://github.com/alibaba/druid/issues/3393" target="_blank" rel="noopener">druid:3393</a> / <a href="https://github.com/baomidou/mybatis-plus/issues/1245" target="_blank" rel="noopener">mybatis-plus:1245</a>，解决办法又两个：</p>
+<ol>
+<li>在MP的<code>GlobalConfig</code>中设置<code>.setDateType(DateType.ONLY_DATE)</code>，强制把所有时间类型转换为<code>Date</code>。</li>
+<li>将MP版本将到<code>3.1.0</code>即可。</li>
+</ol>
+<p>因为在<code>MP ver.3.1.1</code>加入了分布式事务特性，再一个使用新的时间格式会造成不可知的其他第三方插件不支持，综上我选第一种，哈哈。</p>
+<h2 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h2><p>使用MP自带代码生成器生成的Domain类会有<code>@TableName</code> <code>@TableId</code> <code>@TableField</code>注解。同时MP也提供了如<code>@Version</code>（乐观锁中代表版本）<code>@TableLogic</code>（逻辑删除中使用)，下面简单介绍几个注解，详细请参考<a href="https://mp.baomidou.com/guide/annotation.html" target="_blank" rel="noopener">官网文档</a></p>
+<h3 id="TableName"><a href="#TableName" class="headerlink" title="@TableName"></a>@TableName</h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@TableName</span>(value = <span class="hljs-string">"test_subject"</span>,resultMap = <span class="hljs-string">"BaseResultMap"</span>)</span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Subject</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Serializable</span> </span>&#123;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>value：指定数据库中的表名</li>
+<li>resultMap：指定xml中ResultMap的id</li>
+<li>keepGlobalPrefix：<ul>
+<li>false（默认）：如果是 false , 全局的 tablePrefix 不生效</li>
+</ul>
+</li>
+</ul>
+<h3 id="TableId"><a href="#TableId" class="headerlink" title="@TableId"></a>@TableId</h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@TableId</span>(value = <span class="hljs-string">"subject_id"</span>, type = IdType.AUTO)</span><br><span class="line"><span class="hljs-keyword">private</span> Long subjectId;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>用于注解主键对应的属性值</li>
+<li>value：指定主键字段名</li>
+<li>type：指定主键的类型<ul>
+<li>AUTO：数据库自增</li>
+<li>INPUT：自行输入</li>
+<li>ID_WORKER：分布式全局唯一ID 长整型类型</li>
+<li>UUID：32位UUID字符串</li>
+<li>NONE：无状态</li>
+<li>ID_WORKER_STR：分布式全局唯一ID 字符串类型</li>
+</ul>
+</li>
+</ul>
+<h3 id="TableField"><a href="#TableField" class="headerlink" title="@TableField"></a>@TableField</h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@TableField</span>(value = <span class="hljs-string">"sup_subject_id"</span>, fill = FieldFill.INSERT)</span><br><span class="line"><span class="hljs-keyword">private</span> String supSubjectId;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>用于注解除主键以外其他属性</li>
+<li>value：指定对应数据库字段名</li>
+<li>fill：自动填充策略<ul>
+<li>DEFAULT：默认不处理</li>
+<li>INSERT：插入时填充字段</li>
+<li>UPDATE：更新时填充字段</li>
+<li>INSERT_UPDATE：插入和更新时填充字段</li>
+</ul>
+</li>
+<li>其他配置见<a href="https://mybatis.plus/guide/annotation.html#tablefield" target="_blank" rel="noopener">官方文档</a></li>
+</ul>
+<h3 id="（公共字段）默认填充"><a href="#（公共字段）默认填充" class="headerlink" title="（公共字段）默认填充"></a>（公共字段）默认填充</h3><p>使用默认填充特性，首先要在<code>@TableField</code>注解内配置<code>fill</code>属性，然后需要实现<code>MetaObjectHandler</code>接口，进行自定义自动填充时候的赋值。</p>
+<blockquote>
+<p>注意：当字段不为空时，默认填充的值会覆盖原有值。可以在填充时候进行判断，不为空时候进行填充（有点像数据库默认值），但是不建议这么做。因为每次insert和update操作都会执行我们实现的接口，所以该特性最好用于公共字段的默认填充。</p>
+</blockquote>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Component</span></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyMetaObjectHandler</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">MetaObjectHandler</span> </span>&#123;</span><br><span class="line">    <span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment">     * 插入元对象字段填充（用于插入时对公共字段的填充）</span></span><br><span class="line"><span class="hljs-comment">     *</span></span><br><span class="line"><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> metaObject 元对象</span></span><br><span class="line"><span class="hljs-comment">     */</span></span><br><span class="line">    <span class="hljs-meta">@Override</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">insertFill</span><span class="hljs-params">(MetaObject metaObject)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="hljs-string">"-----------------插入方法实体填充INSERT----------------"</span>);</span><br><span class="line">        setFieldValByName(<span class="hljs-string">"classOverDate"</span>, LocalDate.now().plusDays(<span class="hljs-number">60</span>), metaObject);</span><br><span class="line">        setFieldValByName(<span class="hljs-string">"supSubjectId"</span>, <span class="hljs-string">"-1"</span>, metaObject);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment">     * 更新元对象字段填充（用于更新时对公共字段的填充）</span></span><br><span class="line"><span class="hljs-comment">     *</span></span><br><span class="line"><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> metaObject 元对象</span></span><br><span class="line"><span class="hljs-comment">     */</span></span><br><span class="line">    <span class="hljs-meta">@Override</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">updateFill</span><span class="hljs-params">(MetaObject metaObject)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="hljs-string">"-----------------插入方法实体填充UPDATE----------------"</span>);</span><br><span class="line">        setFieldValByName(<span class="hljs-string">"classOverDate"</span>, LocalDate.now().plusDays(<span class="hljs-number">70</span>), metaObject);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="分页插件"><a href="#分页插件" class="headerlink" title="分页插件"></a>分页插件</h2><p>分页时候如果设置<code>pageSize = -1</code>则不进行分页，如果要进行排序分页，传参数时，将排序条件封装即可，MP在Page对象中已经封装好了<br><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> /**</span><br><span class="line"> * 排序字段信息</span><br><span class="line"> */</span><br><span class="line">private List&lt;OrderItem&gt; orders = new ArrayList&lt;&gt;();</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://qiniu.mikecorden.com/2019-08-16-%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-08-16%20%E4%B8%8A%E5%8D%8810.13.46.png" alt><br>请求：<br><img src="https://qiniu.mikecorden.com/2019-08-16-%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-08-16%20%E4%B8%8A%E5%8D%8810.11.32.png" alt></p>
+<h3 id="具体使用"><a href="#具体使用" class="headerlink" title="具体使用"></a>具体使用</h3><ol>
+<li><p>配置</p>
+ <figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment"> * 分页插件</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-meta">@Bean</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> PaginationInterceptor <span class="hljs-title">paginationInterceptor</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">    PaginationInterceptor paginationInterceptor = <span class="hljs-keyword">new</span> PaginationInterceptor();</span><br><span class="line">    <span class="hljs-comment">//你的最大单页限制数量，默认 500 条，小于 0 如 -1 不受限制</span></span><br><span class="line">    <span class="hljs-comment">// paginationInterceptor.setLimit(500);</span></span><br><span class="line">    <span class="hljs-keyword">return</span> paginationInterceptor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用</p>
+ <figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"> <span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment"> * 分页</span></span><br><span class="line"><span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-meta">@GetMapping</span>(<span class="hljs-string">"students/page"</span>)</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> ResponseEntity <span class="hljs-title">searchByPage</span><span class="hljs-params">(Page&lt;Student&gt; student_page, <span class="hljs-keyword">boolean</span> listMode)</span></span>&#123;</span><br><span class="line">    <span class="hljs-keyword">if</span> (listMode) &#123;</span><br><span class="line">        <span class="hljs-comment">// size 小于 0 不在查询 total 及分页，自动调整为列表模式。</span></span><br><span class="line">        <span class="hljs-comment">// 注意！！这个地方自己控制好！！</span></span><br><span class="line">        student_page.setSize(-<span class="hljs-number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    IPage&lt;Student&gt; pageStudent = studentService.page(student_page);</span><br><span class="line">    <span class="hljs-keyword">return</span> ResponseUtil.pageSuccess(pageStudent.getTotal(),pageStudent.getRecords());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="性能分析器"><a href="#性能分析器" class="headerlink" title="性能分析器"></a>性能分析器</h2><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Bean</span></span><br><span class="line"><span class="hljs-comment">//@Profile(&#123;"dev","test"&#125;)// 设置 dev test 环境开启</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> PerformanceInterceptor <span class="hljs-title">performanceInterceptor</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">    PerformanceInterceptor performanceInterceptor = <span class="hljs-keyword">new</span> PerformanceInterceptor();</span><br><span class="line">    performanceInterceptor.setMaxTime(<span class="hljs-number">1000</span>);<span class="hljs-comment">// 最大执行时间</span></span><br><span class="line">    performanceInterceptor.setFormat(<span class="hljs-keyword">true</span>);<span class="hljs-comment">// sql是否格式化</span></span><br><span class="line">    <span class="hljs-keyword">return</span> performanceInterceptor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>控制台效果：<br><img src="https://qiniu.mikecorden.com/2019-08-16-15659218414975.jpg" alt></p>
+<h2 id="默认接口CURD"><a href="#默认接口CURD" class="headerlink" title="默认接口CURD"></a><a href="https://mybatis.plus/guide/crud-interface.html" target="_blank" rel="noopener">默认接口CURD</a></h2><p>通过MP的代码构造器生成的Service和Dao文件，已经默认继承了<code>com.baomidou.mybatisplus.extension.service.impl.ServiceImpl</code>和<code>com.baomidou.mybatisplus.core.mapper.BaseMapper</code>,在这两文件中MP已经默认帮我们实现了一些CRUD方法。</p>
+<h3 id="Mapper-CURD接口"><a href="#Mapper-CURD接口" class="headerlink" title="Mapper CURD接口"></a>Mapper CURD接口</h3><p>在启动时会自动解析实体表关系映射转换为Mybatis内部对象注入容器。<br><img src="https://qiniu.mikecorden.com/2019-08-16-15659221983222.jpg" alt></p>
+<h3 id="Service-CRUD接口"><a href="#Service-CRUD接口" class="headerlink" title="Service CRUD接口"></a>Service CRUD接口</h3><p>进一步封装CRUD，采用get查询单行remove删除list查询集合page分页，前缀命名方式区分Mapper层避免混淆。</p>
+<p>业务ServiceImpl继承了MP的ServiceImpl，并注入到Controller层，所以在Controller层，对于简单的业务，可以直接调用对应方法进行返回。<br><img src="https://qiniu.mikecorden.com/2019-08-16-15659224355806.jpg" alt></p>
+<h2 id="条件构造器"><a href="#条件构造器" class="headerlink" title="条件构造器"></a>条件构造器</h2><p>EntityWrapper<br>数据库字段而不是java属性<br></p>
+<h2 id="SQL注入器"><a href="#SQL注入器" class="headerlink" title="SQL注入器"></a>SQL注入器</h2>
         </div>
         
         <div class="level is-size-7 is-uppercase">
@@ -384,14 +454,30 @@ var _hmt = _hmt || [];
         <span class="has-mr-6">3</span>
         <span>注解</span>
         </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#默认填充">
+        <a class="is-flex" href="#TableName">
         <span class="has-mr-6">3.1</span>
-        <span>默认填充</span>
+        <span>@TableName</span>
+        </a></li><li>
+        <a class="is-flex" href="#TableId">
+        <span class="has-mr-6">3.2</span>
+        <span>@TableId</span>
+        </a></li><li>
+        <a class="is-flex" href="#TableField">
+        <span class="has-mr-6">3.3</span>
+        <span>@TableField</span>
+        </a></li><li>
+        <a class="is-flex" href="#（公共字段）默认填充">
+        <span class="has-mr-6">3.4</span>
+        <span>（公共字段）默认填充</span>
         </a></li></ul></li><li>
         <a class="is-flex" href="#分页插件">
         <span class="has-mr-6">4</span>
         <span>分页插件</span>
-        </a></li><li>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#具体使用">
+        <span class="has-mr-6">4.1</span>
+        <span>具体使用</span>
+        </a></li></ul></li><li>
         <a class="is-flex" href="#性能分析器">
         <span class="has-mr-6">5</span>
         <span>性能分析器</span>
@@ -399,7 +485,15 @@ var _hmt = _hmt || [];
         <a class="is-flex" href="#默认接口CURD">
         <span class="has-mr-6">6</span>
         <span>默认接口CURD</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#Mapper-CURD接口">
+        <span class="has-mr-6">6.1</span>
+        <span>Mapper CURD接口</span>
         </a></li><li>
+        <a class="is-flex" href="#Service-CRUD接口">
+        <span class="has-mr-6">6.2</span>
+        <span>Service CRUD接口</span>
+        </a></li></ul></li><li>
         <a class="is-flex" href="#条件构造器">
         <span class="has-mr-6">7</span>
         <span>条件构造器</span>
