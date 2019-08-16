@@ -16,7 +16,7 @@
 <meta property="og:description" content="在整理MyBatis时候，Mybatis的逆向工程的xml实在懒得写，找代码生成器的时候听说了MyBatis-Plus，看了看官方文档，代码生成器深得我心，对照文档学习了下，感觉效率比MyBatis提升不少。 简介MyBatis-Plus（以下简称MP）是一个MyBatis的增强工具，在MyBatis的基础上只做增强不做改变，为简化开发、提高效率而生。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://mikecorden.com/images/og_image.png">
-<meta property="og:updated_time" content="2019-08-16T02:29:49.131Z">
+<meta property="og:updated_time" content="2019-08-16T03:03:41.370Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MyBatis-Plus">
 <meta name="twitter:description" content="在整理MyBatis时候，Mybatis的逆向工程的xml实在懒得写，找代码生成器的时候听说了MyBatis-Plus，看了看官方文档，代码生成器深得我心，对照文档学习了下，感觉效率比MyBatis提升不少。 简介MyBatis-Plus（以下简称MP）是一个MyBatis的增强工具，在MyBatis的基础上只做增强不做改变，为简化开发、提高效率而生。">
@@ -156,7 +156,7 @@ var _hmt = _hmt || [];
                 <span class="level-item has-text-grey">
                     
                     
-                    20 分钟 读完 (大约 2940 个字)
+                    23 分钟 读完 (大约 3386 个字)
                 </span>
                 
                 
@@ -286,8 +286,26 @@ var _hmt = _hmt || [];
 <h3 id="Mapper-CURD接口"><a href="#Mapper-CURD接口" class="headerlink" title="Mapper CURD接口"></a>Mapper CURD接口</h3><p>在启动时会自动解析实体表关系映射转换为Mybatis内部对象注入容器。<br><img src="https://qiniu.mikecorden.com/2019-08-16-15659221983222.jpg" alt></p>
 <h3 id="Service-CRUD接口"><a href="#Service-CRUD接口" class="headerlink" title="Service CRUD接口"></a>Service CRUD接口</h3><p>进一步封装CRUD，采用get查询单行remove删除list查询集合page分页，前缀命名方式区分Mapper层避免混淆。</p>
 <p>业务ServiceImpl继承了MP的ServiceImpl，并注入到Controller层，所以在Controller层，对于简单的业务，可以直接调用对应方法进行返回。<br><img src="https://qiniu.mikecorden.com/2019-08-16-15659224355806.jpg" alt></p>
-<h2 id="条件构造器"><a href="#条件构造器" class="headerlink" title="条件构造器"></a>条件构造器</h2><p>EntityWrapper<br>数据库字段而不是java属性<br></p>
-<h2 id="SQL注入器"><a href="#SQL注入器" class="headerlink" title="SQL注入器"></a>SQL注入器</h2>
+<h2 id="条件构造器Wrapper"><a href="#条件构造器Wrapper" class="headerlink" title="条件构造器Wrapper"></a>条件构造器Wrapper</h2><p>因为使用Jdk1.8，支持lambda表达式，主要是用各种LambdaWrapper。对于在RPC模式中，不建议传输Wrapper，因为Wrapper很重。正确的方式是封装DTO进行传输，在接收端根据接收到的DTO进行相应的操作。</p>
+<blockquote>
+<p>使用中如果入参的<code>Map</code>或者<code>List</code>为<strong>空</strong>,则不会加入最后生成的sql中!!!</p>
+</blockquote>
+<h3 id="LambdaQueryWrapper"><a href="#LambdaQueryWrapper" class="headerlink" title="LambdaQueryWrapper"></a>LambdaQueryWrapper</h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@GetMapping</span>(<span class="hljs-string">"students/search"</span>)</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> ResponseEntity <span class="hljs-title">searchByCondition</span><span class="hljs-params">(@ModelAttribute StudentModel student_model)</span></span>&#123;</span><br><span class="line">    <span class="hljs-comment">//最好使用LambdaQueryWrapper,这样可以通过Student::getTrueName方式获取数据库字段名</span></span><br><span class="line">    <span class="hljs-comment">//使用正常的QueryWrapper，需要写死字段名如"true_name"才可以</span></span><br><span class="line">    <span class="hljs-keyword">return</span> ResponseUtil.success(studentService.list(<span class="hljs-keyword">new</span> QueryWrapper&lt;Student&gt;()</span><br><span class="line">            .lambda()</span><br><span class="line">            .like(Student::getTrueName,student_model.getTrueName())</span><br><span class="line">            .between(Student::getBirthday,student_model.getBeginDate(),student_model.getEndDate())));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>上面代码中<code>Student::getBirthday</code>，<code>Student</code>为实体类，<code>getBirthday</code>是<code>birthday</code>字段的<strong>getMethod</strong></p>
+</blockquote>
+<p>通过<code>QueryWrapper</code>的<code>.lambda()</code>方法转换为<code>LambdaQueryWrapper</code>，这样可以不用将字段名写死，因为MP在处理<code>LambdaQueryWrapper</code>时候会通过<code>columnToString()</code>来转换为数据库中的字段名。<br><img src="https://qiniu.mikecorden.com/2019-08-16-15659234882352.jpg" alt></p>
+<blockquote>
+<p>如果不能使用Lambda特性，指定字段时候，一定要写数据库中的字段名。不要写实体类的属性名。</p>
+</blockquote>
+<h3 id="LambdaUpdateWrapper"><a href="#LambdaUpdateWrapper" class="headerlink" title="LambdaUpdateWrapper"></a>LambdaUpdateWrapper</h3><p>跟QueryWrapper相似，需要注意的点是，在设置<code>SET</code>时候，要进行非空判断（最好直接使用已经封装的UpdateByID），因为：</p>
+<ul>
+<li>例: set(“name”, “”)—&gt;数据库字段值变为空字符串</li>
+<li>例: set(“name”, null)—&gt;数据库字段值变为null</li>
+</ul>
+<h2 id="SQL注入器-与-分表分库"><a href="#SQL注入器-与-分表分库" class="headerlink" title="SQL注入器 与 分表分库"></a>SQL注入器 与 分表分库</h2><p>待完成…</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Mybatis-Plus的诸多特性，在开发中大大减少了无意义Coding的时间，同时也带来了一些不确定性，和少量的学习成本。本文学习过程中的代码已将上传到GitHub上，<a href="https://github.com/ImCorden/mybatis-plus-study" target="_blank" rel="noopener">链接在这——&gt;</a></p>
+
         </div>
         
         <div class="level is-size-7 is-uppercase">
@@ -494,13 +512,25 @@ var _hmt = _hmt || [];
         <span class="has-mr-6">6.2</span>
         <span>Service CRUD接口</span>
         </a></li></ul></li><li>
-        <a class="is-flex" href="#条件构造器">
+        <a class="is-flex" href="#条件构造器Wrapper">
         <span class="has-mr-6">7</span>
-        <span>条件构造器</span>
+        <span>条件构造器Wrapper</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#LambdaQueryWrapper">
+        <span class="has-mr-6">7.1</span>
+        <span>LambdaQueryWrapper</span>
         </a></li><li>
-        <a class="is-flex" href="#SQL注入器">
+        <a class="is-flex" href="#LambdaUpdateWrapper">
+        <span class="has-mr-6">7.2</span>
+        <span>LambdaUpdateWrapper</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#SQL注入器-与-分表分库">
         <span class="has-mr-6">8</span>
-        <span>SQL注入器</span>
+        <span>SQL注入器 与 分表分库</span>
+        </a></li><li>
+        <a class="is-flex" href="#总结">
+        <span class="has-mr-6">9</span>
+        <span>总结</span>
         </a></li></ul>
         </div>
     </div>
