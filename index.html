@@ -139,6 +139,71 @@ var _hmt = _hmt || [];
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-09-11T01:00:00.000Z">2019-09-11</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Spring-Boot/">Spring Boot</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    3 分钟 读完 (大约 389 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2019/09/11/DruidVersion/">要了命的版本Druid/Mybatis/MybatisPlus</a>
+            
+        </h1>
+        <div class="content">
+            <h2 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h2><p>Druid是alibaba的一款开源数据库连接池。被称为是专门为监控而生的数据库连接池配置，他可以监控sql的执行情况，以及性能，然后根据结果来优化sql或者做性能调优。</p>
+<p>之前自己写项目时候没有用到Druid的监控功能。昨天试了试监控功能就出现了如下错误：<code>java.sql.SQLFeatureNotSupportedException</code>,主要是使用了<code>LocalDateTime</code>类型对应了数据库的<code>timestamp</code>类型字段引发的问题，java8新的时间类都会引发如下问题。<br><img src="https://qiniu.mikecorden.com/2019-09-11-15681725219050.jpg" alt></p>
+<blockquote>
+<p>当前使用版本的是<code>Mybatis-Plus 3.1.2</code>和<code>druid 1.1.20</code>。</p>
+</blockquote>
+<ul>
+<li>在<code>Mybatis-Plus</code>的<code>3.1.1</code>及之后的版本中，引用的mybatis版本为3.5.1。</li>
+<li>在没有启动Druid的监控模块时候<code>druid 1.1.19</code>及以上版本支持<code>mybatis 3.5.1</code>，java8新的时间类型对应数据库时间类型都正常。</li>
+</ul>
+<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>因为<code>mybatis 3.5.1</code>版本对于<code>java.time</code>包下<code>LocalDateTime</code>,<code>LocalDate</code>,<code>LocalTime</code>类型的转换交由了JDBC，若JDBC组件不支持对于<code>LocalDateTime</code>类型的处理则会报错。Druid数据库连接池，在最新版本中尚不支持对于<code>LocalDateTime</code>的处理，会<code>throw SQLFeatureNotSupportedException</code>，提请注意。</p>
+<h2 id="解决方式"><a href="#解决方式" class="headerlink" title="解决方式"></a>解决方式</h2><h3 id="降低mybatis版本"><a href="#降低mybatis版本" class="headerlink" title="降低mybatis版本"></a>降低mybatis版本</h3><h4 id="Mybatis-Plus"><a href="#Mybatis-Plus" class="headerlink" title="Mybatis-Plus"></a>Mybatis-Plus</h4><p>使用3.1.0及以下版本<br><figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.baomidou<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-plus-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.1.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="Mybatis"><a href="#Mybatis" class="headerlink" title="Mybatis"></a>Mybatis</h4><p>使用mybatis 3.5.0及以下版本</p>
+<ol>
+<li><p>mybatis-spring-boot-starter</p>
+ <figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.mybatis.spring.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-spring-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>mybatis</p>
+ <figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.mybatis<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.5.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="更换连接池"><a href="#更换连接池" class="headerlink" title="更换连接池"></a>更换连接池</h4><p>更换为 hicaricp 3.3.1，并将jdbc换为最新的</p>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    <div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-08-13T05:54:00.000Z">2019-08-13</time>
                 
                 <div class="level-item">
@@ -610,58 +675,25 @@ var _hmt = _hmt || [];
 
 
 
-    <div class="card">
+
     
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-07-16T08:35:04.000Z">2018-07-16</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/MacOS相关/">MacOS相关</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    3 分钟 读完 (大约 448 个字)
-                </span>
-                
-                
-            </div>
+<div class="card card-transparent">
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+        <div class="pagination-previous is-invisible is-hidden-mobile">
+            <a class="is-flex-grow has-text-black-ter" href="/page/0/">上一页</a>
         </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+        <div class="pagination-next">
+            <a class="is-flex-grow has-text-black-ter" href="/page/2/">下一页</a>
+        </div>
+        <ul class="pagination-list is-hidden-mobile">
             
-                <a class="has-link-black-ter" href="/2018/07/16/MacJDK/">MacOS JDK，使用Jenv管理本地JDK版本</a>
+            <li><a class="pagination-link is-current" href="/">1</a></li>
             
-        </h1>
-        <div class="content">
-            <p>MacOS上配置JDK环境（附带下载地址），并使用Jenv快速高效的管理本地环境变量JDK版本。<br></p>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2018/07/16/MacJDK/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
+            <li><a class="pagination-link has-text-black-ter" href="/page/2/">2</a></li>
+            
+        </ul>
+    </nav>
 </div>
-
-
-
-
-
-
-
-
 </div>
                 
 
@@ -707,7 +739,7 @@ var _hmt = _hmt || [];
                         文章
                     </p>
                     <p class="title has-text-weight-normal">
-                        10
+                        11
                     </p>
                 </div>
             </div>
@@ -749,7 +781,7 @@ var _hmt = _hmt || [];
         <h3 class="menu-label">
             标签云
         </h3>
-        <a href="/tags/Hexo/" style="font-size: 13.33px;">Hexo</a> <a href="/tags/IDEA/" style="font-size: 10px;">IDEA</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Mac/" style="font-size: 16.67px;">Mac</a> <a href="/tags/Spring-Boot/" style="font-size: 10px;">Spring Boot</a> <a href="/tags/Spring-Cloud/" style="font-size: 16.67px;">Spring Cloud</a> <a href="/tags/备忘/" style="font-size: 10px;">备忘</a>
+        <a href="/tags/Hexo/" style="font-size: 13.33px;">Hexo</a> <a href="/tags/IDEA/" style="font-size: 10px;">IDEA</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Mac/" style="font-size: 16.67px;">Mac</a> <a href="/tags/Spring-Boot/" style="font-size: 13.33px;">Spring Boot</a> <a href="/tags/Spring-Cloud/" style="font-size: 16.67px;">Spring Cloud</a> <a href="/tags/备忘/" style="font-size: 10px;">备忘</a>
     </div>
 </div>
 
@@ -764,6 +796,25 @@ var _hmt = _hmt || [];
         <h3 class="menu-label">
             最新文章
         </h3>
+        
+        <article class="media">
+            
+            <a href="/2019/09/11/DruidVersion/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="要了命的版本Druid/Mybatis/MybatisPlus">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-11T01:00:00.000Z">2019-09-11</time></div>
+                    <a href="/2019/09/11/DruidVersion/" class="has-link-black-ter is-size-6">要了命的版本Druid/Mybatis/MybatisPlus</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Spring-Boot/">Spring Boot</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -841,25 +892,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2019/03/17/Hexo/" class="media-left" style="display: none">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="搭建个人博客 之 Hexo基础">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-03-17T08:43:13.000Z">2019-03-17</time></div>
-                    <a href="/2019/03/17/Hexo/" class="has-link-black-ter is-size-6">搭建个人博客 之 Hexo基础</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Hexo/">Hexo</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -902,7 +934,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">Spring Boot</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">1</span>
+                <span class="level-item tag">2</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/Spring-Cloud/">
@@ -925,6 +957,17 @@ var _hmt = _hmt || [];
             归档
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/09/">
+                <span class="level-start">
+                    <span class="level-item">九月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2019/08/">
@@ -1018,6 +1061,25 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
+            <a href="/2019/09/11/DruidVersion/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="要了命的版本Druid/Mybatis/MybatisPlus">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-11T01:00:00.000Z">2019-09-11</time></div>
+                    <a href="/2019/09/11/DruidVersion/" class="has-link-black-ter is-size-6">要了命的版本Druid/Mybatis/MybatisPlus</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Spring-Boot/">Spring Boot</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2019/08/13/MabtisPlus/" class="media-left" style="display: none">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="MyBatis-Plus">
@@ -1092,25 +1154,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2019/03/17/Hexo/" class="media-left" style="display: none">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="搭建个人博客 之 Hexo基础">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-03-17T08:43:13.000Z">2019-03-17</time></div>
-                    <a href="/2019/03/17/Hexo/" class="has-link-black-ter is-size-6">搭建个人博客 之 Hexo基础</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Hexo/">Hexo</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -1153,7 +1196,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">Spring Boot</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">1</span>
+                <span class="level-item tag">2</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/Spring-Cloud/">
@@ -1176,6 +1219,17 @@ var _hmt = _hmt || [];
             归档
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/09/">
+                <span class="level-start">
+                    <span class="level-item">九月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2019/08/">
