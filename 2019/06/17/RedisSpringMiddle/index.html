@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+<title>Spring整合Redis进阶 - MkCorden|个人博客</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="了解过Spring整合Redis后，我们已经可以使用Redis进行缓存操作了。但在某些业务环境下，我们需要向Redis加载一些既有数据，例如：学员答题竞赛的分数排行，首页的一些缓存。这些数据我们需要在项目初始化阶段加载完毕。在项目运行阶段，我们也可以利用SpringCache进行接口的数据缓存，这样可以改善因为并发导致的缓慢（数据库IO），可以成倍的提升QPS。在分布式环境下的项目，我们也可以利用">
+<meta name="keywords" content="Redis,SpringBoot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring整合Redis进阶">
+<meta property="og:url" content="https://mikecorden.com/2019/06/17/RedisSpringMiddle/index.html">
+<meta property="og:site_name" content="MkCorden|个人博客">
+<meta property="og:description" content="了解过Spring整合Redis后，我们已经可以使用Redis进行缓存操作了。但在某些业务环境下，我们需要向Redis加载一些既有数据，例如：学员答题竞赛的分数排行，首页的一些缓存。这些数据我们需要在项目初始化阶段加载完毕。在项目运行阶段，我们也可以利用SpringCache进行接口的数据缓存，这样可以改善因为并发导致的缓慢（数据库IO），可以成倍的提升QPS。在分布式环境下的项目，我们也可以利用">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://mikecorden.com/images/og_image.png">
+<meta property="og:updated_time" content="2019-10-03T00:54:13.386Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring整合Redis进阶">
+<meta name="twitter:description" content="了解过Spring整合Redis后，我们已经可以使用Redis进行缓存操作了。但在某些业务环境下，我们需要向Redis加载一些既有数据，例如：学员答题竞赛的分数排行，首页的一些缓存。这些数据我们需要在项目初始化阶段加载完毕。在项目运行阶段，我们也可以利用SpringCache进行接口的数据缓存，这样可以改善因为并发导致的缓慢（数据库IO），可以成倍的提升QPS。在分布式环境下的项目，我们也可以利用">
+<meta name="twitter:image" content="https://mikecorden.com/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="https://qiniu.mikecorden.com/avatar.jpeg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/5.10.0-11/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+<script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?a06cf922071486eff2b8bb52d0f71985";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                MkCorden | 个人博客
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/archives">归档</a>
+                
+                <a class="navbar-item" href="/categories">分类</a>
+                
+                <a class="navbar-item" href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-06-17T14:30:23.000Z">2019-06-17</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    8 分钟 读完 (大约 1234 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Spring整合Redis进阶
+            
+        </h1>
+        <div class="content">
+            <p>了解过Spring整合Redis后，我们已经可以使用Redis进行缓存操作了。但在某些业务环境下，我们需要向Redis加载一些既有数据，例如：学员答题竞赛的分数排行，首页的一些缓存。这些数据我们需要在项目初始化阶段加载完毕。在项目运行阶段，我们也可以利用SpringCache进行接口的数据缓存，这样可以改善因为并发导致的缓慢（数据库IO），可以成倍的提升QPS。在分布式环境下的项目，我们也可以利用Redis进行集群环境的session共享。</p>
+<p>本文依次介绍了，项目初始化阶段加载Redis数据的方式，SpringCache与Redis的整合，以及SpringSession与Redis的整合。<br><a id="more"></a></p>
+<h2 id="SpringBoot项目初始化加载Redis数据"><a href="#SpringBoot项目初始化加载Redis数据" class="headerlink" title="SpringBoot项目初始化加载Redis数据"></a>SpringBoot项目初始化加载Redis数据</h2><h3 id="推荐-第一种方式：实现InitializingBean接口"><a href="#推荐-第一种方式：实现InitializingBean接口" class="headerlink" title="(推荐)第一种方式：实现InitializingBean接口"></a>(推荐)第一种方式：实现<code>InitializingBean</code>接口</h3><p>复写afterPropertiesSet方法：<br><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Override</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">afterPropertiesSet</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    List&lt;Student&gt; list = <span class="hljs-keyword">this</span>.findStudents();</span><br><span class="line">    <span class="hljs-keyword">if</span>(StringUtils.isNotNull(list))&#123;</span><br><span class="line">        list.stream()</span><br><span class="line">            .filter(s -&gt; StringUtils.isNotNull(s.getTestDatetime()))</span><br><span class="line">            .forEach(s -&gt; redisService.hmSet(<span class="hljs-string">"stus"</span>,<span class="hljs-string">"stu["</span>+s.getStudentId()+<span class="hljs-string">"]"</span>, s));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="第二种方式：实现ApplicationRunner接口"><a href="#第二种方式：实现ApplicationRunner接口" class="headerlink" title="第二种方式：实现ApplicationRunner接口"></a>第二种方式：实现<code>ApplicationRunner</code>接口</h3><p>复写run方法：<br><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Override</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">(ApplicationArguments args)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    List&lt;Student&gt; list = <span class="hljs-keyword">this</span>.findStudents();</span><br><span class="line">    <span class="hljs-keyword">if</span>(StringUtils.isNotNull(list))&#123;</span><br><span class="line">        list.stream()</span><br><span class="line">            .filter(s -&gt; StringUtils.isNotNull(s.getTestDatetime()))</span><br><span class="line">            .forEach(s -&gt; redisService.hmSet(<span class="hljs-string">"stus"</span>,<span class="hljs-string">"stu["</span>+s.getStudentId()+<span class="hljs-string">"]"</span>, s));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="两种方法区别"><a href="#两种方法区别" class="headerlink" title="两种方法区别"></a>两种方法区别</h3><ul>
+<li>实现<code>InitializingBean</code>接口方式，InitializingBean接口为bean提供了初始化方法的方式，它只包括afterPropertiesSet()方法。在spring初始化bean的时候，如果bean实现了InitializingBean接口， ​ 在对象的所有属性被初始化后之后才会调用afterPropertiesSet()方法。而且这时候用户是进不来的，只有初始化结束后才会放入请求。推荐这种方式。</li>
+<li>实现<code>ApplicationRunner</code>接口方式，复写run方法仅在SpringApplication.run(…)完成之后调用。这时候服务已经对外开放，用户可以访问，当redis预热时间很长的时候会造成用户获取数据出错的情况，所以不推荐。</li>
+</ul>
+<h2 id="SpringCache与Redis"><a href="#SpringCache与Redis" class="headerlink" title="SpringCache与Redis"></a>SpringCache与Redis</h2><h3 id="SpringCache集成redis的运行原理"><a href="#SpringCache集成redis的运行原理" class="headerlink" title="SpringCache集成redis的运行原理"></a>SpringCache集成redis的运行原理</h3><p>Spring缓存抽象模块通过<code>CacheManager</code>来创建、管理实际缓存组件，当SpringBoot应用程序引入<code>spring-boot-starter-data-redis</code>依赖后吗，容器中将注册的是<code>CacheManager</code>实例<code>RedisCacheManager</code>对象，<code>RedisCacheManager</code>来负责创建<code>RedisCache</code>作为缓存管理组件，由<code>RedisCache</code>操作redis服务器实现缓存数据操作。实际测试发现默认注入的<code>RedisCacheManager</code>操作缓存用的是<code>RedisTemplate&lt;Object, Object&gt;</code>，因此我们需要自定义<code>cacheManager</code>，替换掉默认的序列化器。</p>
+<h3 id="pom-xml"><a href="#pom-xml" class="headerlink" title="pom.xml"></a>pom.xml</h3><figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-cache<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="RedisConfig"><a href="#RedisConfig" class="headerlink" title="RedisConfig"></a>RedisConfig</h3><p>自定义cacheManager，配置序列化方式<br><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Bean</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> CacheManager <span class="hljs-title">cacheManager</span><span class="hljs-params">(RedisConnectionFactory redisConnectionFactory, RedisTemplate redisTemplate)</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> RedisCacheManager(</span><br><span class="line">            RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory),</span><br><span class="line">            <span class="hljs-comment">// 默认策略，未配置的 key 会使用这个</span></span><br><span class="line">            <span class="hljs-keyword">this</span>.getRedisCacheConfigurationWithTtl(<span class="hljs-number">600</span>),</span><br><span class="line">            <span class="hljs-comment">// 指定 key 策略</span></span><br><span class="line">            <span class="hljs-keyword">this</span>.getRedisCacheConfigurationMap()</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">private</span> Map&lt;String, RedisCacheConfiguration&gt; <span class="hljs-title">getRedisCacheConfigurationMap</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">    Map&lt;String, RedisCacheConfiguration&gt; redisCacheConfigurationMap = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="hljs-comment">//单独设置某些缓存key的ttl时间</span></span><br><span class="line">    redisCacheConfigurationMap.put(<span class="hljs-string">"UserInfoList"</span>, <span class="hljs-keyword">this</span>.getRedisCacheConfigurationWithTtl(<span class="hljs-number">122200</span>));</span><br><span class="line">    <span class="hljs-keyword">return</span> redisCacheConfigurationMap;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">private</span> RedisCacheConfiguration <span class="hljs-title">getRedisCacheConfigurationWithTtl</span><span class="hljs-params">(Integer seconds)</span> </span>&#123;</span><br><span class="line">    RedisSerializer&lt;Object&gt; serializer = getRedisSerializer();</span><br><span class="line">    RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();</span><br><span class="line">    redisCacheConfiguration = redisCacheConfiguration</span><br><span class="line">            .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(<span class="hljs-keyword">new</span> StringRedisSerializer()))</span><br><span class="line">            .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(serializer))</span><br><span class="line">            .entryTtl(Duration.ofSeconds(seconds));</span><br><span class="line">    <span class="hljs-keyword">return</span> redisCacheConfiguration;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>自定义key生成规则<br><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment"> * Cache缓存key生成规则</span></span><br><span class="line"><span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-meta">@Bean</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> KeyGenerator <span class="hljs-title">simpleKeyGenerator</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">return</span> (o, method, objects) -&gt; &#123;</span><br><span class="line">        StringBuilder stringBuilder = <span class="hljs-keyword">new</span> StringBuilder();</span><br><span class="line">        stringBuilder.append(o.getClass().getSimpleName());</span><br><span class="line">        stringBuilder.append(<span class="hljs-string">"."</span>);</span><br><span class="line">        stringBuilder.append(method.getName());</span><br><span class="line">        stringBuilder.append(<span class="hljs-string">"["</span>);</span><br><span class="line">        <span class="hljs-keyword">for</span> (Object obj : objects) &#123;</span><br><span class="line">            stringBuilder.append(obj.toString());</span><br><span class="line">        &#125;</span><br><span class="line">        stringBuilder.append(<span class="hljs-string">"]"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">return</span> stringBuilder.toString();</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="开启缓存"><a href="#开启缓存" class="headerlink" title="开启缓存"></a>开启缓存</h3><ul>
+<li>在config类添加<code>@EnableCaching</code>注解。</li>
+<li><p>在需要缓存的serviceImpl实现方法添加注解。</p>
+  <figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Override</span></span><br><span class="line"><span class="hljs-meta">@Cacheable</span>(value = <span class="hljs-string">"studentObject"</span>,keyGenerator = <span class="hljs-string">"simpleKeyGenerator"</span>)</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> Student <span class="hljs-title">findStudentById</span><span class="hljs-params">(String id)</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">return</span> getById(id);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><p><img src="https://qiniu.mikecorden.com/2019-10-03-%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-10-02%20%E4%B8%8B%E5%8D%884.38.43.png" alt><br>第一次从mysql中取数据，第二次以后在key生效内都会从redis中取数据，大大减少了数据库的IO负担。</p>
+<h3 id="关于缓存"><a href="#关于缓存" class="headerlink" title="关于缓存"></a>关于缓存</h3><p>项目中关于数据库的缓存方案有很多，例如MybatisPlus的缓存，EhCache，和SpringCache。SpringCache+Redis可以直接缓存一个Service的数据副本，某些业务场景更有效率写。当然也可以将Redis做为Mysql的二级缓存使用。</p>
+<h2 id="Redis实现分布式集群环境session共享"><a href="#Redis实现分布式集群环境session共享" class="headerlink" title="Redis实现分布式集群环境session共享"></a>Redis实现分布式集群环境session共享</h2><h3 id="pom-xml-1"><a href="#pom-xml-1" class="headerlink" title="pom.xml"></a>pom.xml</h3><figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.session<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-session-data-redis<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="添加注解"><a href="#添加注解" class="headerlink" title="添加注解"></a>添加注解</h3><p>在configBean中添加<code>@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 50)</code>注解，该注解还可以配置其他参数：</p>
+<ul>
+<li>maxInactiveIntervalInSeconds:过期时间</li>
+<li>redisNamespace:命名空间，默认为<code>spring:session</code></li>
+<li>redisFlushMode:缓存方式，默认为<code>ON_SAVE</code></li>
+<li>cleanupCron:session缓存定期清除任务，默认<code>static final String DEFAULT_CLEANUP_CRON = &quot;0 * * * * *&quot;;</code></li>
+</ul>
+<p><img src="https://qiniu.mikecorden.com/2019-10-03-15700581776426.jpg" alt="@EnableRedisHttpSession注解"></p>
+<h3 id="测试接口"><a href="#测试接口" class="headerlink" title="测试接口"></a>测试接口</h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@RestController</span>()</span><br><span class="line"><span class="hljs-meta">@RequestMapping</span>(<span class="hljs-string">"/session"</span>)</span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SessionController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-meta">@RequestMapping</span>(value = <span class="hljs-string">"/setSession"</span>, method = RequestMethod.GET)</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> Map&lt;String, Object&gt; <span class="hljs-title">setSession</span> <span class="hljs-params">(HttpServletRequest request)</span></span>&#123;</span><br><span class="line">        Map&lt;String, Object&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        request.getSession().setAttribute(<span class="hljs-string">"request Url"</span>, request.getRequestURL());</span><br><span class="line">        map.put(<span class="hljs-string">"request Url"</span>, request.getRequestURL());</span><br><span class="line">        <span class="hljs-keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-meta">@RequestMapping</span>(value = <span class="hljs-string">"/getSession"</span>, method = RequestMethod.GET)</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">getSession</span> <span class="hljs-params">(HttpServletRequest request)</span></span>&#123;</span><br><span class="line">        Map&lt;String, Object&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        map.put(<span class="hljs-string">"sessionIdUrl"</span>,request.getSession().getAttribute(<span class="hljs-string">"request Url"</span>));</span><br><span class="line">        map.put(<span class="hljs-string">"sessionId"</span>, request.getSession().getId());</span><br><span class="line">        <span class="hljs-keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><ul>
+<li>SetSession<br><img src="https://qiniu.mikecorden.com/2019-10-03-15700596587022.jpg" alt></li>
+<li>Redis<br><img src="https://qiniu.mikecorden.com/2019-10-03-15700591503247.jpg" alt></li>
+<li>GetSession<br><img src="https://qiniu.mikecorden.com/2019-10-03-15700596750460.jpg" alt></li>
+</ul>
+
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/Redis/">Redis</a>, <a class="has-link-grey -link" href="/tags/SpringBoot/">SpringBoot</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/08/13/MabtisPlus/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">MyBatis-Plus</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/06/16/RedisSpringJunior/">
+                <span class="level-item">Redis(单机)安装部署，与SpringBoot整合(有redis配置详解)</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                        <figure class="image is-128x128 has-mb-6">
+                            <img class="is-rounded" src="https://qiniu.mikecorden.com/avatar.jpeg" alt="MkCorden">
+                        </figure>
+                    
+                    
+                    <p class="is-size-4 is-block">
+                        MkCorden
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        software engineer
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>中国,大连</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        15
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        6
+                    </p>
+                </div>
+            </div>
+            <!--<div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        10
+                    </p>
+                </div>
+            </div>-->
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://www.baidu.com" target="_blank">
+                关注我</a>
+        </div>
+        
+        
+    </div>
+</div>
+    
+        
+<div class="card widget" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                目录
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#SpringBoot项目初始化加载Redis数据">
+        <span class="has-mr-6">1</span>
+        <span>SpringBoot项目初始化加载Redis数据</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#推荐-第一种方式：实现InitializingBean接口">
+        <span class="has-mr-6">1.1</span>
+        <span>(推荐)第一种方式：实现InitializingBean接口</span>
+        </a></li><li>
+        <a class="is-flex" href="#第二种方式：实现ApplicationRunner接口">
+        <span class="has-mr-6">1.2</span>
+        <span>第二种方式：实现ApplicationRunner接口</span>
+        </a></li><li>
+        <a class="is-flex" href="#两种方法区别">
+        <span class="has-mr-6">1.3</span>
+        <span>两种方法区别</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#SpringCache与Redis">
+        <span class="has-mr-6">2</span>
+        <span>SpringCache与Redis</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#SpringCache集成redis的运行原理">
+        <span class="has-mr-6">2.1</span>
+        <span>SpringCache集成redis的运行原理</span>
+        </a></li><li>
+        <a class="is-flex" href="#pom-xml">
+        <span class="has-mr-6">2.2</span>
+        <span>pom.xml</span>
+        </a></li><li>
+        <a class="is-flex" href="#RedisConfig">
+        <span class="has-mr-6">2.3</span>
+        <span>RedisConfig</span>
+        </a></li><li>
+        <a class="is-flex" href="#开启缓存">
+        <span class="has-mr-6">2.4</span>
+        <span>开启缓存</span>
+        </a></li><li>
+        <a class="is-flex" href="#效果">
+        <span class="has-mr-6">2.5</span>
+        <span>效果</span>
+        </a></li><li>
+        <a class="is-flex" href="#关于缓存">
+        <span class="has-mr-6">2.6</span>
+        <span>关于缓存</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#Redis实现分布式集群环境session共享">
+        <span class="has-mr-6">3</span>
+        <span>Redis实现分布式集群环境session共享</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#pom-xml-1">
+        <span class="has-mr-6">3.1</span>
+        <span>pom.xml</span>
+        </a></li><li>
+        <a class="is-flex" href="#添加注解">
+        <span class="has-mr-6">3.2</span>
+        <span>添加注解</span>
+        </a></li><li>
+        <a class="is-flex" href="#测试接口">
+        <span class="has-mr-6">3.3</span>
+        <span>测试接口</span>
+        </a></li><li>
+        <a class="is-flex" href="#结果">
+        <span class="has-mr-6">3.4</span>
+        <span>结果</span>
+        </a></li></ul></li></ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/Docker/" style="font-size: 12.5px;">Docker</a> <a href="/tags/Hexo/" style="font-size: 12.5px;">Hexo</a> <a href="/tags/IDEA/" style="font-size: 10px;">IDEA</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Mac/" style="font-size: 15px;">Mac</a> <a href="/tags/Redis/" style="font-size: 17.5px;">Redis</a> <a href="/tags/Spring-Boot/" style="font-size: 12.5px;">Spring Boot</a> <a href="/tags/Spring-Cloud/" style="font-size: 15px;">Spring Cloud</a> <a href="/tags/SpringBoot/" style="font-size: 10px;">SpringBoot</a> <a href="/tags/备忘/" style="font-size: 10px;">备忘</a>
+    </div>
+</div>
+
+    
+    
+<!--        <div class="column-right-shadow is-hidden-widescreen ">-->
+        <div class="column-right-shadow  ">
+        
+            
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2019/09/11/DruidMybatisMybatisPlusVersion/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="要了命的版本Druid/Mybatis/MybatisPlus">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-11T01:00:00.000Z">2019-09-11</time></div>
+                    <a href="/2019/09/11/DruidMybatisMybatisPlusVersion/" class="has-link-black-ter is-size-6">要了命的版本Druid/Mybatis/MybatisPlus</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Spring-Boot/">Spring Boot</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/08/13/MabtisPlus/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="MyBatis-Plus">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-13T05:54:00.000Z">2019-08-13</time></div>
+                    <a href="/2019/08/13/MabtisPlus/" class="has-link-black-ter is-size-6">MyBatis-Plus</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Java/">Java</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/06/17/RedisSpringMiddle/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Spring整合Redis进阶">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-17T14:30:23.000Z">2019-06-17</time></div>
+                    <a href="/2019/06/17/RedisSpringMiddle/" class="has-link-black-ter is-size-6">Spring整合Redis进阶</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/06/16/RedisSpringJunior/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Redis(单机)安装部署，与SpringBoot整合(有redis配置详解)">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-16T11:20:41.000Z">2019-06-16</time></div>
+                    <a href="/2019/06/16/RedisSpringJunior/" class="has-link-black-ter is-size-6">Redis(单机)安装部署，与SpringBoot整合(有redis配置详解)</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/06/16/media/RedisSpringJunior/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Redis(单机)安装部署，与SpringBoot整合(有redis配置详解)">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-16T11:20:41.000Z">2019-06-16</time></div>
+                    <a href="/2019/06/16/media/RedisSpringJunior/" class="has-link-black-ter is-size-6">Redis(单机)安装部署，与SpringBoot整合(有redis配置详解)</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+
+        
+            
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/Hexo/">
+            <span class="level-start">
+                <span class="level-item">Hexo</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Java/">
+            <span class="level-start">
+                <span class="level-item">Java</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/MacOS相关/">
+            <span class="level-start">
+                <span class="level-item">MacOS相关</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">3</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Redis/">
+            <span class="level-start">
+                <span class="level-item">Redis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">4</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Spring-Boot/">
+            <span class="level-start">
+                <span class="level-item">Spring Boot</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Spring-Cloud/">
+            <span class="level-start">
+                <span class="level-item">Spring Cloud</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+        
+            <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/09/">
+                <span class="level-start">
+                    <span class="level-item">九月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/08/">
+                <span class="level-start">
+                    <span class="level-item">八月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/06/">
+                <span class="level-start">
+                    <span class="level-item">六月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">5</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/05/">
+                <span class="level-start">
+                    <span class="level-item">五月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/03/">
+                <span class="level-start">
+                    <span class="level-item">三月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">4</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/02/">
+                <span class="level-start">
+                    <span class="level-item">二月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/07/">
+                <span class="level-start">
+                    <span class="level-item">七月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    MkCorden | 个人博客
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2019 MikeCorden&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Download on GitHub" href="https://www.baidu.com">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
