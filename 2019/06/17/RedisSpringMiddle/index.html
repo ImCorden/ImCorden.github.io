@@ -16,7 +16,7 @@
 <meta property="og:description" content="了解过Spring整合Redis后，我们已经可以使用Redis进行缓存操作了。但在某些业务环境下，我们需要向Redis加载一些既有数据，例如：学员答题竞赛的分数排行，首页的一些缓存。这些数据我们需要在项目初始化阶段加载完毕。在项目运行阶段，我们也可以利用SpringCache进行接口的数据缓存，这样可以改善因为并发导致的缓慢（数据库IO），可以成倍的提升QPS。在分布式环境下的项目，我们也可以利用">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://mikecorden.com/images/og_image.png">
-<meta property="og:updated_time" content="2019-10-03T00:54:13.386Z">
+<meta property="og:updated_time" content="2019-10-03T00:57:48.108Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring整合Redis进阶">
 <meta name="twitter:description" content="了解过Spring整合Redis后，我们已经可以使用Redis进行缓存操作了。但在某些业务环境下，我们需要向Redis加载一些既有数据，例如：学员答题竞赛的分数排行，首页的一些缓存。这些数据我们需要在项目初始化阶段加载完毕。在项目运行阶段，我们也可以利用SpringCache进行接口的数据缓存，这样可以改善因为并发导致的缓慢（数据库IO），可以成倍的提升QPS。在分布式环境下的项目，我们也可以利用">
@@ -156,7 +156,7 @@ var _hmt = _hmt || [];
                 <span class="level-item has-text-grey">
                     
                     
-                    8 分钟 读完 (大约 1234 个字)
+                    9 分钟 读完 (大约 1322 个字)
                 </span>
                 
                 
@@ -198,6 +198,7 @@ var _hmt = _hmt || [];
 <li>cleanupCron:session缓存定期清除任务，默认<code>static final String DEFAULT_CLEANUP_CRON = &quot;0 * * * * *&quot;;</code></li>
 </ul>
 <p><img src="https://qiniu.mikecorden.com/2019-10-03-15700581776426.jpg" alt="@EnableRedisHttpSession注解"></p>
+<h3 id="自定义SpringSession序列化方式"><a href="#自定义SpringSession序列化方式" class="headerlink" title="自定义SpringSession序列化方式"></a>自定义SpringSession序列化方式</h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"> <span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment"> * Redis Session 序列化方式</span></span><br><span class="line"><span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-meta">@Bean</span>(<span class="hljs-string">"springSessionDefaultRedisSerializer"</span>)</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> RedisSerializer&lt;Object&gt; <span class="hljs-title">defaultRedisSerializer</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">return</span> getRedisSerializer();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment"> * Redis序列化方式</span></span><br><span class="line"><span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">private</span> RedisSerializer&lt;Object&gt; <span class="hljs-title">getRedisSerializer</span><span class="hljs-params">()</span></span>&#123;</span><br><span class="line">    Jackson2JsonRedisSerializer&lt;Object&gt; jackson2JsonRedisSerializer = <span class="hljs-keyword">new</span> Jackson2JsonRedisSerializer&lt;&gt;(Object.class);</span><br><span class="line">    ObjectMapper om = <span class="hljs-keyword">new</span> ObjectMapper();</span><br><span class="line">    om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);</span><br><span class="line">    om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);</span><br><span class="line">    <span class="hljs-comment">//解决LocalDateTime的序列化错误</span></span><br><span class="line">    om.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);</span><br><span class="line">    om.registerModule(<span class="hljs-keyword">new</span> JavaTimeModule());</span><br><span class="line">    jackson2JsonRedisSerializer.setObjectMapper(om);</span><br><span class="line">    <span class="hljs-keyword">return</span> jackson2JsonRedisSerializer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="测试接口"><a href="#测试接口" class="headerlink" title="测试接口"></a>测试接口</h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@RestController</span>()</span><br><span class="line"><span class="hljs-meta">@RequestMapping</span>(<span class="hljs-string">"/session"</span>)</span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SessionController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-meta">@RequestMapping</span>(value = <span class="hljs-string">"/setSession"</span>, method = RequestMethod.GET)</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> Map&lt;String, Object&gt; <span class="hljs-title">setSession</span> <span class="hljs-params">(HttpServletRequest request)</span></span>&#123;</span><br><span class="line">        Map&lt;String, Object&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        request.getSession().setAttribute(<span class="hljs-string">"request Url"</span>, request.getRequestURL());</span><br><span class="line">        map.put(<span class="hljs-string">"request Url"</span>, request.getRequestURL());</span><br><span class="line">        <span class="hljs-keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-meta">@RequestMapping</span>(value = <span class="hljs-string">"/getSession"</span>, method = RequestMethod.GET)</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">getSession</span> <span class="hljs-params">(HttpServletRequest request)</span></span>&#123;</span><br><span class="line">        Map&lt;String, Object&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        map.put(<span class="hljs-string">"sessionIdUrl"</span>,request.getSession().getAttribute(<span class="hljs-string">"request Url"</span>));</span><br><span class="line">        map.put(<span class="hljs-string">"sessionId"</span>, request.getSession().getId());</span><br><span class="line">        <span class="hljs-keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><ul>
 <li>SetSession<br><img src="https://qiniu.mikecorden.com/2019-10-03-15700596587022.jpg" alt></li>
@@ -390,12 +391,16 @@ var _hmt = _hmt || [];
         <span class="has-mr-6">3.2</span>
         <span>添加注解</span>
         </a></li><li>
-        <a class="is-flex" href="#测试接口">
+        <a class="is-flex" href="#自定义SpringSession序列化方式">
         <span class="has-mr-6">3.3</span>
+        <span>自定义SpringSession序列化方式</span>
+        </a></li><li>
+        <a class="is-flex" href="#测试接口">
+        <span class="has-mr-6">3.4</span>
         <span>测试接口</span>
         </a></li><li>
         <a class="is-flex" href="#结果">
-        <span class="has-mr-6">3.4</span>
+        <span class="has-mr-6">3.5</span>
         <span>结果</span>
         </a></li></ul></li></ul>
         </div>
