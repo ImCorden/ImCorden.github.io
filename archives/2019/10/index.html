@@ -2,24 +2,20 @@
 <html lang="zh">
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-<title>Mac IDEA启动SpringBoot项目过慢 - MkCorden|个人博客</title>
+<title>归档: 2019/10 - MkCorden|个人博客</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-    <meta name="description" content="最近本地新起的SpringBoot项目运行非常慢，能有十几秒，最后通过以下方法进行解决，解决后运行在三四秒左右。">
-<meta name="keywords" content="Mac,IDEA">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Mac IDEA启动SpringBoot项目过慢">
-<meta property="og:url" content="https://mikecorden.com/2019/05/06/IdeaSpringBoot/index.html">
+    <meta name="keywords" content="Mike | mikecorden | Corden | blog | java | scala | Corden Web">
+<meta property="og:type" content="website">
+<meta property="og:title" content="MkCorden|个人博客">
+<meta property="og:url" content="https://mikecorden.com/archives/2019/10/index.html">
 <meta property="og:site_name" content="MkCorden|个人博客">
-<meta property="og:description" content="最近本地新起的SpringBoot项目运行非常慢，能有十几秒，最后通过以下方法进行解决，解决后运行在三四秒左右。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://mikecorden.com/images/og_image.png">
-<meta property="og:updated_time" content="2019-07-26T08:07:48.880Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mac IDEA启动SpringBoot项目过慢">
-<meta name="twitter:description" content="最近本地新起的SpringBoot项目运行非常慢，能有十几秒，最后通过以下方法进行解决，解决后运行在三四秒左右。">
+<meta name="twitter:title" content="MkCorden|个人博客">
 <meta name="twitter:image" content="https://mikecorden.com/images/og_image.png">
 
 
@@ -98,7 +94,7 @@ var _hmt = _hmt || [];
 
 <link rel="stylesheet" href="/css/style.css">
 </head>
-<body class="is-2-column">
+<body class="is-3-column">
     <nav class="navbar navbar-main">
     <div class="container">
         <div class="navbar-brand is-flex-center">
@@ -123,10 +119,6 @@ var _hmt = _hmt || [];
             <div class="navbar-end">
                 
                 
-                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
-                    <i class="fas fa-list-ul"></i>
-                </a>
-                
                 
                 <a class="navbar-item search" title="搜索" href="javascript:;">
                     <i class="fas fa-search"></i>
@@ -140,81 +132,54 @@ var _hmt = _hmt || [];
     <section class="section">
         <div class="container">
             <div class="columns">
-                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main"><div class="card">
-    
-    <div class="card-content article ">
+                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main">
+
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="tag is-link">
+        十月 2019
+        </h3>
+        <div class="timeline">
         
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-05-06T14:45:00.000Z">2019-05-06</time>
+            <article class="media">
                 
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/MacOS相关/">MacOS相关</a>
+                <div class="media-content">
+                    <div class="content">
+                        <time class="has-text-grey is-size-7 is-block is-uppercase" datetime="2019-10-22T14:23:00.000Z">2019-10-22</time>
+                        <a href="/2019/10/22/RedisSentinelAnalysis/" class="has-link-black-ter is-size-6">Redis Sentinel原理分析</a>
+                        <div class="level article-meta is-mobile">
+                            <div class="level-left">
+                                
+                                <div class="level-item is-size-7 is-uppercase">
+                                <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    1 分钟 读完 (大约 124 个字)
-                </span>
-                
-                
-            </div>
-        </div>
+            </article>
         
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                Mac IDEA启动SpringBoot项目过慢
-            
-        </h1>
-        <div class="content">
-            <p>最近本地新起的SpringBoot项目运行非常慢，能有十几秒，最后通过以下方法进行解决，解决后运行在三四秒左右。<br><a id="more"></a></p>
-<h2 id="通过hostname命令查看本机hostname"><a href="#通过hostname命令查看本机hostname" class="headerlink" title="通过hostname命令查看本机hostname"></a>通过hostname命令查看本机hostname</h2><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hostname</span><br></pre></td></tr></table></figure>
-<p>得到如下信息<br><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MacBook-Pro.local</span><br></pre></td></tr></table></figure></p>
-<h2 id="修改host文件"><a href="#修改host文件" class="headerlink" title="修改host文件"></a>修改host文件</h2><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/hosts</span><br></pre></td></tr></table></figure>
-<p>修改条目如下，注意分隔符是TAB，不是空格<br><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1	localhost MacBook-Pro.local</span><br><span class="line">::1     localhost MacBook-Pro.local</span><br></pre></td></tr></table></figure></p>
-<p>也可以通过软件进行修改</p>
-<p>   <img src="https://qiniu.mikecorden.com/2019-05-06-15571539814663.jpg" alt></p>
-
-        </div>
-        
-        <div class="level is-size-7 is-uppercase">
-            <div class="level-start">
-                <div class="level-item">
-                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
-                    <a class="has-link-grey -link" href="/tags/IDEA/">IDEA</a>, <a class="has-link-grey -link" href="/tags/Mac/">Mac</a>
+            <article class="media">
+                
+                <div class="media-content">
+                    <div class="content">
+                        <time class="has-text-grey is-size-7 is-block is-uppercase" datetime="2019-10-19T07:30:23.000Z">2019-10-19</time>
+                        <a href="/2019/10/19/RedisSentinel/" class="has-link-black-ter is-size-6">Redis Sentinel模式</a>
+                        <div class="level article-meta is-mobile">
+                            <div class="level-left">
+                                
+                                <div class="level-item is-size-7 is-uppercase">
+                                <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </article>
+        
         </div>
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-<div class="card card-transparent">
-    <div class="level post-navigation is-flex-wrap is-mobile">
-        
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/06/05/LaunchpadIcon/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">Launchpad图标修改</span>
-            </a>
-        </div>
-        
-        
-        <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2019/03/18/Hexo2/">
-                <span class="level-item">搭建个人博客 之 MWeb，服务器和全站Https</span>
-                <i class="level-item fas fa-chevron-right"></i>
-            </a>
-        </div>
-        
     </div>
 </div>
 
@@ -225,7 +190,7 @@ var _hmt = _hmt || [];
 
 
 
-<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
     
         
 <div class="card widget">
@@ -299,25 +264,6 @@ var _hmt = _hmt || [];
 </div>
     
         
-<div class="card widget" id="toc">
-    <div class="card-content">
-        <div class="menu">
-            <h3 class="menu-label">
-                目录
-            </h3>
-            <ul class="menu-list"><li>
-        <a class="is-flex" href="#通过hostname命令查看本机hostname">
-        <span class="has-mr-6">1</span>
-        <span>通过hostname命令查看本机hostname</span>
-        </a></li><li>
-        <a class="is-flex" href="#修改host文件">
-        <span class="has-mr-6">2</span>
-        <span>修改host文件</span>
-        </a></li></ul>
-        </div>
-    </div>
-</div>
-
     
         
 <div class="card widget">
@@ -332,7 +278,7 @@ var _hmt = _hmt || [];
     
     
 <!--        <div class="column-right-shadow is-hidden-widescreen ">-->
-        <div class="column-right-shadow  ">
+        <div class="column-right-shadow is-hidden-widescreen ">
         
             
 <div class="card widget">
@@ -604,6 +550,286 @@ var _hmt = _hmt || [];
 </div>
         
         </div>
+    
+</div>
+
+                
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2019/10/22/RedisSentinelAnalysis/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Redis Sentinel原理分析">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-10-22T14:23:00.000Z">2019-10-22</time></div>
+                    <a href="/2019/10/22/RedisSentinelAnalysis/" class="has-link-black-ter is-size-6">Redis Sentinel原理分析</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/10/19/RedisSentinel/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Redis Sentinel模式">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-10-19T07:30:23.000Z">2019-10-19</time></div>
+                    <a href="/2019/10/19/RedisSentinel/" class="has-link-black-ter is-size-6">Redis Sentinel模式</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/09/11/DruidMybatisMybatisPlusVersion/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="要了命的版本Druid/Mybatis/MybatisPlus">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-11T01:00:00.000Z">2019-09-11</time></div>
+                    <a href="/2019/09/11/DruidMybatisMybatisPlusVersion/" class="has-link-black-ter is-size-6">要了命的版本Druid/Mybatis/MybatisPlus</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Spring-Boot/">Spring Boot</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/08/13/MabtisPlus/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="MyBatis-Plus">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-13T05:54:00.000Z">2019-08-13</time></div>
+                    <a href="/2019/08/13/MabtisPlus/" class="has-link-black-ter is-size-6">MyBatis-Plus</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Java/">Java</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/06/17/RedisSpringMiddle/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Spring整合Redis进阶">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-17T14:30:23.000Z">2019-06-17</time></div>
+                    <a href="/2019/06/17/RedisSpringMiddle/" class="has-link-black-ter is-size-6">Spring整合Redis进阶</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/Hexo/">
+            <span class="level-start">
+                <span class="level-item">Hexo</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Java/">
+            <span class="level-start">
+                <span class="level-item">Java</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/MacOS相关/">
+            <span class="level-start">
+                <span class="level-item">MacOS相关</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">3</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Redis/">
+            <span class="level-start">
+                <span class="level-item">Redis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">5</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Spring-Boot/">
+            <span class="level-start">
+                <span class="level-item">Spring Boot</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Spring-Cloud/">
+            <span class="level-start">
+                <span class="level-item">Spring Cloud</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/10/">
+                <span class="level-start">
+                    <span class="level-item">十月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/09/">
+                <span class="level-start">
+                    <span class="level-item">九月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/08/">
+                <span class="level-start">
+                    <span class="level-item">八月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/06/">
+                <span class="level-start">
+                    <span class="level-item">六月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">4</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/05/">
+                <span class="level-start">
+                    <span class="level-item">五月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/03/">
+                <span class="level-start">
+                    <span class="level-item">三月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">4</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/02/">
+                <span class="level-start">
+                    <span class="level-item">二月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/07/">
+                <span class="level-start">
+                    <span class="level-item">七月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
     
 </div>
 

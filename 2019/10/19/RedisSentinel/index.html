@@ -11,12 +11,12 @@
 <meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis Sentinel模式">
-<meta property="og:url" content="https://mikecorden.com/2019/06/19/RedisSentinel/index.html">
+<meta property="og:url" content="https://mikecorden.com/2019/10/19/RedisSentinel/index.html">
 <meta property="og:site_name" content="MkCorden|个人博客">
 <meta property="og:description" content="在我们了解了Redis单机版本的Redis操作，使用后。在实际的生产环境中，不可能使用单机版Redis，通常最简单的就是主从模式，有点类似mysql的主从库，而当主Redis倒了，我们需要手动通过slaveof no one,slaveof new host进行切换,已经不是监控麻烦的事了，所以Redis官方提供了Sentinel出现了，解决了这一问题。 概述Redis-Sentinel是Redi">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://mikecorden.com/images/og_image.png">
-<meta property="og:updated_time" content="2019-10-17T01:40:36.226Z">
+<meta property="og:updated_time" content="2019-10-22T14:22:39.670Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis Sentinel模式">
 <meta name="twitter:description" content="在我们了解了Redis单机版本的Redis操作，使用后。在实际的生产环境中，不可能使用单机版Redis，通常最简单的就是主从模式，有点类似mysql的主从库，而当主Redis倒了，我们需要手动通过slaveof no one,slaveof new host进行切换,已经不是监控麻烦的事了，所以Redis官方提供了Sentinel出现了，解决了这一问题。 概述Redis-Sentinel是Redi">
@@ -146,7 +146,7 @@ var _hmt = _hmt || [];
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-06-19T07:30:23.000Z">2019-06-19</time>
+                <time class="level-item has-text-grey" datetime="2019-10-19T07:30:23.000Z">2019-10-19</time>
                 
                 <div class="level-item">
                 <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
@@ -156,7 +156,7 @@ var _hmt = _hmt || [];
                 <span class="level-item has-text-grey">
                     
                     
-                    19 分钟 读完 (大约 2815 个字)
+                    19 分钟 读完 (大约 2851 个字)
                 </span>
                 
                 
@@ -249,8 +249,8 @@ sentinel leader-epoch mymaster 1-->
 <li><code>SENTINEL REMOVE &lt;name&gt;</code> 命令sentinel放弃对某个master的监听  </li>
 <li><code>SENTINEL SET &lt;name&gt; &lt;option&gt; &lt;value&gt;</code> 这个命令很像Redis的CONFIG SET命令，用来改变指定master的配置。支持多个<option><value>。例如以下实例：<code>SENTINEL SET objects-cache-master down-after-milliseconds 1000</code><br>只要是配置文件中存在的配置项，都可以用SENTINEL SET命令来设置。这个还可以用来设置master的属性，比如说quorum(票数)，而不需要先删除master，再重新添加master。例如：SENTINEL SET objects-cache-master quorum 5</value></option></li>
 </ul>
-<h2 id="手动容错现象"><a href="#手动容错现象" class="headerlink" title="手动容错现象"></a>手动容错现象</h2><p>通过上面sentinel log图片，我们可以看到15节点的sentinel显示，主节点是15，从节点是17和19，在17，19分别有两个sentinel监控我们的主节点。现在我们手动模拟线上主节点挂了的状态。关闭主节点，sentinel log如下：<br><img src="https://qiniu.mikecorden.com/2019-10-17-15706220445150.jpg" alt></p>
-<h3 id="log解析"><a href="#log解析" class="headerlink" title="log解析"></a>log解析</h3><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">// 主观下线master节点:10.211.55.15 6380</span><br><span class="line"># +sdown master mymaster 10.211.55.15 6380,</span><br><span class="line"></span><br><span class="line">// 预留一个新的epoch(纪元),也就是配置版本,版本号为1</span><br><span class="line"># +new-epoch 1,</span><br><span class="line"></span><br><span class="line">// 选举出sentinel的leader为89641c594597aabde5b19d58c5724c0b7e7649f0</span><br><span class="line"># +vote-for-leader 89641c594597aabde5b19d58c5724c0b7e7649f0 1,</span><br><span class="line"></span><br><span class="line">// 客观下线10.211.55.15节点,投票结果是3,规定最小票数位2</span><br><span class="line"># +odown master mymaster 10.211.55.15 6380 #quorum 3/2,</span><br><span class="line"></span><br><span class="line">// 时间为down-after-milliseconds,默认是30秒,30秒内不进行故障转移</span><br><span class="line"># Next failover delay: I will not start a failover before Wed Oct  9 11:53:56 2019,</span><br><span class="line"></span><br><span class="line">// 选举出的sentinel leader 进行更新配置文件</span><br><span class="line"># +config-update-from sentinel 89641c594597aabde5b19d58c5724c0b7e7649f0 10.211.55.17 26380 @ mymaster 10.211.55.15 6380,</span><br><span class="line"></span><br><span class="line">// 切换master节点为10.211.55.17 6380</span><br><span class="line"># +switch-master mymaster 10.211.55.15 6380 10.211.55.17 6380,</span><br><span class="line"></span><br><span class="line">// 设置10.211.55.19 6380/10.211.55.15 6380为master:10.211.55.17 6380的从节点</span><br><span class="line">* +slave slave 10.211.55.19:6380 10.211.55.19 6380 @ mymaster 10.211.55.17 6380,</span><br><span class="line">* +slave slave 10.211.55.15:6380 10.211.55.15 6380 @ mymaster 10.211.55.17 6380,</span><br><span class="line"></span><br><span class="line">// 主观下线从节点10.211.55.15:6380</span><br><span class="line"># +sdown slave 10.211.55.15:6380 10.211.55.15 6380 @ mymaster 10.211.55.17 6380,</span><br></pre></td></tr></table></figure>
+<h2 id="手动容错现象"><a href="#手动容错现象" class="headerlink" title="手动容错现象"></a>手动容错现象</h2><p>通过上面sentinel log图片，我们可以看到15节点的sentinel显示，主节点是15，从节点是17和19，在17，19分别有两个sentinel监控我们的主节点。现在我们手动模拟线上主节点挂了的状态。关闭主节点，sentinel log如下：<br><img src="https://qiniu.mikecorden.com/2019-10-17-15706220445150.jpg" alt><br><img src="https://qiniu.mikecorden.com/2019-10-22-15717212061811.jpg" alt></p>
+<h3 id="log解析"><a href="#log解析" class="headerlink" title="log解析"></a>log解析</h3><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">// 主观下线master节点:10.211.55.15 6380</span><br><span class="line"># +sdown master mymaster 10.211.55.15 6380,</span><br><span class="line"></span><br><span class="line">// 预留一个新的epoch(纪元),也就是配置版本,版本号为1</span><br><span class="line"># +new-epoch 1,</span><br><span class="line"></span><br><span class="line">// 选举出sentinel的leader为89641c594597aabde5b19d58c5724c0b7e7649f0</span><br><span class="line"># +vote-for-leader 89641c594597aabde5b19d58c5724c0b7e7649f0 1,</span><br><span class="line"></span><br><span class="line">// 客观下线10.211.55.15节点,投票结果是3,规定最小票数位2</span><br><span class="line"># +odown master mymaster 10.211.55.15 6380 #quorum 3/2,</span><br><span class="line"></span><br><span class="line">// 因为+vote-for-leader 89641c594597aabde5b19d58c5724c0b7e7649f0 1,当选失败，那么在设定的故障迁移超时时间（failover-timout=1500）的两倍之后，重新尝试当选。</span><br><span class="line"># Next failover delay: I will not start a failover before Wed Oct  9 11:53:56 2019,</span><br><span class="line"></span><br><span class="line">// 选举出的sentinel leader 进行更新配置文件</span><br><span class="line"># +config-update-from sentinel 89641c594597aabde5b19d58c5724c0b7e7649f0 10.211.55.17 26380 @ mymaster 10.211.55.15 6380,</span><br><span class="line"></span><br><span class="line">// 切换master节点为10.211.55.17 6380</span><br><span class="line"># +switch-master mymaster 10.211.55.15 6380 10.211.55.17 6380,</span><br><span class="line"></span><br><span class="line">// 设置10.211.55.19 6380/10.211.55.15 6380为master:10.211.55.17 6380的从节点</span><br><span class="line">* +slave slave 10.211.55.19:6380 10.211.55.19 6380 @ mymaster 10.211.55.17 6380,</span><br><span class="line">* +slave slave 10.211.55.15:6380 10.211.55.15 6380 @ mymaster 10.211.55.17 6380,</span><br><span class="line"></span><br><span class="line">// 主观下线从节点10.211.55.15:6380</span><br><span class="line"># +sdown slave 10.211.55.15:6380 10.211.55.15 6380 @ mymaster 10.211.55.17 6380,</span><br></pre></td></tr></table></figure>
 <h3 id="sentinel-conf的变化"><a href="#sentinel-conf的变化" class="headerlink" title="sentinel.conf的变化"></a>sentinel.conf的变化</h3><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sentinel config-epoch mymaster 1</span><br><span class="line">sentinel leader-epoch mymaster 1</span><br><span class="line">sentinel known-replica mymaster 10.211.55.15 6380</span><br><span class="line">sentinel known-replica mymaster 10.211.55.19 6380</span><br><span class="line">sentinel known-sentinel mymaster 10.211.55.19 26380 a757e33ab258e4e6b19880af7019418d5752dc11</span><br><span class="line">sentinel known-sentinel mymaster 10.211.55.17 26380 89641c594597aabde5b19d58c5724c0b7e7649f0</span><br><span class="line">sentinel current-epoch 1</span><br></pre></td></tr></table></figure>
 <h3 id="下线节点重新上线"><a href="#下线节点重新上线" class="headerlink" title="下线节点重新上线"></a>下线节点重新上线</h3><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1:X 09 Oct 2019 12:27:35.600 # -sdown slave 10.211.55.15:6380 10.211.55.15 6380 @ mymaster 10.211.55.17 6380</span><br></pre></td></tr></table></figure>
 <p>由log可见，sentinel会移除该节点的下线状态，并使其成为现master节点的slave节点。</p>
@@ -282,16 +282,16 @@ sentinel leader-epoch mymaster 1-->
     <div class="level post-navigation is-flex-wrap is-mobile">
         
         <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/08/13/MabtisPlus/">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/10/22/RedisSentinelAnalysis/">
                 <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">MyBatis-Plus</span>
+                <span class="level-item">Redis Sentinel原理分析</span>
             </a>
         </div>
         
         
         <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2019/06/17/RedisSpringMiddle/">
-                <span class="level-item">Spring整合Redis进阶</span>
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/09/11/DruidMybatisMybatisPlusVersion/">
+                <span class="level-item">要了命的版本Druid/Mybatis/MybatisPlus</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -345,7 +345,7 @@ sentinel leader-epoch mymaster 1-->
                         文章
                     </p>
                     <p class="title has-text-weight-normal">
-                        15
+                        16
                     </p>
                 </div>
             </div>
@@ -478,7 +478,7 @@ sentinel leader-epoch mymaster 1-->
         <h3 class="menu-label">
             标签云
         </h3>
-        <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Hexo/" style="font-size: 12.5px;">Hexo</a> <a href="/tags/IDEA/" style="font-size: 10px;">IDEA</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Mac/" style="font-size: 15px;">Mac</a> <a href="/tags/Redis/" style="font-size: 17.5px;">Redis</a> <a href="/tags/Spring-Boot/" style="font-size: 17.5px;">Spring Boot</a> <a href="/tags/Spring-Cloud/" style="font-size: 15px;">Spring Cloud</a> <a href="/tags/备忘/" style="font-size: 10px;">备忘</a>
+        <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Hexo/" style="font-size: 12px;">Hexo</a> <a href="/tags/IDEA/" style="font-size: 10px;">IDEA</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Mac/" style="font-size: 14px;">Mac</a> <a href="/tags/Redis/" style="font-size: 18px;">Redis</a> <a href="/tags/Spring-Boot/" style="font-size: 16px;">Spring Boot</a> <a href="/tags/Spring-Cloud/" style="font-size: 14px;">Spring Cloud</a> <a href="/tags/备忘/" style="font-size: 10px;">备忘</a>
     </div>
 </div>
 
@@ -493,6 +493,44 @@ sentinel leader-epoch mymaster 1-->
         <h3 class="menu-label">
             最新文章
         </h3>
+        
+        <article class="media">
+            
+            <a href="/2019/10/22/RedisSentinelAnalysis/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Redis Sentinel原理分析">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-10-22T14:23:00.000Z">2019-10-22</time></div>
+                    <a href="/2019/10/22/RedisSentinelAnalysis/" class="has-link-black-ter is-size-6">Redis Sentinel原理分析</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/10/19/RedisSentinel/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Redis Sentinel模式">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-10-19T07:30:23.000Z">2019-10-19</time></div>
+                    <a href="/2019/10/19/RedisSentinel/" class="has-link-black-ter is-size-6">Redis Sentinel模式</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -534,25 +572,6 @@ sentinel leader-epoch mymaster 1-->
         
         <article class="media">
             
-            <a href="/2019/06/19/RedisSentinel/" class="media-left" style="display: none">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Redis Sentinel模式">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-19T07:30:23.000Z">2019-06-19</time></div>
-                    <a href="/2019/06/19/RedisSentinel/" class="has-link-black-ter is-size-6">Redis Sentinel模式</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
             <a href="/2019/06/17/RedisSpringMiddle/" class="media-left" style="display: none">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="Spring整合Redis进阶">
@@ -563,25 +582,6 @@ sentinel leader-epoch mymaster 1-->
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-17T14:30:23.000Z">2019-06-17</time></div>
                     <a href="/2019/06/17/RedisSpringMiddle/" class="has-link-black-ter is-size-6">Spring整合Redis进阶</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/06/16/RedisSpringJunior/" class="media-left" style="display: none">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Redis(单机)安装部署，与SpringBoot整合(有redis配置详解)">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-16T11:20:41.000Z">2019-06-16</time></div>
-                    <a href="/2019/06/16/RedisSpringJunior/" class="has-link-black-ter is-size-6">Redis(单机)安装部署，与SpringBoot整合(有redis配置详解)</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
                     </p>
@@ -631,7 +631,7 @@ sentinel leader-epoch mymaster 1-->
                 <span class="level-item">Redis</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">4</span>
+                <span class="level-item tag">5</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/Spring-Boot/">
@@ -664,6 +664,17 @@ sentinel leader-epoch mymaster 1-->
         <ul class="menu-list">
         
         <li>
+            <a class="level is-marginless" href="/archives/2019/10/">
+                <span class="level-start">
+                    <span class="level-item">十月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
             <a class="level is-marginless" href="/archives/2019/09/">
                 <span class="level-start">
                     <span class="level-item">九月 2019</span>
@@ -691,7 +702,7 @@ sentinel leader-epoch mymaster 1-->
                     <span class="level-item">六月 2019</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">5</span>
+                    <span class="level-item tag">4</span>
                 </span>
             </a>
         </li>

@@ -2,24 +2,24 @@
 <html lang="zh">
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-<title>Mac IDEA启动SpringBoot项目过慢 - MkCorden|个人博客</title>
+<title>Redis Sentinel原理分析 - MkCorden|个人博客</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-    <meta name="description" content="最近本地新起的SpringBoot项目运行非常慢，能有十几秒，最后通过以下方法进行解决，解决后运行在三四秒左右。">
-<meta name="keywords" content="Mac,IDEA">
+    <meta name="description" content="主备切换过程上一篇文章我们了解了如何部署Sentinel模式Redis集群，本文在上一篇的基础上，结合log来分析Sentinel集群模式的一些原理。">
+<meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Mac IDEA启动SpringBoot项目过慢">
-<meta property="og:url" content="https://mikecorden.com/2019/05/06/IdeaSpringBoot/index.html">
+<meta property="og:title" content="Redis Sentinel原理分析">
+<meta property="og:url" content="https://mikecorden.com/2019/10/22/RedisSentinelAnalysis/index.html">
 <meta property="og:site_name" content="MkCorden|个人博客">
-<meta property="og:description" content="最近本地新起的SpringBoot项目运行非常慢，能有十几秒，最后通过以下方法进行解决，解决后运行在三四秒左右。">
+<meta property="og:description" content="主备切换过程上一篇文章我们了解了如何部署Sentinel模式Redis集群，本文在上一篇的基础上，结合log来分析Sentinel集群模式的一些原理。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://mikecorden.com/images/og_image.png">
-<meta property="og:updated_time" content="2019-07-26T08:07:48.880Z">
+<meta property="og:updated_time" content="2019-10-22T14:25:06.573Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mac IDEA启动SpringBoot项目过慢">
-<meta name="twitter:description" content="最近本地新起的SpringBoot项目运行非常慢，能有十几秒，最后通过以下方法进行解决，解决后运行在三四秒左右。">
+<meta name="twitter:title" content="Redis Sentinel原理分析">
+<meta name="twitter:description" content="主备切换过程上一篇文章我们了解了如何部署Sentinel模式Redis集群，本文在上一篇的基础上，结合log来分析Sentinel集群模式的一些原理。">
 <meta name="twitter:image" content="https://mikecorden.com/images/og_image.png">
 
 
@@ -146,17 +146,17 @@ var _hmt = _hmt || [];
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-05-06T14:45:00.000Z">2019-05-06</time>
+                <time class="level-item has-text-grey" datetime="2019-10-22T14:23:00.000Z">2019-10-22</time>
                 
                 <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/MacOS相关/">MacOS相关</a>
+                <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
                 </div>
                 
                 
                 <span class="level-item has-text-grey">
                     
                     
-                    1 分钟 读完 (大约 124 个字)
+                    23 分钟 读完 (大约 3394 个字)
                 </span>
                 
                 
@@ -165,17 +165,131 @@ var _hmt = _hmt || [];
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                Mac IDEA启动SpringBoot项目过慢
+                Redis Sentinel原理分析
             
         </h1>
         <div class="content">
-            <p>最近本地新起的SpringBoot项目运行非常慢，能有十几秒，最后通过以下方法进行解决，解决后运行在三四秒左右。<br><a id="more"></a></p>
-<h2 id="通过hostname命令查看本机hostname"><a href="#通过hostname命令查看本机hostname" class="headerlink" title="通过hostname命令查看本机hostname"></a>通过hostname命令查看本机hostname</h2><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hostname</span><br></pre></td></tr></table></figure>
-<p>得到如下信息<br><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MacBook-Pro.local</span><br></pre></td></tr></table></figure></p>
-<h2 id="修改host文件"><a href="#修改host文件" class="headerlink" title="修改host文件"></a>修改host文件</h2><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/hosts</span><br></pre></td></tr></table></figure>
-<p>修改条目如下，注意分隔符是TAB，不是空格<br><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1	localhost MacBook-Pro.local</span><br><span class="line">::1     localhost MacBook-Pro.local</span><br></pre></td></tr></table></figure></p>
-<p>也可以通过软件进行修改</p>
-<p>   <img src="https://qiniu.mikecorden.com/2019-05-06-15571539814663.jpg" alt></p>
+            <h2 id="主备切换过程"><a href="#主备切换过程" class="headerlink" title="主备切换过程"></a>主备切换过程</h2><p><img src="https://qiniu.mikecorden.com/2019-10-22-15717212061811.jpg" alt><br>上一篇文章我们了解了如何部署Sentinel模式Redis集群，本文在上一篇的基础上，结合log来分析Sentinel集群模式的一些原理。<br><a id="more"></a></p>
+<h3 id="SDOWN-主观下线"><a href="#SDOWN-主观下线" class="headerlink" title="SDOWN 主观下线"></a>SDOWN 主观下线</h3><p>SDOWN(subjectively down)，指的是单个Sentinel实例对服务器做出的下线判断。</p>
+<p>即服务器在<code>down-after-milliseconds</code>指定毫秒数内，没有响应Sentinel实例的<code>PING</code>命令，或者响应结果为错误时，Sentinel实例将标记此服务器为SDOWN状态。</p>
+<p>Sentinel会以每秒一次的频率向所有与其建立了命令连接的实例（master，从服务，其他sentinel）发<code>PING</code>命令。</p>
+<blockquote>
+<p>如果多个sentinel监视一个服务，有可能存在多个sentinel的<code>down-after-milliseconds</code>配置不同，这个在实际生产中要注意。</p>
+</blockquote>
+<h3 id="ODOWN-客观下线"><a href="#ODOWN-客观下线" class="headerlink" title="ODOWN 客观下线"></a>ODOWN 客观下线</h3><p>ODOWN(objectively down)，指的是多个Sentinel实例在对同一个服务器做出<code>SDOWN</code>判断， 并且通过<code>SENTINEL is-master-down-by-addr</code>命令互相交流之后，得出的服务器下线判断。ODOWN后才会开启failover。</p>
+<p>当一个Sentinel实例标记master为SDOWN后，会询问其他监控该master的Sentinel实例是否也认为master是主观下线。接受到足够数量（判断master是SDOWN，数量由<code>sentinel monitor &lt;masterName&gt; &lt;ip&gt; &lt;port&gt; &lt;quorum&gt;</code>中<code>&lt;quorum&gt;</code>确定）后，master被客观下线，准备进行failover。</p>
+<blockquote>
+<p><strong><em>只有master有ODOWN状态，slave没有ODOWN状态。</em></strong></p>
+</blockquote>
+<h4 id="Sentinel之间如何交流master的SDOWN并确定是否ODOWN"><a href="#Sentinel之间如何交流master的SDOWN并确定是否ODOWN" class="headerlink" title="Sentinel之间如何交流master的SDOWN并确定是否ODOWN"></a>Sentinel之间如何交流master的SDOWN并确定是否ODOWN</h4><p>Sentinel通过发送<code>SENTINEL is-master-down-by-addr &lt;ip&gt; &lt;port&gt; &lt;current_epoch&gt; &lt;runid&gt;</code></p>
+<ul>
+<li><code>ip</code>: 主观下线的服务id</li>
+<li><code>port</code>: 主观下线的服务端口</li>
+<li><code>current_epoch</code>: sentinel的纪元</li>
+<li><code>runid</code>:<ol>
+<li><code>*</code> 表示检测服务下线状态</li>
+<li><code>sentinel运行id</code>，表示用来选举领头sentinel</li>
+</ol>
+</li>
+</ul>
+<p>一个sentinel接收另一个sentinel发来的is-master-down-by-addr后，提取参数，根据ip和端口，检测该服务时候在该sentinel主观下线，并且回复is-master-down-by-addr，回复包含三个参数：</p>
+<ul>
+<li>down_state（1表示已下线，0表示未下线）</li>
+<li>leader_runid（领头sentinal id）</li>
+<li>leader_epoch（领头sentinel纪元）</li>
+</ul>
+<p>Sentinel接收到回复后，根据配置设置的下线最小数量，达到这个值，既认为该服务客观下线。</p>
+<h3 id="SDOWN-ODOWN切换"><a href="#SDOWN-ODOWN切换" class="headerlink" title="SDOWN/ODOWN切换"></a>SDOWN/ODOWN切换</h3><p>从SDOWN切换到ODOWN不需要任何一致性算法，只需要一个<code>gossip协议</code>：如果一个Sentinel收到了足够多的Sentinel发来消息告诉它某个master已经down掉了，SDOWN状态就会变成ODOWN状态。<strong><em>如果之后master可用了，这个状态就会相应地被清理掉。</em></strong></p>
+<p>正如之前已经解释过了，真正进行failover需要一个授权的过程，但是所有的failover都开始于一个ODOWN状态。ODOWN状态只适用于master，对于不是master的redis节点sentinel之间不需要任何协商，slaves和Sentinel不会有ODOWN状态。</p>
+<h3 id="配置版本号-纪元epoch"><a href="#配置版本号-纪元epoch" class="headerlink" title="配置版本号/纪元epoch"></a>配置版本号/纪元epoch</h3><p>在执行failover的时候，Sentinel会自动获取一份新的配置版本号用于本次的failover。当failover结束后，新的版本号会被用于最新的配置。</p>
+<blockquote>
+<p>每个版本号都是独一无二的。</p>
+</blockquote>
+<h3 id="配置传播"><a href="#配置传播" class="headerlink" title="配置传播"></a>配置传播</h3><p>一个Sentinel成功地对一个master进行了failover，它将会把关于master的最新配置通过广播形式通知其它sentinel，其它的Sentinel则更新对应master的配置。</p>
+<p>当将一个slave选举为master并发送<code>SLAVEOF NO ONE</code>后，即使其它的slave还没针对新master重新配置自己，failover也被认为是成功了的，然后所有sentinels将会发布新的配置信息。</p>
+<p>每个sentinel使用##发布/订阅##的方式持续地传播master的配置版本信息，配置传播的##发布/订阅##管道是：<strong>sentinel</strong>:hello。<strong>因为每一个配置都有一个版本号，所以以版本号最大的那个为标准。</strong></p>
+<h3 id="Sentinel的选举"><a href="#Sentinel的选举" class="headerlink" title="Sentinel的选举"></a>Sentinel的选举</h3><p>一个redis服务被判断为客观下线时，多个监视该服务的sentinel协商，选举一个领头sentinel，对该redis服务进行故障转移操作。选举领头sentinel遵循以下规则：</p>
+<ul>
+<li>所有的sentinel都有公平被选举成领头的资格。</li>
+<li>所有的sentinel都有且只有一次将某个sentinel选举成领头的机会（在一轮选举中），一旦选举某个sentinel为领头，不能更改。</li>
+<li>sentinel设置领头sentinel是先到先得，一旦当前sentinel设置了领头sentinel，以后要求设置sentinel为领头请求都会被拒绝。</li>
+<li>每个发现服务客观下线的sentinel，都会要求其他sentinel将自己设置成领头。</li>
+<li>当一个sentinel（源sentinel）向另一个sentinel（目sentinel）发送<code>is-master-down-by-addr ip port current_epoch runid</code>命令的时候，<code>runid</code>参数不是*，而是sentinel运行id，就表示源sentinel要求目标sentinel选举其为领头。</li>
+<li>源sentinel会检查目标sentinel对其要求设置成领头的回复，如果回复的leader_runid和leader_epoch为源sentinel，表示目标sentinel同意将源sentinel设置成领头。</li>
+<li>如果某个sentinel被半数以上的sentinel设置成领头，那么该sentinel既为领头。</li>
+<li>如果在限定时间内，没有选举出领头sentinel，暂定一段时间，再选举。</li>
+</ul>
+<h3 id="Slave的选举"><a href="#Slave的选举" class="headerlink" title="Slave的选举"></a>Slave的选举</h3><p>当Sentinel准备好开始failover，并得到了最终的选举授权后，要开始进行Slave的选举，评估方面有：</p>
+<ol>
+<li>与master断开连接的次数</li>
+<li>Slave的优先级</li>
+<li>数据复制的下标(用来评估slave当前拥有多少master的数据)</li>
+<li>进程ID</li>
+</ol>
+<p>如果一个slave与master失去联系超过10次，并且每次都超过了配置的最大失联时间(down-after-milliseconds)，如果sentinel在进行failover时发现slave失联，那么这个slave就会被sentinel认为不适合用来做新master的。更严格的定义是，如果一个slave持续断开连接的时间超过<code>(down-after-milliseconds * 10) + milliseconds_since_master_is_in_SDOWN_state</code>就会被认为失去选举资格。</p>
+<p>符合上述条件的slave才会被列入master候选人列表，并根据以下顺序来进行排序：</p>
+<ol>
+<li>sentinel首先会根据slaves的优先级来进行排序，优先级越小排名越靠前。</li>
+<li>如果优先级相同，则查看复制的下标，哪个从master接收的复制数据多，哪个就靠前。</li>
+<li>如果优先级和下标都相同，就选择进程ID较小的那个。</li>
+</ol>
+<p>一个redis无论是master还是slave，都必须在配置中指定一个slave优先级。要注意到master也是有可能通过failover变成slave的。<br><strong><em>如果一个redis的slave优先级配置为0，那么它将永远不会被选为master。但是它依然会从master哪里复制数据</em></strong>。</p>
+<h3 id="Sentinel模式主备切换总结"><a href="#Sentinel模式主备切换总结" class="headerlink" title="Sentinel模式主备切换总结"></a>Sentinel模式主备切换总结</h3><p>Sentinel主要负责三个方面工作：</p>
+<ol>
+<li><p>监控（Monitoring）</p>
+<blockquote>
+<p>Sentinel 会不断地检查你的主服务器和从服务器是否运作正常。</p>
+</blockquote>
+</li>
+<li><p>提醒（Notification）</p>
+<blockquote>
+<p>当被监控的某个 Redis 服务器出现问题时， Sentinel 可以通过 API 向管理员或者其他应用程序发送通知。</p>
+</blockquote>
+</li>
+<li><p>自动故障转移（Automatic failover）</p>
+<blockquote>
+<p>当一个主服务器不能正常工作时， Sentinel 会开始一次自动故障迁移操作， 它会将失效主服务器的其中一个从服务器升级为新的主服务器， 并让失效主服务器的其他从服务器改为复制新的主服务器； 当客户端试图连接失效的主服务器时， 集群也会向客户端返回新主服务器的地址， 使得集群可以使用新主服务器代替失效服务器。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="Sentinel集群杂乱知识总结"><a href="#Sentinel集群杂乱知识总结" class="headerlink" title="Sentinel集群杂乱知识总结"></a>Sentinel集群杂乱知识总结</h2><h3 id="为什么要集群"><a href="#为什么要集群" class="headerlink" title="为什么要集群"></a>为什么要集群</h3><p>单个Sentinel节点不可靠，可能因为宕机，网络波动问题导致无法进行主备切换，多个Sentinel，redis客户端可以连接任意一个Sentinel节点获取redis集群的信息。</p>
+<h3 id="Sentinel集群注意"><a href="#Sentinel集群注意" class="headerlink" title="Sentinel集群注意"></a>Sentinel集群注意</h3><ol>
+<li>Sentinel集群大多数Sentinel节点认定master主观下线时，master才会被客观下线，<strong><em>即使不管我们在sentinel monitor中设置的数是多少，就算是满足了该值，只要达不到大多数，就不会发生故障迁移</em></strong>。</li>
+<li>官方建议至少3台Sentinel节点。</li>
+<li><code>sentinel.conf</code>中IP不要写127.0.0.1/localhost，jedis和客户端是通过这个获取master的IP，会导致连接不上master节点。</li>
+<li>当sentinel 启动后会自动的修改sentinel.conf文件，如已发现的master的slave信息，和集群中其它sentinel 的信息等,这样即使重启sentinel也能保持原来的状态。注意，当集群服务器调整时，如更换sentinel的机器，或者新配置一个sentinel，请不要直接复制原来运行过得sentinel配置文件，因为其里面自动生成了以上说的那些信息，我们应该复制一个新的配置文件或者把自动生成的信息给删掉。</li>
+<li>当发生故障迁移的时候，master的变更记录与slave更换master的修改会自动同步到redis的配置文件，这样即使重启redis也能保持变更后的状态。</li>
+</ol>
+<h3 id="Sentinel工作方式（每个Sentinel实例都执行的定时任务）"><a href="#Sentinel工作方式（每个Sentinel实例都执行的定时任务）" class="headerlink" title="Sentinel工作方式（每个Sentinel实例都执行的定时任务）"></a>Sentinel工作方式（每个Sentinel实例都执行的定时任务）</h3><ol>
+<li>每个Sentinel以每秒钟一次的频率向它所知的Master，Slave以及其他 Sentinel 实例发送一个PING命令。</li>
+<li>如果一个实例（instance）距离最后一次有效回复PING命令的时间超过 own-after-milliseconds 选项所指定的值，则这个实例会被Sentinel标记为主观下线。</li>
+<li>如果一个Master被标记为主观下线，则正在监视这个Master的所有 Sentinel 要以每秒一次的频率确认Master的确进入了主观下线状态。 </li>
+<li>当有足够数量的Sentinel（大于等于配置文件指定的值）在指定的时间范围内确认Master的确进入了主观下线状态，则Master会被标记为客观下线。</li>
+<li>在一般情况下，每个Sentinel 会以每10秒一次的频率向它已知的所有Master，Slave发送 INFO 命令。</li>
+<li>当Master被Sentinel标记为客观下线时，Sentinel 向下线的 Master 的所有Slave发送 INFO命令的频率会从10秒一次改为每秒一次。</li>
+<li>若没有足够数量的Sentinel同意Master已经下线，Master的客观下线状态就会被移除。 若 Master重新向Sentinel 的PING命令返回有效回复，Master的主观下线状态就会被移除。</li>
+</ol>
+<h3 id="Sentinel集群节点-Slaves之间的发现机制"><a href="#Sentinel集群节点-Slaves之间的发现机制" class="headerlink" title="Sentinel集群节点/Slaves之间的发现机制"></a>Sentinel集群节点/Slaves之间的发现机制</h3><p>Sentinel集群中每一个Sentinel节点都不需要配置其他节点的信息。因为Sentinel利用了master节点的发布/订阅机制去自动发现/监控同一master的sentinel节点。</p>
+<p>同样，你也不需要在sentinel中配置某个master的所有slave的地址，sentinel会通过询问master来得到这些slave的地址的。</p>
+<blockquote>
+<p>管道名：<code>__sentinel__:hello</code></p>
+</blockquote>
+<ul>
+<li>每个sentinel通过向每个master和slave的发布/订阅频道<code>__sentinel__:hello</code>每秒发送一次消息，来宣布它的存在。</li>
+<li>每个sentinel也订阅了每个master和slave的频道<code>__sentinel__:hello</code>的内容，来发现未知的sentinel，当检测到了新的sentinel，则将其加入到自身维护的master监控列表中。</li>
+<li>每个sentinel发送的消息中也包含了其当前维护的最新的master配置。如果某个sentinel发现自己的配置版本低于接收到的配置版本，则会用新的配置更新自己的master配置。</li>
+</ul>
+<p>在为一个master添加一个新的sentinel前，sentinel总是检查是否已经有sentinel与新的sentinel的进程号或者是地址是一样的。如果是那样，这个sentinel将会被删除，而把新的sentinel添加上去。</p>
+<h3 id="Sentinel模式master的配置注意"><a href="#Sentinel模式master的配置注意" class="headerlink" title="Sentinel模式master的配置注意"></a>Sentinel模式master的配置注意</h3><p>因为master在ODOWN后恢复，会变成新master的slave，所以在master的<code>redis.conf</code>   配置文件中同样要配置<code>masterauth &lt;password&gt;</code>，否则变为slave会连接不上新的master节点。</p>
+<h3 id="三个定时任务"><a href="#三个定时任务" class="headerlink" title="三个定时任务"></a>三个定时任务</h3><ol>
+<li>每10秒每个sentinel会对master和slave执行info命令，这个任务达到两个目的：<ul>
+<li>发现slave节点</li>
+<li>确认主从关系</li>
+</ul>
+</li>
+<li>每2秒每个sentinel通过master节点的channel交换信息（pub/sub）。master节点上有一个发布订阅的频道(<code>__sentinel__:hello</code>)。sentinel节点通过<code>__sentinel__:hello</code>频道进行信息交换(对节点的”看法”和自身的信息)，达成共识。</li>
+<li>每1秒每个sentinel对其他sentinel和redis节点执行ping操作（相互监控），这个其实是一个心跳检测，是失败判定的依据。</li>
+</ol>
 
         </div>
         
@@ -183,7 +297,7 @@ var _hmt = _hmt || [];
             <div class="level-start">
                 <div class="level-item">
                     <span class="is-size-6 has-text-grey has-mr-7">#</span>
-                    <a class="has-link-grey -link" href="/tags/IDEA/">IDEA</a>, <a class="has-link-grey -link" href="/tags/Mac/">Mac</a>
+                    <a class="has-link-grey -link" href="/tags/Redis/">Redis</a>
                 </div>
             </div>
         </div>
@@ -200,17 +314,10 @@ var _hmt = _hmt || [];
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
         
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/06/05/LaunchpadIcon/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">Launchpad图标修改</span>
-            </a>
-        </div>
-        
         
         <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2019/03/18/Hexo2/">
-                <span class="level-item">搭建个人博客 之 MWeb，服务器和全站Https</span>
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/10/19/RedisSentinel/">
+                <span class="level-item">Redis Sentinel模式</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -306,14 +413,74 @@ var _hmt = _hmt || [];
                 目录
             </h3>
             <ul class="menu-list"><li>
-        <a class="is-flex" href="#通过hostname命令查看本机hostname">
+        <a class="is-flex" href="#主备切换过程">
         <span class="has-mr-6">1</span>
-        <span>通过hostname命令查看本机hostname</span>
+        <span>主备切换过程</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#SDOWN-主观下线">
+        <span class="has-mr-6">1.1</span>
+        <span>SDOWN 主观下线</span>
         </a></li><li>
-        <a class="is-flex" href="#修改host文件">
+        <a class="is-flex" href="#ODOWN-客观下线">
+        <span class="has-mr-6">1.2</span>
+        <span>ODOWN 客观下线</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#Sentinel之间如何交流master的SDOWN并确定是否ODOWN">
+        <span class="has-mr-6">1.2.1</span>
+        <span>Sentinel之间如何交流master的SDOWN并确定是否ODOWN</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#SDOWN-ODOWN切换">
+        <span class="has-mr-6">1.3</span>
+        <span>SDOWN/ODOWN切换</span>
+        </a></li><li>
+        <a class="is-flex" href="#配置版本号-纪元epoch">
+        <span class="has-mr-6">1.4</span>
+        <span>配置版本号/纪元epoch</span>
+        </a></li><li>
+        <a class="is-flex" href="#配置传播">
+        <span class="has-mr-6">1.5</span>
+        <span>配置传播</span>
+        </a></li><li>
+        <a class="is-flex" href="#Sentinel的选举">
+        <span class="has-mr-6">1.6</span>
+        <span>Sentinel的选举</span>
+        </a></li><li>
+        <a class="is-flex" href="#Slave的选举">
+        <span class="has-mr-6">1.7</span>
+        <span>Slave的选举</span>
+        </a></li><li>
+        <a class="is-flex" href="#Sentinel模式主备切换总结">
+        <span class="has-mr-6">1.8</span>
+        <span>Sentinel模式主备切换总结</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#Sentinel集群杂乱知识总结">
         <span class="has-mr-6">2</span>
-        <span>修改host文件</span>
-        </a></li></ul>
+        <span>Sentinel集群杂乱知识总结</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#为什么要集群">
+        <span class="has-mr-6">2.1</span>
+        <span>为什么要集群</span>
+        </a></li><li>
+        <a class="is-flex" href="#Sentinel集群注意">
+        <span class="has-mr-6">2.2</span>
+        <span>Sentinel集群注意</span>
+        </a></li><li>
+        <a class="is-flex" href="#Sentinel工作方式（每个Sentinel实例都执行的定时任务）">
+        <span class="has-mr-6">2.3</span>
+        <span>Sentinel工作方式（每个Sentinel实例都执行的定时任务）</span>
+        </a></li><li>
+        <a class="is-flex" href="#Sentinel集群节点-Slaves之间的发现机制">
+        <span class="has-mr-6">2.4</span>
+        <span>Sentinel集群节点/Slaves之间的发现机制</span>
+        </a></li><li>
+        <a class="is-flex" href="#Sentinel模式master的配置注意">
+        <span class="has-mr-6">2.5</span>
+        <span>Sentinel模式master的配置注意</span>
+        </a></li><li>
+        <a class="is-flex" href="#三个定时任务">
+        <span class="has-mr-6">2.6</span>
+        <span>三个定时任务</span>
+        </a></li></ul></li></ul>
         </div>
     </div>
 </div>
