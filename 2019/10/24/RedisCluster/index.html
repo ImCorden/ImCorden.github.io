@@ -16,7 +16,7 @@
 <meta property="og:description" content="从Redis 3.0以后官方推出了Cluster的集群方案，大大增强了Redis水平扩展能力。在此之前已经有第三方Redis集群解决方案，如Twemproxy（Twitter开源），Codis等。Cluster与这些区别是并非使用Porxy模式来连接集群节点，而是使用无中心节点的模式来组建集群，在Cluster之前，只有Sentienl保证了Redis的高可用性。 Cluster实现了多个节点的数">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://mikecorden.com/images/og_image.png">
-<meta property="og:updated_time" content="2019-10-24T07:43:34.196Z">
+<meta property="og:updated_time" content="2019-10-24T07:54:01.789Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis Cluster">
 <meta name="twitter:description" content="从Redis 3.0以后官方推出了Cluster的集群方案，大大增强了Redis水平扩展能力。在此之前已经有第三方Redis集群解决方案，如Twemproxy（Twitter开源），Codis等。Cluster与这些区别是并非使用Porxy模式来连接集群节点，而是使用无中心节点的模式来组建集群，在Cluster之前，只有Sentienl保证了Redis的高可用性。 Cluster实现了多个节点的数">
@@ -156,7 +156,7 @@ var _hmt = _hmt || [];
                 <span class="level-item has-text-grey">
                     
                     
-                    27 分钟 读完 (大约 4016 个字)
+                    27 分钟 读完 (大约 4114 个字)
                 </span>
                 
                 
@@ -295,14 +295,15 @@ var _hmt = _hmt || [];
 </tr>
 </tbody>
 </table>
-<h2 id="迁移前状态"><a href="#迁移前状态" class="headerlink" title="迁移前状态"></a>迁移前状态</h2><p><img src="https://qiniu.mikecorden.com/2019-10-24-15718949821769.jpg" alt></p>
+<h3 id="迁移前状态"><a href="#迁移前状态" class="headerlink" title="迁移前状态"></a>迁移前状态</h3><p><img src="https://qiniu.mikecorden.com/2019-10-24-15718949821769.jpg" alt></p>
 <h3 id="添加主节点"><a href="#添加主节点" class="headerlink" title="添加主节点"></a>添加主节点</h3><figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./redis-cli -a 123456 --cluster add-node 10.211.55.17:7001 10.211.55.19:7001</span><br><span class="line">./redis-cli -a 123456 --cluster add-node 10.211.55.17:7002 10.211.55.19:7001</span><br><span class="line">./redis-cli -a 123456 --cluster add-node 10.211.55.17:7003 10.211.55.19:7001</span><br></pre></td></tr></table></figure>
 <p>使用<code>./redis-cli -a 123456 --cluster check 10.211.55.19:7001</code>查看状态<br><img src="https://qiniu.mikecorden.com/2019-10-24-Cluster1.png" alt><br>发现已经将3个节点加入cluster集群，但是没有分配任何slot。</p>
 <h3 id="添加新的主节点的从节点"><a href="#添加新的主节点的从节点" class="headerlink" title="添加新的主节点的从节点"></a>添加新的主节点的从节点</h3><p>我们分别为10.211.55.17上7001～7003增加从节点7004～7006<br><figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">./redis-cli -a javaee12 --cluster add-node 10.211.55.17:7004 10.211.55.19:7001 --cluster-slave --cluster-master-id b13675b85b05d4fd2c430fb78b3998ebbf777295</span><br><span class="line"></span><br><span class="line">./redis-cli -a javaee12 --cluster add-node 10.211.55.17:7005 10.211.55.19:7001 --cluster-slave --cluster-master-id 3cf5fd50477d4a35931c18073967f672308712d7</span><br><span class="line"></span><br><span class="line">./redis-cli -a javaee12 --cluster add-node 10.211.55.17:7006 10.211.55.19:7001 --cluster-slave --cluster-master-id 1c3a2b8460e0a2d8abb3d716bcafe48d9644dba3</span><br></pre></td></tr></table></figure></p>
 <p>查看现在集群状态<br><img src="https://qiniu.mikecorden.com/2019-10-24-clusteraddslave.png" alt><br>三个slave节点已经加上</p>
-<h3 id="迁移"><a href="#迁移" class="headerlink" title="迁移"></a>迁移</h3><figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#</span> 后续填的迁移slot会从现有节点随机抽取</span><br><span class="line">./redis-cli -a javaee12 --cluster reshard 10.211.55.19:7001</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#</span> 将一个节点的定量slot迁移到其他节点</span><br><span class="line">./redis-cli -a javaee12 --cluster reshard 10.211.55.19:7001 --cluster-from bd8be2765f1ea9be8abf86e55d72ce77eda59a70 --cluster-to 3cf5fd50477d4a35931c18073967f672308712d7 --cluster-slots 3641 --cluster-yes --cluster-timeout 5000 --cluster-pipeline 10</span><br></pre></td></tr></table></figure>
-<p><img src="https://qiniu.mikecorden.com/2019-10-24-15718992364176.jpg" alt></p>
-<h3 id="删除旧节点"><a href="#删除旧节点" class="headerlink" title="删除旧节点"></a>删除旧节点</h3><p><code>./redis-cli -a 123456 --cluster del-node 10.211.55.19:7003 45e24c18dfd00d7f460faeb66ddbc6506612c8de</code><br><img src="https://qiniu.mikecorden.com/2019-10-24-15719005409459.jpg" alt></p>
+<h3 id="进行迁移"><a href="#进行迁移" class="headerlink" title="进行迁移"></a>进行迁移</h3><figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#</span> 后续填的迁移slot会从现有节点随机抽取</span><br><span class="line">./redis-cli -a javaee12 --cluster reshard 10.211.55.19:7001</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#</span> 将一个节点的定量slot迁移到其他节点</span><br><span class="line">./redis-cli -a javaee12 --cluster reshard 10.211.55.19:7001 --cluster-from bd8be2765f1ea9be8abf86e55d72ce77eda59a70 --cluster-to 3cf5fd50477d4a35931c18073967f672308712d7 --cluster-slots 3641 --cluster-yes --cluster-timeout 5000 --cluster-pipeline 10</span><br></pre></td></tr></table></figure>
+<p><img src="https://qiniu.mikecorden.com/2019-10-24-15718992364176.jpg" alt="迁移后状态"></p>
+<h3 id="删除旧节点"><a href="#删除旧节点" class="headerlink" title="删除旧节点"></a>删除旧节点</h3><figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./redis-cli -a 123456 --cluster del-node 10.211.55.19:7003 45e24c18dfd00d7f460faeb66ddbc6506612c8de</span><br></pre></td></tr></table></figure>
+<p><img src="https://qiniu.mikecorden.com/2019-10-24-15719005409459.jpg" alt></p>
 <p>删除master主节点时需注意下面几点：</p>
 <ul>
 <li>如果主节点有从节点，需要将从节点转移到其他主节点或提前删除从节点。</li>
@@ -310,6 +311,9 @@ var _hmt = _hmt || [];
 </ul>
 <h3 id="重新分配"><a href="#重新分配" class="headerlink" title="重新分配"></a>重新分配</h3><p>删除完节点后，发现slot并不平均，我们进行rebalance。<br><figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./redis-cli -a 123456 --cluster rebalance 10.211.55.17:7001</span><br></pre></td></tr></table></figure></p>
 <p><img src="https://qiniu.mikecorden.com/2019-10-24-15719017227694.jpg" alt><br><img src="https://qiniu.mikecorden.com/2019-10-24-15719017674834.jpg" alt></p>
+<h2 id="SpringBoot使用Cluster-Redis"><a href="#SpringBoot使用Cluster-Redis" class="headerlink" title="SpringBoot使用Cluster Redis"></a>SpringBoot使用Cluster Redis</h2><h3 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h3><figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">spring:</span></span><br><span class="line"><span class="hljs-attr">  redis:</span></span><br><span class="line"><span class="hljs-attr">    jedis:</span></span><br><span class="line"><span class="hljs-attr">      pool:</span></span><br><span class="line"><span class="hljs-attr">        max-active:</span> <span class="hljs-number">10</span></span><br><span class="line"><span class="hljs-attr">        max-wait:</span> <span class="hljs-number">10000</span></span><br><span class="line"><span class="hljs-attr">        max-idle:</span> <span class="hljs-number">10</span></span><br><span class="line"><span class="hljs-attr">        min-idle:</span> <span class="hljs-number">0</span></span><br><span class="line"><span class="hljs-attr">    cluster:</span></span><br><span class="line"><span class="hljs-attr">      max-redirects:</span> <span class="hljs-number">3</span></span><br><span class="line"><span class="hljs-attr">      nodes:</span> <span class="hljs-number">10.211</span><span class="hljs-number">.55</span><span class="hljs-number">.19</span><span class="hljs-string">:7001</span> <span class="hljs-number">10.211</span><span class="hljs-number">.55</span><span class="hljs-number">.19</span><span class="hljs-string">:7002</span> <span class="hljs-number">10.211</span><span class="hljs-number">.55</span><span class="hljs-number">.19</span><span class="hljs-string">:7003</span> <span class="hljs-number">10.211</span><span class="hljs-number">.55</span><span class="hljs-number">.19</span><span class="hljs-string">:7004</span> <span class="hljs-number">10.211</span><span class="hljs-number">.55</span><span class="hljs-number">.19</span><span class="hljs-string">:7005</span> <span class="hljs-number">10.211</span><span class="hljs-number">.55</span><span class="hljs-number">.19</span><span class="hljs-string">:7006</span></span><br><span class="line"><span class="hljs-attr">    password:</span> <span class="hljs-number">123456</span></span><br><span class="line"><span class="hljs-attr">    ssl:</span> <span class="hljs-literal">false</span></span><br><span class="line"><span class="hljs-attr">    timeout:</span> <span class="hljs-number">10000</span></span><br></pre></td></tr></table></figure>
+<h3 id="RedisConfig-java"><a href="#RedisConfig-java" class="headerlink" title="RedisConfig.java"></a><code>RedisConfig.java</code></h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Value</span>(<span class="hljs-string">"$&#123;spring.redis.cluster.max-redirects&#125;"</span>)</span><br><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> maxRedirects;</span><br><span class="line"><span class="hljs-meta">@Value</span>(<span class="hljs-string">"$&#123;spring.redis.cluster.nodes&#125;"</span>)</span><br><span class="line"><span class="hljs-keyword">private</span> String nodes;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">RedisClusterConfiguration redisConfig = <span class="hljs-keyword">new</span> RedisClusterConfiguration();</span><br><span class="line">redisConfig.setMaxRedirects(maxRedirects);</span><br><span class="line"></span><br><span class="line">String[] cNodes = nodes.split(<span class="hljs-string">" "</span>);</span><br><span class="line">List&lt;RedisNode&gt; nodes = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"><span class="hljs-keyword">for</span>(String node : cNodes)&#123;</span><br><span class="line">    String[] hp = node.split(<span class="hljs-string">":"</span>);</span><br><span class="line">    nodes.add(<span class="hljs-keyword">new</span> RedisNode(hp[<span class="hljs-number">0</span>],Integer.parseInt(hp[<span class="hljs-number">1</span>])));</span><br><span class="line">&#125;</span><br><span class="line">redisConfig.setClusterNodes(nodes);</span><br><span class="line">redisConfig.setPassword(RedisPassword.of(password));</span><br></pre></td></tr></table></figure>
 
         </div>
         
@@ -504,30 +508,42 @@ var _hmt = _hmt || [];
         <a class="is-flex" href="#在线迁移">
         <span class="has-mr-6">7</span>
         <span>在线迁移</span>
-        </a></li><li>
-        <a class="is-flex" href="#迁移前状态">
-        <span class="has-mr-6">8</span>
-        <span>迁移前状态</span>
         </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#迁移前状态">
+        <span class="has-mr-6">7.1</span>
+        <span>迁移前状态</span>
+        </a></li><li>
         <a class="is-flex" href="#添加主节点">
-        <span class="has-mr-6">8.1</span>
+        <span class="has-mr-6">7.2</span>
         <span>添加主节点</span>
         </a></li><li>
         <a class="is-flex" href="#添加新的主节点的从节点">
-        <span class="has-mr-6">8.2</span>
+        <span class="has-mr-6">7.3</span>
         <span>添加新的主节点的从节点</span>
         </a></li><li>
-        <a class="is-flex" href="#迁移">
-        <span class="has-mr-6">8.3</span>
-        <span>迁移</span>
+        <a class="is-flex" href="#进行迁移">
+        <span class="has-mr-6">7.4</span>
+        <span>进行迁移</span>
         </a></li><li>
         <a class="is-flex" href="#删除旧节点">
-        <span class="has-mr-6">8.4</span>
+        <span class="has-mr-6">7.5</span>
         <span>删除旧节点</span>
         </a></li><li>
         <a class="is-flex" href="#重新分配">
-        <span class="has-mr-6">8.5</span>
+        <span class="has-mr-6">7.6</span>
         <span>重新分配</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#SpringBoot使用Cluster-Redis">
+        <span class="has-mr-6">8</span>
+        <span>SpringBoot使用Cluster Redis</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#配置文件">
+        <span class="has-mr-6">8.1</span>
+        <span>配置文件</span>
+        </a></li><li>
+        <a class="is-flex" href="#RedisConfig-java">
+        <span class="has-mr-6">8.2</span>
+        <span>RedisConfig.java</span>
         </a></li></ul></li></ul>
         </div>
     </div>
