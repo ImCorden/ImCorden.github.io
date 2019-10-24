@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+<title>Redis Cluster - MkCorden|个人博客</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="从Redis 3.0以后官方推出了Cluster的集群方案，大大增强了Redis水平扩展能力。在此之前已经有第三方Redis集群解决方案，如Twemproxy（Twitter开源），Codis等。Cluster与这些区别是并非使用Porxy模式来连接集群节点，而是使用无中心节点的模式来组建集群，在Cluster之前，只有Sentienl保证了Redis的高可用性。 Cluster实现了多个节点的数">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis Cluster">
+<meta property="og:url" content="https://mikecorden.com/2019/10/24/RedisCluster/index.html">
+<meta property="og:site_name" content="MkCorden|个人博客">
+<meta property="og:description" content="从Redis 3.0以后官方推出了Cluster的集群方案，大大增强了Redis水平扩展能力。在此之前已经有第三方Redis集群解决方案，如Twemproxy（Twitter开源），Codis等。Cluster与这些区别是并非使用Porxy模式来连接集群节点，而是使用无中心节点的模式来组建集群，在Cluster之前，只有Sentienl保证了Redis的高可用性。 Cluster实现了多个节点的数">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://mikecorden.com/images/og_image.png">
+<meta property="og:updated_time" content="2019-10-24T07:43:34.196Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis Cluster">
+<meta name="twitter:description" content="从Redis 3.0以后官方推出了Cluster的集群方案，大大增强了Redis水平扩展能力。在此之前已经有第三方Redis集群解决方案，如Twemproxy（Twitter开源），Codis等。Cluster与这些区别是并非使用Porxy模式来连接集群节点，而是使用无中心节点的模式来组建集群，在Cluster之前，只有Sentienl保证了Redis的高可用性。 Cluster实现了多个节点的数">
+<meta name="twitter:image" content="https://mikecorden.com/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="https://qiniu.mikecorden.com/avatar.jpeg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/5.10.0-11/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+<script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?a06cf922071486eff2b8bb52d0f71985";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-2-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                MkCorden | 个人博客
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/archives">归档</a>
+                
+                <a class="navbar-item" href="/categories">分类</a>
+                
+                <a class="navbar-item" href="/about">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-10-24T07:43:23.000Z">2019-10-24</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    27 分钟 读完 (大约 4016 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Redis Cluster
+            
+        </h1>
+        <div class="content">
+            <p>从Redis 3.0以后官方推出了Cluster的集群方案，大大增强了Redis水平扩展能力。在此之前已经有第三方Redis集群解决方案，如Twemproxy（Twitter开源），Codis等。Cluster与这些区别是并非使用Porxy模式来连接集群节点，而是使用无中心节点的模式来组建集群，在Cluster之前，只有Sentienl保证了Redis的高可用性。</p>
+<p>Cluster实现了多个节点的数据共享，即使部分节点失效或者无法进行通讯，Cluster仍可以继续处理请求。每个主节点至少有一个从节点，当主机节点宕机等不可用情况，从节点会提升为主节点，并自动开始提供服务。</p>
+<p>Cluster的节点分配是通过哈希槽实现的（Hash Slot），所有key值都属于16384个哈希槽其中一个，Cluster模式中，每一个主节点都会分配处理一定范围的slot。<br><a id="more"></a></p>
+<h2 id="Redis-Cluster"><a href="#Redis-Cluster" class="headerlink" title="Redis Cluster"></a>Redis Cluster</h2><h3 id="CAP"><a href="#CAP" class="headerlink" title="CAP"></a>CAP</h3><blockquote>
+<p>CAP定理：指的是在一个分布式系统中，Consistency（一致性）、 Availability（可用性）、Partition tolerance（分区容错性），三者不可同时获得。<br>一致性(C)：在分布式系统中的所有数据备份，在同一时刻是否同样的值。（所有节点在同一时间的数据完全一致，越多节点，数据同步越耗时）<br>可用性(A)：负载过大后，集群整体是否还能响应客户端的读写请求。（服务一直可用，而且是正常响应时间）<br>分区容错性(P)：分区容忍性，就是高可用性，一个节点崩了，并不影响其它的节点（100个节点，挂了几个，不影响服务，越多机器越好）</p>
+</blockquote>
+<p>对于单一节点的Redis，保证了CP牺牲了A，即<strong><em>Redis能够保证所有用户看到相同的数据</em></strong>（一致性，因为Redis不自动冗余数据）和<strong><em>网络通信出问题时，暂时隔离开的子系统能继续运行</em></strong>（分区容忍性，因为Master之间没有直接关系，不需要通信），但是<strong><em>不保证某些结点故障时，所有请求都能被响应</em></strong>（可用性，某个Master结点挂了的话，那么它上面分片的数据就无法访问了）。</p>
+<p>对于Cluster，Redis从单一NOSQL内存数据库变为分布式NOSQL数据库，从CP变成了AP。即通过自动分片和冗余数据，Redis具有了真正的分布式能力，某个结点挂了的话，因为数据在其他结点上有备份，所以其他结点顶上来就可以继续提供服务，保证了Availability。然而，也正因为这一点，Redis无法保证曾经的强一致性了。</p>
+<h3 id="Redis-Cluster特点"><a href="#Redis-Cluster特点" class="headerlink" title="Redis Cluster特点"></a>Redis Cluster特点</h3><ul>
+<li>去中心、去中间件，各节点平等，保存各自数据和集群状态，节点间活跃互连。  </li>
+<li>传统用一致性哈希分配数据，集群用哈希槽（hash slot）分配。 算法为CRC16。  </li>
+<li>默认分配16384个slot， 用CRC16算法取模{ CRC16(key)%16384 }计算所属slot。  </li>
+<li>最少3个主节点</li>
+</ul>
+<h3 id="Redis-Cluster优点"><a href="#Redis-Cluster优点" class="headerlink" title="Redis Cluster优点"></a>Redis Cluster优点</h3><ul>
+<li>官方解决方案</li>
+<li>可以在线水平扩展（Twemproxy的一大弊端就是不支持在线扩容节点）</li>
+<li>客户端直连，系统瓶颈更少</li>
+<li>无中心架构</li>
+<li>支持数据分片</li>
+</ul>
+<h2 id="redis-cli代替redis-trib-rb"><a href="#redis-cli代替redis-trib-rb" class="headerlink" title="redis-cli代替redis-trib.rb"></a>redis-cli代替redis-trib.rb</h2><p>redis 5.0版本后会抛弃redis-trib.rb。直接使用redis-cli客户端实现集群管理。命令如下：<br><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">redis-cli --cluster help</span><br><span class="line">Cluster Manager Commands:</span><br><span class="line">  create         host1:port1 ... hostN:portN   #创建集群</span><br><span class="line">                 --cluster-replicas &lt;arg&gt;      #从节点个数</span><br><span class="line">  check          host:port                     #检查集群</span><br><span class="line">                 --cluster-search-multiple-owners #检查是否有槽同时被分配给了多个节点</span><br><span class="line">  info           host:port                     #查看集群状态</span><br><span class="line">  fix            host:port                     #修复集群</span><br><span class="line">                 --cluster-search-multiple-owners #修复槽的重复分配问题</span><br><span class="line">  reshard        host:port                     #指定集群的任意一节点进行迁移slot，重新分slots</span><br><span class="line">                 --cluster-from &lt;arg&gt;          #需要从哪些源节点上迁移slot，可从多个源节点完成迁移，以逗号隔开，传递的是节点的node id，还可以直接传递--from all，这样源节点就是集群的所有节点，不传递该参数的话，则会在迁移过程中提示用户输入</span><br><span class="line">                 --cluster-to &lt;arg&gt;            #slot需要迁移的目的节点的node id，目的节点只能填写一个，不传递该参数的话，则会在迁移过程中提示用户输入</span><br><span class="line">                 --cluster-slots &lt;arg&gt;         #需要迁移的slot数量，不传递该参数的话，则会在迁移过程中提示用户输入。</span><br><span class="line">                 --cluster-yes                 #指定迁移时的确认输入</span><br><span class="line">                 --cluster-timeout &lt;arg&gt;       #设置migrate命令的超时时间</span><br><span class="line">                 --cluster-pipeline &lt;arg&gt;      #定义cluster getkeysinslot命令一次取出的key数量，不传的话使用默认值为10</span><br><span class="line">                 --cluster-replace             #是否直接replace到目标节点</span><br><span class="line">  rebalance      host:port                                      #指定集群的任意一节点进行平衡集群节点slot数量 </span><br><span class="line">                 --cluster-weight &lt;node1=w1...nodeN=wN&gt;         #指定集群节点的权重</span><br><span class="line">                 --cluster-use-empty-masters                    #设置可以让没有分配slot的主节点参与，默认不允许</span><br><span class="line">                 --cluster-timeout &lt;arg&gt;                        #设置migrate命令的超时时间</span><br><span class="line">                 --cluster-simulate                             #模拟rebalance操作，不会真正执行迁移操作</span><br><span class="line">                 --cluster-pipeline &lt;arg&gt;                       #定义cluster getkeysinslot命令一次取出的key数量，默认值为10</span><br><span class="line">                 --cluster-threshold &lt;arg&gt;                      #迁移的slot阈值超过threshold，执行rebalance操作</span><br><span class="line">                 --cluster-replace                              #是否直接replace到目标节点</span><br><span class="line">  add-node       new_host:new_port existing_host:existing_port  #添加节点，把新节点加入到指定的集群，默认添加主节点</span><br><span class="line">                 --cluster-slave                                #新节点作为从节点，默认随机一个主节点</span><br><span class="line">                 --cluster-master-id &lt;arg&gt;                      #给新节点指定主节点</span><br><span class="line">  del-node       host:port node_id                              #删除给定的一个节点，成功后关闭该节点服务</span><br><span class="line">  call           host:port command arg arg .. arg               #在集群的所有节点执行相关命令</span><br><span class="line">  set-timeout    host:port milliseconds                         #设置cluster-node-timeout</span><br><span class="line">  import         host:port                                      #将外部redis数据导入集群</span><br><span class="line">                 --cluster-from &lt;arg&gt;                           #将指定实例的数据导入到集群</span><br><span class="line">                 --cluster-copy                                 #migrate时指定copy</span><br><span class="line">                 --cluster-replace                              #migrate时指定replace</span><br><span class="line">  help</span><br></pre></td></tr></table></figure></p>
+<h2 id="Docker部署"><a href="#Docker部署" class="headerlink" title="Docker部署"></a>Docker部署</h2><h3 id="配置文件redis-conf"><a href="#配置文件redis-conf" class="headerlink" title="配置文件redis.conf"></a>配置文件redis.conf</h3><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">port 7001 # 3主3从分别为7000～7006</span><br><span class="line">requirepass 123456</span><br><span class="line">masterauth 123456</span><br><span class="line">daemonize no # docker部署为no</span><br><span class="line">cluster-enabled yes</span><br><span class="line">cluster-config-file node-17-7001.conf # 集群配置文件，首次启动自动生成</span><br><span class="line"></span><br><span class="line">cluster-announce-ip 10.211.55.17</span><br><span class="line">cluster-announce-port 7001</span><br><span class="line">cluster-announce-bus-port 17001</span><br></pre></td></tr></table></figure>
+<h3 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h3><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -it --privileged=true -v /media/psf/Linux/df/redis/cluster-config/redis11.conf:/etc/redis/redis.conf --privileged=true -v /var/df/cluster-redis/cluster1/data:/data --restart always --name cluster11  --net=host --sysctl net.core.somaxconn=1024 redis:5.0.5 redis-server /etc/redis/redis.conf --appendonly yes</span><br><span class="line">docker run -d -it --privileged=true -v /media/psf/Linux/df/redis/cluster-config/redis12.conf:/etc/redis/redis.conf --privileged=true -v /var/df/cluster-redis/cluster2/data:/data --restart always --name cluster12  --net=host --sysctl net.core.somaxconn=1024 redis:5.0.5 redis-server /etc/redis/redis.conf --appendonly yes</span><br><span class="line">docker run -d -it --privileged=true -v /media/psf/Linux/df/redis/cluster-config/redis13.conf:/etc/redis/redis.conf --privileged=true -v /var/df/cluster-redis/cluster3/data:/data --restart always --name cluster13  --net=host --sysctl net.core.somaxconn=1024 redis:5.0.5 redis-server /etc/redis/redis.conf --appendonly yes</span><br><span class="line">docker run -d -it --privileged=true -v /media/psf/Linux/df/redis/cluster-config/redis14.conf:/etc/redis/redis.conf --privileged=true -v /var/df/cluster-redis/cluster4/data:/data --restart always --name cluster14  --net=host --sysctl net.core.somaxconn=1024 redis:5.0.5 redis-server /etc/redis/redis.conf --appendonly yes</span><br><span class="line">docker run -d -it --privileged=true -v /media/psf/Linux/df/redis/cluster-config/redis15.conf:/etc/redis/redis.conf --privileged=true -v /var/df/cluster-redis/cluster5/data:/data --restart always --name cluster15  --net=host --sysctl net.core.somaxconn=1024 redis:5.0.5 redis-server /etc/redis/redis.conf --appendonly yes</span><br><span class="line">docker run -d -it --privileged=true -v /media/psf/Linux/df/redis/cluster-config/redis16.conf:/etc/redis/redis.conf --privileged=true -v /var/df/cluster-redis/cluster6/data:/data --restart always --name cluster16  --net=host --sysctl net.core.somaxconn=1024 redis:5.0.5 redis-server /etc/redis/redis.conf --appendonly yes</span><br></pre></td></tr></table></figure>
+<p><img src="https://qiniu.mikecorden.com/2019-10-24-15718114329565.jpg" alt></p>
+<h3 id="自动生成的文件"><a href="#自动生成的文件" class="headerlink" title="自动生成的文件"></a>自动生成的文件</h3><p><img src="https://qiniu.mikecorden.com/2019-10-24-15718113688031.jpg" alt></p>
+<h3 id="防火墙设置"><a href="#防火墙设置" class="headerlink" title="防火墙设置"></a>防火墙设置</h3><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --permanent --add-port=7001/tcp   </span><br><span class="line">firewall-cmd --permanent --add-port=7002/tcp                                                                                                             </span><br><span class="line">firewall-cmd --permanent --add-port=7003/tcp                                                                                                             </span><br><span class="line">firewall-cmd --permanent --add-port=7004/tcp                                                                                                             </span><br><span class="line">firewall-cmd --permanent --add-port=7005/tcp                                                                                                             </span><br><span class="line">firewall-cmd --permanent --add-port=7006/tcp</span><br><span class="line">firewall-cmd --permanent --add-port=17001/tcp   </span><br><span class="line">firewall-cmd --permanent --add-port=17002/tcp                                                                                                             </span><br><span class="line">firewall-cmd --permanent --add-port=17003/tcp                                                                                                             </span><br><span class="line">firewall-cmd --permanent --add-port=17004/tcp                                                                                                             </span><br><span class="line">firewall-cmd --permanent --add-port=17005/tcp                                                                                                             </span><br><span class="line">firewall-cmd --permanent --add-port=17006/tcp     </span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+<h3 id="通过redis-cli建立集群"><a href="#通过redis-cli建立集群" class="headerlink" title="通过redis-cli建立集群"></a>通过redis-cli建立集群</h3><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/bin/redis-cli -a 123456 --cluster create 10.211.55.17:7001 10.211.55.17:7002 10.211.55.17:7003 10.211.55.17:7004 10.211.55.17:7005 10.211.55.17:7006 --cluster-replicas 1</span><br></pre></td></tr></table></figure>
+<p><img src="https://qiniu.mikecorden.com/2019-10-24-15718118771955.jpg" alt></p>
+<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><p><img src="https://qiniu.mikecorden.com/2019-10-24-15718140007196.jpg" alt><br>至此Cluster就搭建完毕了。</p>
+<h2 id="查看Cluster所有节点"><a href="#查看Cluster所有节点" class="headerlink" title="查看Cluster所有节点"></a>查看Cluster所有节点</h2><p>登陆Cluster任意节点，使用<code>cluster nodes</code> ,列出集群当前已知的所有节点（node），以及这些节点的相关信息。<br><img src="https://qiniu.mikecorden.com/2019-10-24-15718133202590.jpg" alt><br>我们可以看到7001节点的slot为<code>0-5460</code>,7002为<code>5461-10922</code>，7003为<code>10923-16383</code></p>
+<h2 id="Redis-Cluster处理流程"><a href="#Redis-Cluster处理流程" class="headerlink" title="Redis Cluster处理流程"></a>Redis Cluster处理流程</h2><ul>
+<li>检查Key所在Slot是否属于当前Node？ </li>
+<li>计算crc16(key) % 16384得到Slot </li>
+<li>查询clusterState.slots负责Slot的结点指针 </li>
+<li>与myself指针比较</li>
+<li>若不属于，则响应MOVED错误重定向客户端</li>
+<li>若属于且Key存在，则直接操作，返回结果给客户端</li>
+<li>若Key不存在，检查该Slot是否迁出中？(clusterState.migrating_slots_to)</li>
+<li>若Slot迁出中，返回ASK错误重定向客户端到迁移的目的服务器上</li>
+<li>若Slot未迁出，检查Slot是否导入中？(clusterState.importing_slots_from)</li>
+<li>若Slot导入中且有ASKING标记，则直接操作</li>
+<li>否则响应MOVED错误重定向客户端</li>
+</ul>
+<h2 id="Redis-Cluster的failover"><a href="#Redis-Cluster的failover" class="headerlink" title="Redis Cluster的failover"></a>Redis Cluster的failover</h2><h3 id="检测"><a href="#检测" class="headerlink" title="检测"></a>检测</h3><p>一般地，集群中的节点会向其他节点发送PING数据包，同时也总是应答（accept）来自集群连接端口的连接请求，并对接收到的PING数据包进行回复。当一个节点向另一个节点发PING命令，但是目标节点未能在给定的时限（node timeout）内回复时，那么发送命令的节点会将目标节点标记为PFAIL（possible failure）。</p>
+<p>由于节点间的交互总是伴随着信息传播的功能，此时每次当节点对其他节点发送 PING 命令的时候，就会告知目标节点此时集群中已经被标记为PFAIL或者FAIL标记的节点。相应的，当节点接收到其他节点发来的信息时， 它会记下那些被其他节点标记为失效的节点。 这称为失效报告（failure report）。</p>
+<p>如果节点已经将某个节点标记为PFAIL，并且根据节点所收到的失效报告显式，集群中的大部分其他主节点（n/2+1）也认为那个节点进入了失效状态，那么节点会将那个PFAIL节点的状态标记为FAIL。</p>
+<p>一旦某个节点被标记为FAIL，关于这个节点已失效的信息就会被广播到整个集群，所有接收到这条信息的节点都会将失效节点标记为FAIL。</p>
+<h3 id="选举"><a href="#选举" class="headerlink" title="选举"></a>选举</h3><p>一旦某个主节点进入 FAIL 状态， 集群变为FAIL状态，同时会触发failover。failover的目的是从从节点中选举出新的主节点，使得集群恢复正常继续提供服务。<br>整个主节点选举的过程可分为申请、授权、升级、同步四个阶段： </p>
+<ol>
+<li><p>申请<br> 新的主节点由原已失效的主节点属下的所有从节点中自行选举产生，从节点的选举遵循以下条件： </p>
+<ul>
+<li>这个节点是已下线主节点的从节点； </li>
+<li>已下线主节点负责处理的哈希槽数量非空；</li>
+<li><p>主从节点之间的复制连接的断线时长有限，不超过 ( (node-timeout * slave-validity-factor) + repl-ping-slave-period ）。</p>
+<p>如果一个从节点满足了以上的所有条件，那么这个从节点将向集群中的其他主节点发送授权请求，询问它们是否允许自己升级为新的主节点。<br>从节点发送授权请求的时机会根据各从节点与主节点的数据偏差来进行排序，让偏差小的从节点优先发起授权请求。</p>
+</li>
+</ul>
+</li>
+<li><p>授权<br>其他主节点会遵信以下三点标准来进行判断： </p>
+<ul>
+<li>发送授权请求的是从节点，而且它所属的主节点处于FAIL状态 ；</li>
+<li>从节点的currentEpoch〉自身的currentEpoch，从节点的configEpoch&gt;=自身保存的该从节点的configEpoch；</li>
+<li><p>这个从节点处于正常的运行状态，没有被标记为FAIL或PFAIL状态；</p>
+<p>如果发送授权请求的从节点满足以上标准，那么主节点将同意从节点的升级要求，向从节点返回CLUSTERMSG_TYPE_FAILOVER_AUTH_ACK授权。</p>
+</li>
+</ul>
+</li>
+<li>升级<br> 一旦某个从节点在给定的时限内得到大部分主节点（n/2+1）的授权，它就会接管所有由已下线主节点负责处理的哈希槽，并主动向其他节点发送一个PONG数据包，包含以下内容： <ul>
+<li>告知其他节点自己现在是主节点了 </li>
+<li>告知其他节点自己是一个ROMOTED SLAVE，即已升级的从节点；</li>
+<li>告知其他节点都根据自己新的节点属性信息对配置进行相应的更新 </li>
+</ul>
+</li>
+<li><p>同步<br> 其他节点在接收到ROMOTED SLAVE的告知后，会根据新的主节点对配置进行相应的更新。特别地，其他从节点会将新的主节点设为自己的主节点，从而与新的主节点进行数据同步。至此，failover结束，集群恢复正常状态。</p>
+<p> 此时，如果原主节点恢复正常，但由于其的configEpoch小于其他节点保存的configEpoch（failover了产生较大的configEpoch），故其配置会被更新为最新配置，并将自己设新主节点的从节点。</p>
+<p> 另外，在failover过程中，如果原主节点恢复正常，failover中止，不会产生新的主节点。</p>
+</li>
+</ol>
+<h2 id="在线迁移"><a href="#在线迁移" class="headerlink" title="在线迁移"></a>在线迁移</h2><p>在10.211.55.19的7000～7006有一套cluster（3主3从），现在迁移到10.211.55.17上</p>
+<p>迁移前：</p>
+<table>
+<thead>
+<tr>
+<th>主</th>
+<th>从</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10.211.55.19:7001</td>
+<td>10.211.55.19:7004</td>
+</tr>
+<tr>
+<td>10.211.55.19:7002</td>
+<td>10.211.55.19:7005</td>
+</tr>
+<tr>
+<td>10.211.55.19:7003</td>
+<td>10.211.55.19:7006</td>
+</tr>
+</tbody>
+</table>
+<p>迁移后：</p>
+<table>
+<thead>
+<tr>
+<th>主</th>
+<th>从</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10.211.55.17:7001</td>
+<td>10.211.55.17:7004</td>
+</tr>
+<tr>
+<td>10.211.55.17:7002</td>
+<td>10.211.55.17:7005</td>
+</tr>
+<tr>
+<td>10.211.55.17:7003</td>
+<td>10.211.55.17:7006</td>
+</tr>
+</tbody>
+</table>
+<h2 id="迁移前状态"><a href="#迁移前状态" class="headerlink" title="迁移前状态"></a>迁移前状态</h2><p><img src="https://qiniu.mikecorden.com/2019-10-24-15718949821769.jpg" alt></p>
+<h3 id="添加主节点"><a href="#添加主节点" class="headerlink" title="添加主节点"></a>添加主节点</h3><figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./redis-cli -a 123456 --cluster add-node 10.211.55.17:7001 10.211.55.19:7001</span><br><span class="line">./redis-cli -a 123456 --cluster add-node 10.211.55.17:7002 10.211.55.19:7001</span><br><span class="line">./redis-cli -a 123456 --cluster add-node 10.211.55.17:7003 10.211.55.19:7001</span><br></pre></td></tr></table></figure>
+<p>使用<code>./redis-cli -a 123456 --cluster check 10.211.55.19:7001</code>查看状态<br><img src="https://qiniu.mikecorden.com/2019-10-24-Cluster1.png" alt><br>发现已经将3个节点加入cluster集群，但是没有分配任何slot。</p>
+<h3 id="添加新的主节点的从节点"><a href="#添加新的主节点的从节点" class="headerlink" title="添加新的主节点的从节点"></a>添加新的主节点的从节点</h3><p>我们分别为10.211.55.17上7001～7003增加从节点7004～7006<br><figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">./redis-cli -a javaee12 --cluster add-node 10.211.55.17:7004 10.211.55.19:7001 --cluster-slave --cluster-master-id b13675b85b05d4fd2c430fb78b3998ebbf777295</span><br><span class="line"></span><br><span class="line">./redis-cli -a javaee12 --cluster add-node 10.211.55.17:7005 10.211.55.19:7001 --cluster-slave --cluster-master-id 3cf5fd50477d4a35931c18073967f672308712d7</span><br><span class="line"></span><br><span class="line">./redis-cli -a javaee12 --cluster add-node 10.211.55.17:7006 10.211.55.19:7001 --cluster-slave --cluster-master-id 1c3a2b8460e0a2d8abb3d716bcafe48d9644dba3</span><br></pre></td></tr></table></figure></p>
+<p>查看现在集群状态<br><img src="https://qiniu.mikecorden.com/2019-10-24-clusteraddslave.png" alt><br>三个slave节点已经加上</p>
+<h3 id="迁移"><a href="#迁移" class="headerlink" title="迁移"></a>迁移</h3><figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#</span> 后续填的迁移slot会从现有节点随机抽取</span><br><span class="line">./redis-cli -a javaee12 --cluster reshard 10.211.55.19:7001</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#</span> 将一个节点的定量slot迁移到其他节点</span><br><span class="line">./redis-cli -a javaee12 --cluster reshard 10.211.55.19:7001 --cluster-from bd8be2765f1ea9be8abf86e55d72ce77eda59a70 --cluster-to 3cf5fd50477d4a35931c18073967f672308712d7 --cluster-slots 3641 --cluster-yes --cluster-timeout 5000 --cluster-pipeline 10</span><br></pre></td></tr></table></figure>
+<p><img src="https://qiniu.mikecorden.com/2019-10-24-15718992364176.jpg" alt></p>
+<h3 id="删除旧节点"><a href="#删除旧节点" class="headerlink" title="删除旧节点"></a>删除旧节点</h3><p><code>./redis-cli -a 123456 --cluster del-node 10.211.55.19:7003 45e24c18dfd00d7f460faeb66ddbc6506612c8de</code><br><img src="https://qiniu.mikecorden.com/2019-10-24-15719005409459.jpg" alt></p>
+<p>删除master主节点时需注意下面几点：</p>
+<ul>
+<li>如果主节点有从节点，需要将从节点转移到其他主节点或提前删除从节点。</li>
+<li>如果主节点有slot，去掉分配的slot，然后再删除主节点。</li>
+</ul>
+<h3 id="重新分配"><a href="#重新分配" class="headerlink" title="重新分配"></a>重新分配</h3><p>删除完节点后，发现slot并不平均，我们进行rebalance。<br><figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./redis-cli -a 123456 --cluster rebalance 10.211.55.17:7001</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://qiniu.mikecorden.com/2019-10-24-15719017227694.jpg" alt><br><img src="https://qiniu.mikecorden.com/2019-10-24-15719017674834.jpg" alt></p>
+
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/Redis/">Redis</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/10/22/RedisSentinelAnalysis/">
+                <span class="level-item">Redis Sentinel原理分析</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered" style="flex-shrink: 1">
+                <div>
+                    
+                        <figure class="image is-128x128 has-mb-6">
+                            <img class="is-rounded" src="https://qiniu.mikecorden.com/avatar.jpeg" alt="MkCorden">
+                        </figure>
+                    
+                    
+                    <p class="is-size-4 is-block">
+                        MkCorden
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        software engineer
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>中国,大连</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        19
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        6
+                    </p>
+                </div>
+            </div>
+            <!--<div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        9
+                    </p>
+                </div>
+            </div>-->
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://www.baidu.com" target="_blank">
+                关注我</a>
+        </div>
+        
+        
+    </div>
+</div>
+    
+        
+<div class="card widget" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                目录
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#Redis-Cluster">
+        <span class="has-mr-6">1</span>
+        <span>Redis Cluster</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#CAP">
+        <span class="has-mr-6">1.1</span>
+        <span>CAP</span>
+        </a></li><li>
+        <a class="is-flex" href="#Redis-Cluster特点">
+        <span class="has-mr-6">1.2</span>
+        <span>Redis Cluster特点</span>
+        </a></li><li>
+        <a class="is-flex" href="#Redis-Cluster优点">
+        <span class="has-mr-6">1.3</span>
+        <span>Redis Cluster优点</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#redis-cli代替redis-trib-rb">
+        <span class="has-mr-6">2</span>
+        <span>redis-cli代替redis-trib.rb</span>
+        </a></li><li>
+        <a class="is-flex" href="#Docker部署">
+        <span class="has-mr-6">3</span>
+        <span>Docker部署</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#配置文件redis-conf">
+        <span class="has-mr-6">3.1</span>
+        <span>配置文件redis.conf</span>
+        </a></li><li>
+        <a class="is-flex" href="#启动容器">
+        <span class="has-mr-6">3.2</span>
+        <span>启动容器</span>
+        </a></li><li>
+        <a class="is-flex" href="#自动生成的文件">
+        <span class="has-mr-6">3.3</span>
+        <span>自动生成的文件</span>
+        </a></li><li>
+        <a class="is-flex" href="#防火墙设置">
+        <span class="has-mr-6">3.4</span>
+        <span>防火墙设置</span>
+        </a></li><li>
+        <a class="is-flex" href="#通过redis-cli建立集群">
+        <span class="has-mr-6">3.5</span>
+        <span>通过redis-cli建立集群</span>
+        </a></li><li>
+        <a class="is-flex" href="#验证">
+        <span class="has-mr-6">3.6</span>
+        <span>验证</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#查看Cluster所有节点">
+        <span class="has-mr-6">4</span>
+        <span>查看Cluster所有节点</span>
+        </a></li><li>
+        <a class="is-flex" href="#Redis-Cluster处理流程">
+        <span class="has-mr-6">5</span>
+        <span>Redis Cluster处理流程</span>
+        </a></li><li>
+        <a class="is-flex" href="#Redis-Cluster的failover">
+        <span class="has-mr-6">6</span>
+        <span>Redis Cluster的failover</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#检测">
+        <span class="has-mr-6">6.1</span>
+        <span>检测</span>
+        </a></li><li>
+        <a class="is-flex" href="#选举">
+        <span class="has-mr-6">6.2</span>
+        <span>选举</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#在线迁移">
+        <span class="has-mr-6">7</span>
+        <span>在线迁移</span>
+        </a></li><li>
+        <a class="is-flex" href="#迁移前状态">
+        <span class="has-mr-6">8</span>
+        <span>迁移前状态</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#添加主节点">
+        <span class="has-mr-6">8.1</span>
+        <span>添加主节点</span>
+        </a></li><li>
+        <a class="is-flex" href="#添加新的主节点的从节点">
+        <span class="has-mr-6">8.2</span>
+        <span>添加新的主节点的从节点</span>
+        </a></li><li>
+        <a class="is-flex" href="#迁移">
+        <span class="has-mr-6">8.3</span>
+        <span>迁移</span>
+        </a></li><li>
+        <a class="is-flex" href="#删除旧节点">
+        <span class="has-mr-6">8.4</span>
+        <span>删除旧节点</span>
+        </a></li><li>
+        <a class="is-flex" href="#重新分配">
+        <span class="has-mr-6">8.5</span>
+        <span>重新分配</span>
+        </a></li></ul></li></ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Hexo/" style="font-size: 12px;">Hexo</a> <a href="/tags/IDEA/" style="font-size: 10px;">IDEA</a> <a href="/tags/Java/" style="font-size: 18px;">Java</a> <a href="/tags/Mac/" style="font-size: 14px;">Mac</a> <a href="/tags/Redis/" style="font-size: 20px;">Redis</a> <a href="/tags/Spring-Boot/" style="font-size: 16px;">Spring Boot</a> <a href="/tags/Spring-Cloud/" style="font-size: 14px;">Spring Cloud</a> <a href="/tags/备忘/" style="font-size: 10px;">备忘</a>
+    </div>
+</div>
+
+    
+    
+<!--        <div class="column-right-shadow is-hidden-widescreen ">-->
+        <div class="column-right-shadow  ">
+        
+            
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2019/10/24/RedisCluster/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Redis Cluster">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-10-24T07:43:23.000Z">2019-10-24</time></div>
+                    <a href="/2019/10/24/RedisCluster/" class="has-link-black-ter is-size-6">Redis Cluster</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/10/22/RedisSentinelAnalysis/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Redis Sentinel原理分析">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-10-22T14:23:00.000Z">2019-10-22</time></div>
+                    <a href="/2019/10/22/RedisSentinelAnalysis/" class="has-link-black-ter is-size-6">Redis Sentinel原理分析</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/10/19/RedisSentinel/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Redis Sentinel模式">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-10-19T07:30:23.000Z">2019-10-19</time></div>
+                    <a href="/2019/10/19/RedisSentinel/" class="has-link-black-ter is-size-6">Redis Sentinel模式</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/10/19/media/RedisSentinel-1/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Redis Sentinel模式">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-10-19T07:30:23.000Z">2019-10-19</time></div>
+                    <a href="/2019/10/19/media/RedisSentinel-1/" class="has-link-black-ter is-size-6">Redis Sentinel模式</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/10/19/media/RedisSentinel/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Redis Sentinel模式">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-10-19T07:30:23.000Z">2019-10-19</time></div>
+                    <a href="/2019/10/19/media/RedisSentinel/" class="has-link-black-ter is-size-6">Redis Sentinel模式</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+
+        
+            
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/Hexo/">
+            <span class="level-start">
+                <span class="level-item">Hexo</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Java/">
+            <span class="level-start">
+                <span class="level-item">Java</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/MacOS相关/">
+            <span class="level-start">
+                <span class="level-item">MacOS相关</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">3</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Redis/">
+            <span class="level-start">
+                <span class="level-item">Redis</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">8</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Spring-Boot/">
+            <span class="level-start">
+                <span class="level-item">Spring Boot</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Spring-Cloud/">
+            <span class="level-start">
+                <span class="level-item">Spring Cloud</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+        
+            <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/10/">
+                <span class="level-start">
+                    <span class="level-item">十月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">5</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/09/">
+                <span class="level-start">
+                    <span class="level-item">九月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/08/">
+                <span class="level-start">
+                    <span class="level-item">八月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/06/">
+                <span class="level-start">
+                    <span class="level-item">六月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">4</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/05/">
+                <span class="level-start">
+                    <span class="level-item">五月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/03/">
+                <span class="level-start">
+                    <span class="level-item">三月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">4</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/02/">
+                <span class="level-start">
+                    <span class="level-item">二月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/07/">
+                <span class="level-start">
+                    <span class="level-item">七月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    MkCorden | 个人博客
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2019 MikeCorden&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Download on GitHub" href="https://www.baidu.com">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
