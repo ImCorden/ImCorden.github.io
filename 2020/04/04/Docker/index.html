@@ -16,7 +16,7 @@
 <meta property="og:description" content="工作忙了小半年，终于有时间开始更新了！！！！ 为什么使用Docker：开箱即用，快速部署，可移植性强，环境隔离本文主要介绍Docker的基础操作">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://mikecorden.com/images/og_image.png">
-<meta property="og:updated_time" content="2020-04-04T08:13:29.517Z">
+<meta property="og:updated_time" content="2020-04-04T08:17:45.340Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker 基础">
 <meta name="twitter:description" content="工作忙了小半年，终于有时间开始更新了！！！！ 为什么使用Docker：开箱即用，快速部署，可移植性强，环境隔离本文主要介绍Docker的基础操作">
@@ -184,13 +184,13 @@ var _hmt = _hmt || [];
 <li>ENV 设置环境变量 </li>
 <li>EXPOSE 暴露容器端口 </li>
 <li>RUN 在构建镜像的时候执行，作用于镜像层面 </li>
-<li>ENTRYPOINT 在容器启动的时候执行，作用于容器层，dockerfile里有==多条时只允许执行最后一条== </li>
+<li>ENTRYPOINT 在容器启动的时候执行，作用于容器层，dockerfile里有<strong>多条时只允许执行最后一条</strong> </li>
 <li>CMD <ul>
-<li>在容器启动的时候执行，作用于容器层，dockerfile里有==多条时只允许执行最后一条== </li>
+<li>在容器启动的时候执行，作用于容器层，dockerfile里有<strong>多条时只允许执行最后一条</strong> </li>
 <li>容器启动后执行默认的命令或者参数，允许被修改 命令格式: <ul>
 <li>shell命令格式:RUN yum install -y net-tools </li>
 <li>exec命令格式:RUN [ “yum”,”install” ,”-y” ,”net-tools”] <blockquote>
-<p>==RUN作用于镜像层，在构建image时候执行。 CMD，ENTRYPOINT作用于容器层，创建容器才会执行。==</p>
+<p><strong>RUN作用于镜像层，在构建image时候执行。 CMD，ENTRYPOINT作用于容器层，创建容器才会执行。</strong></p>
 </blockquote>
 </li>
 </ul>
@@ -209,8 +209,8 @@ var _hmt = _hmt || [];
 <p> <img src="https://qiniu.mikecorden.com/mweb/15852922672077.jpg" alt></p>
 </li>
 </ol>
-<p>当CMD有参数，当启动容器时会将CMD全部内容当成ENTRYPOINT的参数执行，==如果想覆盖entrypoint，在<code>docker run</code>后带<code>--entrypoint</code>即可==，==当entrypoint在shell模式下，cmd任何参数内容都不会传入到entrypoint中==。</p>
-<p>一般该怎么使用：一般还是会用==entrypoint的中括号形式==作为docker容器启动以后的默认执行命令，里面放的是==不变的部分==，==可变部分==比如命令参数可以==使用cmd的形式提供默认版本==，也就是run里面没有任何参数时使用的默认参数。如果我们想用默认参数，就直接run，否则想用其他参数，就run 里面加参数。</p>
+<p>当CMD有参数，当启动容器时会将CMD全部内容当成ENTRYPOINT的参数执行，<strong>如果想覆盖entrypoint，在<code>docker run</code>后带<code>--entrypoint</code>即可</strong>，<strong>当entrypoint在shell模式下，cmd任何参数内容都不会传入到entrypoint中</strong>。</p>
+<p>一般该怎么使用：一般还是会用<strong>entrypoint的中括号形式</strong>作为docker容器启动以后的默认执行命令，里面放的是<strong>不变的部分</strong>，<strong>可变部分</strong>比如命令参数可以<strong>使用cmd的形式提供默认版本</strong>，也就是run里面没有任何参数时使用的默认参数。如果我们想用默认参数，就直接run，否则想用其他参数，就run 里面加参数。</p>
 <h2 id="Docker-网络模式"><a href="#Docker-网络模式" class="headerlink" title="Docker 网络模式"></a>Docker 网络模式</h2><p>Docker的网络模式源自CNM（容器网络模型）方案，CNM是开源且支持插接式连接。</p>
 <h3 id="CNM与Docker"><a href="#CNM与Docker" class="headerlink" title="CNM与Docker"></a>CNM与Docker</h3><p>CNM定义了3个基本要素：</p>
 <ol>
@@ -222,7 +222,7 @@ var _hmt = _hmt || [];
 </li>
 </ol>
 <p><img src="https://qiniu.mikecorden.com/mweb/15859760229627.jpg" alt></p>
-<p>如果一个容器要与另一个容器连接需要，则要讲两个容器连接到相同的网桥。当两个容器连接到相同的网桥时候，可以用对方容器的名字直接ping通，因为容器都注册到了指定的Docker DNS服务，所以相同网络的容器可以解析其他容器的名称。==<strong><em>但是Linux默认的Bridge网络是不支持通过Docker DNS服务进行域名解析的，自定义桥接网络可以！</em></strong>==</p>
+<p>如果一个容器要与另一个容器连接需要，则要讲两个容器连接到相同的网桥。当两个容器连接到相同的网桥时候，可以用对方容器的名字直接ping通，因为容器都注册到了指定的Docker DNS服务，所以相同网络的容器可以解析其他容器的名称。<strong><em>但是Linux默认的Bridge网络是不支持通过Docker DNS服务进行域名解析的，自定义桥接网络可以！</em></strong></p>
 <p><img src="https://qiniu.mikecorden.com/mweb/15859759682444.jpg" alt></p>
 <h3 id="默认网络模式"><a href="#默认网络模式" class="headerlink" title="默认网络模式"></a>默认网络模式</h3><ul>
 <li>bridge:桥接模式 </li>
@@ -230,7 +230,7 @@ var _hmt = _hmt || [];
 <li>none:无网络模式 </li>
 </ul>
 <p>查看网络模式命令<code>docker network ls</code></p>
-<h3 id="桥接模式Bridge（Win叫Nat）"><a href="#桥接模式Bridge（Win叫Nat）" class="headerlink" title="桥接模式Bridge（Win叫Nat）"></a>桥接模式Bridge（Win叫Nat）</h3><p>Bridge模式是Docker==默认的网络设置==，当Docker服务启动时，会在主机上创建一个名为docker0的虚拟网桥，并选择一个和宿主机不同的IP地址和子网分配给docker  0网桥。<br><img src="https://qiniu.mikecorden.com/mweb/15859764365370.jpg" alt></p>
+<h3 id="桥接模式Bridge（Win叫Nat）"><a href="#桥接模式Bridge（Win叫Nat）" class="headerlink" title="桥接模式Bridge（Win叫Nat）"></a>桥接模式Bridge（Win叫Nat）</h3><p>Bridge模式是Docker<strong>默认的网络设置</strong>，当Docker服务启动时，会在主机上创建一个名为docker0的虚拟网桥，并选择一个和宿主机不同的IP地址和子网分配给docker  0网桥。<br><img src="https://qiniu.mikecorden.com/mweb/15859764365370.jpg" alt></p>
 <p>查看桥接情况：</p>
 <figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install -y net-tools &amp;&amp; yum install -y bridge-utils</span><br><span class="line">btctl show</span><br></pre></td></tr></table></figure>
 <p><img src="https://qiniu.mikecorden.com/mweb/15859768856063.jpg" alt></p>
@@ -266,7 +266,7 @@ var _hmt = _hmt || [];
 <li>正常启动<code>docker-compose up</code></li>
 <li>指定文件启动<code>docker-compose -f docker.yml up</code></li>
 <li><p>后台启动<code>docker-compose -d up</code></p>
-<p>创建的镜像使用==<strong>项目名+资源名</strong>==称作为新的镜像名称，创建的网络和卷同样会使用项目名作为前缀。</p>
+<p>创建的镜像使用<strong>项目名+资源名</strong>称作为新的镜像名称，创建的网络和卷同样会使用项目名作为前缀。</p>
 </li>
 </ul>
 </li>
