@@ -2,20 +2,24 @@
 <html lang="zh">
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-<title>MkCorden|个人博客</title>
+<title>Docker 基础 - MkCorden|个人博客</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-    <meta name="keywords" content="Mike | mikecorden | Corden | blog | java | scala | Corden Web">
-<meta property="og:type" content="website">
-<meta property="og:title" content="MkCorden|个人博客">
-<meta property="og:url" content="https://mikecorden.com/index.html">
+    <meta name="description" content="工作忙了小半年，终于有时间开始更新了！！！！ 为什么使用Docker：开箱即用，快速部署，可移植性强，环境隔离本文主要介绍Docker的基础操作 Dockerfile基础 FROM 基于哪个镜像 MAINTAINER 注明作者 COPY 简单复制，不会解压复制的压缩文件 ADD  复制，会解压要复制的压缩文件 ADD 可以复制并执行语句，例如：ADD init.sql .   WORKDIR 工作">
+<meta name="keywords" content="Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker 基础">
+<meta property="og:url" content="https://mikecorden.com/2020/04/04/Docker/index.html">
 <meta property="og:site_name" content="MkCorden|个人博客">
+<meta property="og:description" content="工作忙了小半年，终于有时间开始更新了！！！！ 为什么使用Docker：开箱即用，快速部署，可移植性强，环境隔离本文主要介绍Docker的基础操作 Dockerfile基础 FROM 基于哪个镜像 MAINTAINER 注明作者 COPY 简单复制，不会解压复制的压缩文件 ADD  复制，会解压要复制的压缩文件 ADD 可以复制并执行语句，例如：ADD init.sql .   WORKDIR 工作">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://mikecorden.com/images/og_image.png">
+<meta property="og:updated_time" content="2020-04-04T08:04:14.250Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MkCorden|个人博客">
+<meta name="twitter:title" content="Docker 基础">
+<meta name="twitter:description" content="工作忙了小半年，终于有时间开始更新了！！！！ 为什么使用Docker：开箱即用，快速部署，可移植性强，环境隔离本文主要介绍Docker的基础操作 Dockerfile基础 FROM 基于哪个镜像 MAINTAINER 注明作者 COPY 简单复制，不会解压复制的压缩文件 ADD  复制，会解压要复制的压缩文件 ADD 可以复制并执行语句，例如：ADD init.sql .   WORKDIR 工作">
 <meta name="twitter:image" content="https://mikecorden.com/images/og_image.png">
 
 
@@ -94,7 +98,7 @@ var _hmt = _hmt || [];
 
 <link rel="stylesheet" href="/css/style.css">
 </head>
-<body class="is-3-column">
+<body class="is-2-column">
     <nav class="navbar navbar-main">
     <div class="container">
         <div class="navbar-brand is-flex-center">
@@ -119,6 +123,10 @@ var _hmt = _hmt || [];
             <div class="navbar-end">
                 
                 
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
                 
                 <a class="navbar-item search" title="搜索" href="javascript:;">
                     <i class="fas fa-search"></i>
@@ -132,8 +140,7 @@ var _hmt = _hmt || [];
     <section class="section">
         <div class="container">
             <div class="columns">
-                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main">
-    <div class="card">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main"><div class="card">
     
     <div class="card-content article ">
         
@@ -158,7 +165,7 @@ var _hmt = _hmt || [];
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2020/04/04/Docker/">Docker 基础</a>
+                Docker 基础
             
         </h1>
         <div class="content">
@@ -347,60 +354,15 @@ var _hmt = _hmt || [];
 <figure class="highlight json hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123; </span><br><span class="line">    <span class="hljs-attr">"insecure-registries"</span>:[<span class="hljs-string">"http://&lt;host:port&gt;"</span>] </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
         </div>
         
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-10-24T07:43:23.000Z">2019-10-24</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    27 分钟 读完 (大约 4114 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2019/10/24/RedisCluster/">Redis Cluster</a>
-            
-        </h1>
-        <div class="content">
-            <p>从Redis 3.0以后官方推出了Cluster的集群方案，大大增强了Redis水平扩展能力。在此之前已经有第三方Redis集群解决方案，如Twemproxy（Twitter开源），Codis等。Cluster与这些区别是并非使用Porxy模式来连接集群节点，而是使用无中心节点的模式来组建集群，在Cluster之前，只有Sentienl保证了Redis的高可用性。</p>
-<p>Cluster实现了多个节点的数据共享，即使部分节点失效或者无法进行通讯，Cluster仍可以继续处理请求。每个主节点至少有一个从节点，当主机节点宕机等不可用情况，从节点会提升为主节点，并自动开始提供服务。</p>
-<p>Cluster的节点分配是通过哈希槽实现的（Hash Slot），所有key值都属于16384个哈希槽其中一个，Cluster模式中，每一个主节点都会分配处理一定范围的slot。<br></p>
-        </div>
-        
-        
-        <div class="level is-mobile">
+        <div class="level is-size-7 is-uppercase">
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/10/24/RedisCluster/#more">阅读更多</a>
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/Docker/">Docker</a>
                 </div>
             </div>
         </div>
+        
         
         
     </div>
@@ -410,459 +372,28 @@ var _hmt = _hmt || [];
 
 
 
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-10-22T14:23:00.000Z">2019-10-22</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    23 分钟 读完 (大约 3394 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2019/10/22/RedisSentinelAnalysis/">Redis Sentinel原理分析</a>
-            
-        </h1>
-        <div class="content">
-            <h2 id="主备切换过程"><a href="#主备切换过程" class="headerlink" title="主备切换过程"></a>主备切换过程</h2><p><img src="https://qiniu.mikecorden.com/2019-10-22-15717212061811.jpg" alt><br>上一篇文章我们了解了如何部署Sentinel模式Redis集群，本文在上一篇的基础上，结合log来分析Sentinel集群模式的一些原理。<br></p>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/10/22/RedisSentinelAnalysis/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-10-19T07:30:23.000Z">2019-10-19</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    19 分钟 读完 (大约 2851 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2019/10/19/RedisSentinel/">Redis Sentinel模式</a>
-            
-        </h1>
-        <div class="content">
-            <p>在我们了解了Redis单机版本的Redis操作，使用后。在实际的生产环境中，不可能使用单机版Redis，通常最简单的就是主从模式，有点类似mysql的主从库，而当主Redis倒了，我们需要手动通过<code>slaveof no one</code>,<code>slaveof new host</code>进行切换,已经不是监控麻烦的事了，所以Redis官方提供了Sentinel出现了，解决了这一问题。</p>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Redis-Sentinel是Redis官方推荐的高可用性(HA)解决方案，当用Redis做Master-slave的高可用方案时，假如master宕机了，Redis本身(包括它的很多客户端)都没有实现自动进行主备切换，而Redis-sentinel本身也是一个独立运行的进程，它能监控多个master-slave集群，发现master宕机后能进行自动切换。Sentinel由一个或多个Sentinel 实例 组成的Sentinel 系统可以监视任意多个主服务器，以及这些主服务器属下的所有从服务器，并在被监视的主服务器进入下线状态时，自动将下线主服务器属下的某个从服务器升级为新的主服务器。<br><img src="https://qiniu.mikecorden.com/2019-10-17-%E6%88%AA%E5%B1%8F2019-10-09%E4%B8%8B%E5%8D%882.42.32.png" alt="Sentinel模式"><br></p>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/10/19/RedisSentinel/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-09-11T01:00:00.000Z">2019-09-11</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Spring-Boot/">Spring Boot</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    9 分钟 读完 (大约 1375 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2019/09/11/DruidMybatisMybatisPlusVersion/">要了命的版本Druid/Mybatis/MybatisPlus</a>
-            
-        </h1>
-        <div class="content">
-            <h2 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h2><p>Druid是alibaba的一款开源数据库连接池。被称为是专门为监控而生的数据库连接池配置，他可以监控sql的执行情况，以及性能，然后根据结果来优化sql或者做性能调优。</p>
-<p>之前自己写项目时候没有用到Druid的监控功能。昨天试了试监控功能就出现了如下错误：<code>java.sql.SQLFeatureNotSupportedException</code>,主要是使用了<code>LocalDateTime</code>类型对应了数据库的<code>timestamp</code>类型字段引发的问题，java8新的时间类都会引发如下问题。<br></p>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/09/11/DruidMybatisMybatisPlusVersion/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-08-13T05:54:00.000Z">2019-08-13</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Java/">Java</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    23 分钟 读完 (大约 3396 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2019/08/13/MabtisPlus/">MyBatis-Plus</a>
-            
-        </h1>
-        <div class="content">
-            <p>在整理MyBatis时候，Mybatis的逆向工程的xml实在懒得写，找代码生成器的时候听说了MyBatis-Plus，看了看官方文档，代码生成器深得我心，对照文档学习了下，感觉效率比MyBatis提升不少。</p>
-<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><a href="https://mybatis.plus" target="_blank" rel="noopener">MyBatis-Plus</a>（以下简称MP）是一个<a href="http://www.mybatis.org/mybatis-3/" target="_blank" rel="noopener">MyBatis</a>的增强工具，在MyBatis的基础上只做增强不做改变，为简化开发、提高效率而生。<br></p>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/08/13/MabtisPlus/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-06-17T14:30:23.000Z">2019-06-17</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    9 分钟 读完 (大约 1322 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2019/06/17/RedisSpringMiddle/">Spring整合Redis进阶</a>
-            
-        </h1>
-        <div class="content">
-            <p>了解过Spring整合Redis后，我们已经可以使用Redis进行缓存操作了。但在某些业务环境下，我们需要向Redis加载一些既有数据，例如：学员答题竞赛的分数排行，首页的一些缓存。这些数据我们需要在项目初始化阶段加载完毕。在项目运行阶段，我们也可以利用SpringCache进行接口的数据缓存，这样可以改善因为并发导致的缓慢（数据库IO），可以成倍的提升QPS。在分布式环境下的项目，我们也可以利用Redis进行集群环境的session共享。</p>
-<p>本文依次介绍了，项目初始化阶段加载Redis数据的方式，SpringCache与Redis的整合，以及SpringSession与Redis的整合。<br></p>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/06/17/RedisSpringMiddle/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-06-16T11:20:41.000Z">2019-06-16</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    1 小时 读完 (大约 7082 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2019/06/16/RedisSpringJunior/">Redis(单机)安装部署，与SpringBoot整合(有redis配置详解)</a>
-            
-        </h1>
-        <div class="content">
-            <p>了解了Redis相关基础知识后，本文介绍了如何在Linux中用Docker快速搭建Redis服务（单机），并与SpringBoot进行整合。使用RedisTemplate进行redis的相关操作。<br></p>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/06/16/RedisSpringJunior/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-06-15T12:33:01.000Z">2019-06-15</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    15 分钟 读完 (大约 2263 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2019/06/15/RedisFirstEncounter/">初遇Redis</a>
-            
-        </h1>
-        <div class="content">
-            <h2 id="什么是Redis"><a href="#什么是Redis" class="headerlink" title="什么是Redis"></a>什么是Redis</h2><h3 id="讲到redis不得不讲NoSql"><a href="#讲到redis不得不讲NoSql" class="headerlink" title="讲到redis不得不讲NoSql"></a>讲到redis不得不讲NoSql</h3><ul>
-<li>NoSQL是不同于传统的关系数据库的数据库管理系统的统称。其两者最重要的区别是NoSQL不使用SQL作为查询语言。 NoSQL数据存储可以不需要固定的表格模式。NoSQL是基于键值对的，可以想象成表中的主键和值的对应关系。</li>
-<li>NoSQL：redis、memcached、mongodb、guava（loadingCache）</li>
-</ul>
-<h3 id="Redis是什么"><a href="#Redis是什么" class="headerlink" title="Redis是什么"></a>Redis是什么</h3><p>Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统，它可以用作数据库、缓存和消息中间件。 它支持多 种类型的数据结构，如 字符串（strings）、散列（hashes）、 列表（lists）、 集合（sets）、 有序集合（sorted sets）等。<br></p>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/06/15/RedisFirstEncounter/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-06-05T02:32:40.000Z">2019-06-05</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/MacOS相关/">MacOS相关</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    1 分钟 读完 (大约 164 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2019/06/05/LaunchpadIcon/">Launchpad图标修改</a>
-            
-        </h1>
-        <div class="content">
-            <p>最近买了34寸曲面显示器，Launchpad的图标显示比较别扭，所以调整显示的行数与列数。<br></p>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/06/05/LaunchpadIcon/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-
-    
 <div class="card card-transparent">
-    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-        <div class="pagination-previous is-invisible is-hidden-mobile">
-            <a class="is-flex-grow has-text-black-ter" href="/page/0/">上一页</a>
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/10/24/RedisCluster/">
+                <span class="level-item">Redis Cluster</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
         </div>
-        <div class="pagination-next">
-            <a class="is-flex-grow has-text-black-ter" href="/page/2/">下一页</a>
-        </div>
-        <ul class="pagination-list is-hidden-mobile">
-            
-            <li><a class="pagination-link is-current" href="/">1</a></li>
-            
-            <li><a class="pagination-link has-text-black-ter" href="/page/2/">2</a></li>
-            
-        </ul>
-    </nav>
+        
+    </div>
 </div>
+
+
 </div>
                 
 
 
 
 
-<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left is-sticky">
     
         
 <div class="card widget">
@@ -936,6 +467,125 @@ var _hmt = _hmt || [];
 </div>
     
         
+<div class="card widget" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                目录
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#Dockerfile基础">
+        <span class="has-mr-6">1</span>
+        <span>Dockerfile基础</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#例子：解释cmd-entrypoint">
+        <span class="has-mr-6">1.1</span>
+        <span>例子：解释cmd / entrypoint</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#Docker-网络模式">
+        <span class="has-mr-6">2</span>
+        <span>Docker 网络模式</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#CNM与Docker">
+        <span class="has-mr-6">2.1</span>
+        <span>CNM与Docker</span>
+        </a></li><li>
+        <a class="is-flex" href="#默认网络模式">
+        <span class="has-mr-6">2.2</span>
+        <span>默认网络模式</span>
+        </a></li><li>
+        <a class="is-flex" href="#桥接模式Bridge（Win叫Nat）">
+        <span class="has-mr-6">2.3</span>
+        <span>桥接模式Bridge（Win叫Nat）</span>
+        </a></li><li>
+        <a class="is-flex" href="#主机模式Host">
+        <span class="has-mr-6">2.4</span>
+        <span>主机模式Host</span>
+        </a></li><li>
+        <a class="is-flex" href="#无网络模式None">
+        <span class="has-mr-6">2.5</span>
+        <span>无网络模式None</span>
+        </a></li><li>
+        <a class="is-flex" href="#容器之间的单向双向连接">
+        <span class="has-mr-6">2.6</span>
+        <span>容器之间的单向双向连接</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#Docker-Compose">
+        <span class="has-mr-6">3</span>
+        <span>Docker-Compose</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#安装">
+        <span class="has-mr-6">3.1</span>
+        <span>安装</span>
+        </a></li><li>
+        <a class="is-flex" href="#简单的docker-compose-yml文件">
+        <span class="has-mr-6">3.2</span>
+        <span>简单的docker-compose.yml文件</span>
+        </a></li><li>
+        <a class="is-flex" href="#docker-compose-yml-解析">
+        <span class="has-mr-6">3.3</span>
+        <span>docker-compose.yml 解析</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#version">
+        <span class="has-mr-6">3.3.1</span>
+        <span>version</span>
+        </a></li><li>
+        <a class="is-flex" href="#services">
+        <span class="has-mr-6">3.3.2</span>
+        <span>services</span>
+        </a></li><li>
+        <a class="is-flex" href="#networks、volumes">
+        <span class="has-mr-6">3.3.3</span>
+        <span>networks、volumes</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#部署应用">
+        <span class="has-mr-6">3.4</span>
+        <span>部署应用</span>
+        </a></li><li>
+        <a class="is-flex" href="#其他例子">
+        <span class="has-mr-6">3.5</span>
+        <span>其他例子</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#载入-导出镜像-容器">
+        <span class="has-mr-6">4</span>
+        <span>载入/导出镜像/容器</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#镜像">
+        <span class="has-mr-6">4.1</span>
+        <span>镜像</span>
+        </a></li><li>
+        <a class="is-flex" href="#容器">
+        <span class="has-mr-6">4.2</span>
+        <span>容器</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#其他常用命令-操作">
+        <span class="has-mr-6">5</span>
+        <span>其他常用命令/操作</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#镜像-1">
+        <span class="has-mr-6">5.1</span>
+        <span>镜像</span>
+        </a></li><li>
+        <a class="is-flex" href="#容器-1">
+        <span class="has-mr-6">5.2</span>
+        <span>容器</span>
+        </a></li><li>
+        <a class="is-flex" href="#文件复制">
+        <span class="has-mr-6">5.3</span>
+        <span>文件复制</span>
+        </a></li><li>
+        <a class="is-flex" href="#定义自己的阿里云镜像加速">
+        <span class="has-mr-6">5.4</span>
+        <span>定义自己的阿里云镜像加速</span>
+        </a></li><li>
+        <a class="is-flex" href="#私有镜像仓库Https改Http">
+        <span class="has-mr-6">5.5</span>
+        <span>私有镜像仓库Https改Http</span>
+        </a></li></ul></li></ul>
+        </div>
+    </div>
+</div>
+
     
         
 <div class="card widget">
@@ -950,7 +600,7 @@ var _hmt = _hmt || [];
     
     
 <!--        <div class="column-right-shadow is-hidden-widescreen ">-->
-        <div class="column-right-shadow is-hidden-widescreen ">
+        <div class="column-right-shadow  ">
         
             
 <div class="card widget">
@@ -1241,305 +891,6 @@ var _hmt = _hmt || [];
 </div>
         
         </div>
-    
-</div>
-
-                
-                
-
-
-
-
-<div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
-    
-        
-<div class="card widget">
-    <div class="card-content">
-        <h3 class="menu-label">
-            最新文章
-        </h3>
-        
-        <article class="media">
-            
-            <a href="/2020/04/04/Docker/" class="media-left" style="display: none">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Docker 基础">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-04T08:03:40.000Z">2020-04-04</time></div>
-                    <a href="/2020/04/04/Docker/" class="has-link-black-ter is-size-6">Docker 基础</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Docker/">Docker</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/10/24/RedisCluster/" class="media-left" style="display: none">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Redis Cluster">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-10-24T07:43:23.000Z">2019-10-24</time></div>
-                    <a href="/2019/10/24/RedisCluster/" class="has-link-black-ter is-size-6">Redis Cluster</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/10/22/RedisSentinelAnalysis/" class="media-left" style="display: none">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Redis Sentinel原理分析">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-10-22T14:23:00.000Z">2019-10-22</time></div>
-                    <a href="/2019/10/22/RedisSentinelAnalysis/" class="has-link-black-ter is-size-6">Redis Sentinel原理分析</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/10/19/RedisSentinel/" class="media-left" style="display: none">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Redis Sentinel模式">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-10-19T07:30:23.000Z">2019-10-19</time></div>
-                    <a href="/2019/10/19/RedisSentinel/" class="has-link-black-ter is-size-6">Redis Sentinel模式</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/09/11/DruidMybatisMybatisPlusVersion/" class="media-left" style="display: none">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="要了命的版本Druid/Mybatis/MybatisPlus">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-11T01:00:00.000Z">2019-09-11</time></div>
-                    <a href="/2019/09/11/DruidMybatisMybatisPlusVersion/" class="has-link-black-ter is-size-6">要了命的版本Druid/Mybatis/MybatisPlus</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Spring-Boot/">Spring Boot</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-    </div>
-</div>
-
-    
-        
-<div class="card widget">
-    <div class="card-content">
-        <div class="menu">
-            <h3 class="menu-label">
-                分类
-            </h3>
-            <ul class="menu-list">
-            <li>
-        <a class="level is-marginless" href="/categories/Docker/">
-            <span class="level-start">
-                <span class="level-item">Docker</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">1</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/Hexo/">
-            <span class="level-start">
-                <span class="level-item">Hexo</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">2</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/Java/">
-            <span class="level-start">
-                <span class="level-item">Java</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">2</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/MacOS相关/">
-            <span class="level-start">
-                <span class="level-item">MacOS相关</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">4</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/Redis/">
-            <span class="level-start">
-                <span class="level-item">Redis</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">6</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/Spring-Boot/">
-            <span class="level-start">
-                <span class="level-item">Spring Boot</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">2</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/Spring-Cloud/">
-            <span class="level-start">
-                <span class="level-item">Spring Cloud</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">2</span>
-            </span>
-        </a></li>
-            </ul>
-        </div>
-    </div>
-</div>
-    
-        <div class="card widget">
-    <div class="card-content">
-        <div class="menu">
-        <h3 class="menu-label">
-            归档
-        </h3>
-        <ul class="menu-list">
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2020/04/">
-                <span class="level-start">
-                    <span class="level-item">四月 2020</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">1</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2019/10/">
-                <span class="level-start">
-                    <span class="level-item">十月 2019</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">3</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2019/09/">
-                <span class="level-start">
-                    <span class="level-item">九月 2019</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">1</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2019/08/">
-                <span class="level-start">
-                    <span class="level-item">八月 2019</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">1</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2019/06/">
-                <span class="level-start">
-                    <span class="level-item">六月 2019</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">5</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2019/05/">
-                <span class="level-start">
-                    <span class="level-item">五月 2019</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">1</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2019/03/">
-                <span class="level-start">
-                    <span class="level-item">三月 2019</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">4</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2019/02/">
-                <span class="level-start">
-                    <span class="level-item">二月 2019</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">2</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2018/07/">
-                <span class="level-start">
-                    <span class="level-item">七月 2018</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">1</span>
-                </span>
-            </a>
-        </li>
-        
-        </ul>
-        </div>
-    </div>
-</div>
-    
     
 </div>
 

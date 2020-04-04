@@ -149,6 +149,232 @@ var _hmt = _hmt || [];
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-04-04T08:03:40.000Z">2020-04-04</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Docker/">Docker</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    17 分钟 读完 (大约 2618 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/04/04/Docker/">Docker 基础</a>
+            
+        </h1>
+        <div class="content">
+            <p>工作忙了小半年，终于有时间开始更新了！！！！</p>
+<p>为什么使用Docker：开箱即用，快速部署，可移植性强，环境隔离<br>本文主要介绍Docker的基础操作</p>
+<h2 id="Dockerfile基础"><a href="#Dockerfile基础" class="headerlink" title="Dockerfile基础"></a>Dockerfile基础</h2><ol>
+<li>FROM 基于哪个镜像</li>
+<li>MAINTAINER 注明作者</li>
+<li>COPY 简单复制，不会解压复制的压缩文件</li>
+<li>ADD <ol>
+<li>复制，会解压要复制的压缩文件</li>
+<li>ADD 可以复制并执行语句，例如：<code>ADD init.sql .</code></li>
+</ol>
+</li>
+<li>WORKDIR 工作路径（进入容器默认文件夹），不存在会直接新建</li>
+<li>ENV 设置环境变量 </li>
+<li>EXPOSE 暴露容器端口 </li>
+<li>RUN 在构建镜像的时候执行，作用于镜像层面 </li>
+<li>ENTRYPOINT 在容器启动的时候执行，作用于容器层，dockerfile里有==多条时只允许执行最后一条== </li>
+<li>CMD <ul>
+<li>在容器启动的时候执行，作用于容器层，dockerfile里有==多条时只允许执行最后一条== </li>
+<li>容器启动后执行默认的命令或者参数，允许被修改 命令格式: <ul>
+<li>shell命令格式:RUN yum install -y net-tools </li>
+<li>exec命令格式:RUN [ “yum”,”install” ,”-y” ,”net-tools”] <blockquote>
+<p>==RUN作用于镜像层，在构建image时候执行。 CMD，ENTRYPOINT作用于容器层，创建容器才会执行。==</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="例子：解释cmd-entrypoint"><a href="#例子：解释cmd-entrypoint" class="headerlink" title="例子：解释cmd / entrypoint"></a>例子：解释cmd / entrypoint</h3><ol>
+<li><p>dockerfile</p>
+<p> <img src="https://qiniu.mikecorden.com/mweb/15852922968381.jpg" alt></p>
+</li>
+<li><p>无传入参数</p>
+<p> <img src="https://qiniu.mikecorden.com/mweb/15852922095754.jpg" alt></p>
+</li>
+<li><p>有传入参数</p>
+<p> <img src="https://qiniu.mikecorden.com/mweb/15852922672077.jpg" alt></p>
+</li>
+</ol>
+<p>当CMD有参数，当启动容器时会将CMD全部内容当成ENTRYPOINT的参数执行，==如果想覆盖entrypoint，在<code>docker run</code>后带<code>--entrypoint</code>即可==，==当entrypoint在shell模式下，cmd任何参数内容都不会传入到entrypoint中==。</p>
+<p>一般该怎么使用：一般还是会用==entrypoint的中括号形式==作为docker容器启动以后的默认执行命令，里面放的是==不变的部分==，==可变部分==比如命令参数可以==使用cmd的形式提供默认版本==，也就是run里面没有任何参数时使用的默认参数。如果我们想用默认参数，就直接run，否则想用其他参数，就run 里面加参数。</p>
+<h2 id="Docker-网络模式"><a href="#Docker-网络模式" class="headerlink" title="Docker 网络模式"></a>Docker 网络模式</h2><p>Docker的网络模式源自CNM（容器网络模型）方案，CNM是开源且支持插接式连接。</p>
+<h3 id="CNM与Docker"><a href="#CNM与Docker" class="headerlink" title="CNM与Docker"></a>CNM与Docker</h3><p>CNM定义了3个基本要素：</p>
+<ol>
+<li><p><strong>沙盒</strong><br> 一个独立的网络栈。包括以太网接口，端口，路由表以及DNS配置。 </p>
+</li>
+<li><p><strong>终端</strong><br> 虚拟网接口。就像普通网络接口一样，终端主要职责是负责创建连接，在CNM中，终端负责将沙盒连接到网络。</p>
+</li>
+<li><p><strong>网络</strong><br> 是801.1d网桥（类似交换机）的软件实现。因此网络就是需要交换的终端的集合，并且终端之间相互独立。</p>
+</li>
+</ol>
+<p><img src="https://qiniu.mikecorden.com/mweb/15859760229627.jpg" alt></p>
+<p>如果一个容器要与另一个容器连接需要，则要讲两个容器连接到相同的网桥。当两个容器连接到相同的网桥时候，可以用对方容器的名字直接ping通，因为容器都注册到了指定的Docker DNS服务，所以相同网络的容器可以解析其他容器的名称。==<strong><em>但是Linux默认的Bridge网络是不支持通过Docker DNS服务进行域名解析的，自定义桥接网络可以！</em></strong>==</p>
+<p><img src="https://qiniu.mikecorden.com/mweb/15859759682444.jpg" alt></p>
+<h3 id="默认网络模式"><a href="#默认网络模式" class="headerlink" title="默认网络模式"></a>默认网络模式</h3><ul>
+<li>bridge:桥接模式 </li>
+<li>host:主机模式 </li>
+<li>none:无网络模式 </li>
+</ul>
+<p>查看网络模式命令<code>docker network ls</code></p>
+<h3 id="桥接模式Bridge（Win叫Nat）"><a href="#桥接模式Bridge（Win叫Nat）" class="headerlink" title="桥接模式Bridge（Win叫Nat）"></a>桥接模式Bridge（Win叫Nat）</h3><p>Bridge模式是Docker==默认的网络设置==，当Docker服务启动时，会在主机上创建一个名为docker0的虚拟网桥，并选择一个和宿主机不同的IP地址和子网分配给docker  0网桥。<br><img src="https://qiniu.mikecorden.com/mweb/15859764365370.jpg" alt></p>
+<p>查看桥接情况：</p>
+<figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install -y net-tools &amp;&amp; yum install -y bridge-utils</span><br><span class="line">btctl show</span><br></pre></td></tr></table></figure>
+<p><img src="https://qiniu.mikecorden.com/mweb/15859768856063.jpg" alt></p>
+<h3 id="主机模式Host"><a href="#主机模式Host" class="headerlink" title="主机模式Host"></a>主机模式Host</h3><p>该模式下，容器不会有自己的Ip地址，而是使用宿主机的IP地址和端口。<br>查看宿主机端口占用情况：</p>
+<figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install -y net-tools &amp;&amp; yum install -y bridge-utils</span><br><span class="line">netstat -tunlp|grep &lt;port&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="https://qiniu.mikecorden.com/mweb/15859779972685.jpg" alt></p>
+<h3 id="无网络模式None"><a href="#无网络模式None" class="headerlink" title="无网络模式None"></a>无网络模式None</h3><p>无法连接外网</p>
+<h3 id="容器之间的单向双向连接"><a href="#容器之间的单向双向连接" class="headerlink" title="容器之间的单向双向连接"></a>容器之间的单向双向连接</h3><ol>
+<li>单向连接<br> 在容器启东命令添加<code>--link &lt;container name&gt;</code></li>
+<li>双向连接<br> 需要双向连接的容器添加到自定义的网桥上即可。<br> 创建网桥方式<code>docker network create -d bridge &lt;bridge name&gt;</code></li>
+</ol>
+<h2 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker-Compose"></a>Docker-Compose</h2><p>Docker-Compose的前身是Fig，知道Docker收购了Orchard公司后，将Fig更名为Docker-Compose。命令行工具也从<code>fig</code>更为<code>docker-compose</code>，并自此成为了绑定在Docker引擎之上的外部工具。内部实现上，Fig会解析YAML文件，并通过Docker API进行应用的部署和管理。</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum install -y epel-release &amp;&amp; yum install -y python-pip</span><br><span class="line">pip install -i https://pypi.tuna.tsinghua.edu.cn/simple docker-compose==1.24.1</span><br><span class="line">docker-compose version</span><br></pre></td></tr></table></figure>
+<p><img src="https://qiniu.mikecorden.com/mweb/15859826660146.jpg" alt></p>
+<h3 id="简单的docker-compose-yml文件"><a href="#简单的docker-compose-yml文件" class="headerlink" title="简单的docker-compose.yml文件"></a>简单的docker-compose.yml文件</h3><figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">version:</span> <span class="hljs-string">"3"</span></span><br><span class="line"><span class="hljs-attr">services:</span></span><br><span class="line"><span class="hljs-attr">  web-fe:</span></span><br><span class="line"><span class="hljs-attr">    build:</span> <span class="hljs-string">.</span></span><br><span class="line"><span class="hljs-attr">    command:</span> <span class="hljs-string">python</span> <span class="hljs-string">app.py</span></span><br><span class="line"><span class="hljs-attr">    ports:</span></span><br><span class="line"><span class="hljs-attr">    - target:</span> <span class="hljs-number">5000</span></span><br><span class="line"><span class="hljs-attr">      published:</span> <span class="hljs-number">8080</span></span><br><span class="line"><span class="hljs-attr">    networks:</span></span><br><span class="line"><span class="hljs-bullet">      -</span> <span class="hljs-string">counter-net</span></span><br><span class="line"><span class="hljs-attr">    volumes:</span></span><br><span class="line"><span class="hljs-attr">    - type:</span> <span class="hljs-string">volume</span></span><br><span class="line"><span class="hljs-attr">      source:</span> <span class="hljs-string">counter-vol</span></span><br><span class="line"><span class="hljs-attr">      target:</span> <span class="hljs-string">/code</span></span><br><span class="line"><span class="hljs-attr">  redis:</span></span><br><span class="line"><span class="hljs-attr">    image:</span> <span class="hljs-string">"redis:5.0.5"</span></span><br><span class="line"><span class="hljs-attr">    networks:</span></span><br><span class="line"><span class="hljs-attr">      counter-net:</span></span><br><span class="line"><span class="hljs-attr">networks:</span></span><br><span class="line"><span class="hljs-attr">  counter-net:</span></span><br><span class="line"><span class="hljs-attr">volumes:</span></span><br><span class="line"><span class="hljs-attr">  counter-vol:</span></span><br></pre></td></tr></table></figure>
+<h3 id="docker-compose-yml-解析"><a href="#docker-compose-yml-解析" class="headerlink" title="docker-compose.yml 解析"></a>docker-compose.yml 解析</h3><p>包含四个一级key：<code>version</code>，<code>services</code>，<code>networks</code>，<code>volumes</code></p>
+<h4 id="version"><a href="#version" class="headerlink" title="version"></a>version</h4><p>version是必须指定的，总是位于文件的第一行，定义了Compose文件格式（主要是API）的版本，而非定义了Docker Compose或Docker引擎的版本号，==<strong>建议使用最新版本</strong>==。</p>
+<h4 id="services"><a href="#services" class="headerlink" title="services"></a>services</h4><p>在service里/定义了两个服务：<code>web-fe</code>，<code>redis</code>。</p>
+<ul>
+<li>build:指定Docker基于当前目录下的Dockerfile创建一个新的镜像。</li>
+<li>command:指定在Docker容器中执行app.py脚本，所以容器内必须有app.py文件，这一点在Dockerfile进行设置。此command指令可以覆盖Dockerfile中指定的CMD指令。</li>
+<li>ports:讲容器内5000端口映射到宿主机8080端口。</li>
+<li>networks:链接到已存在的Docker网络中，或者在networks中定义的key值名字的网络。</li>
+<li>volumes:将counter-vol卷挂载到容器内/code上，同样counter-vol可以使存在的或者是CIA面volumes中定义的。</li>
+<li>images:使用该值得镜像构建，本地没有会从DockerHub进行下载。</li>
+</ul>
+<h4 id="networks、volumes"><a href="#networks、volumes" class="headerlink" title="networks、volumes"></a>networks、volumes</h4><p>定义新的网络或者卷，网络默认是Bridge模式，当网络模式为Overlay模式时，允许独立的容器连接（attachable）到该网络</p>
+<figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">networks:</span></span><br><span class="line"><span class="hljs-attr">  over-net:</span></span><br><span class="line"><span class="hljs-attr">    driver:</span> <span class="hljs-string">over-lay</span></span><br><span class="line"><span class="hljs-attr">    attachable:</span> <span class="hljs-literal">true</span></span><br></pre></td></tr></table></figure>
+<h3 id="部署应用"><a href="#部署应用" class="headerlink" title="部署应用"></a>部署应用</h3><p>进入到docker-compose.yml和Dockerfile的文件夹。</p>
+<ul>
+<li><p>启动创建</p>
+<ul>
+<li>正常启动<code>docker-compose up</code></li>
+<li>指定文件启动<code>docker-compose -f docker.yml up</code></li>
+<li><p>后台启动<code>docker-compose -d up</code></p>
+<p>创建的镜像使用==<strong>项目名+资源名</strong>==称作为新的镜像名称，创建的网络和卷同样会使用项目名作为前缀。</p>
+</li>
+</ul>
+</li>
+<li><p>停止/终止</p>
+<ul>
+<li>终止<code>docker-compose down</code>，不会删除启动时创建或拉取的镜像，创建的卷（因为数据的长期持久化）</li>
+<li>停止<code>dokcer-compose stop</code></li>
+</ul>
+</li>
+<li><p>其他命令</p>
+<ul>
+<li>列出各个容器内运行的进程<code>docker-compose top</code></li>
+<li>重启<code>docker-compose restart</code></li>
+<li>列出Compose应用中的各个容器<code>docker-compose ps</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="其他例子"><a href="#其他例子" class="headerlink" title="其他例子"></a>其他例子</h3><figure class="highlight yaml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">version:</span> <span class="hljs-string">"3"</span></span><br><span class="line"><span class="hljs-attr">services:</span></span><br><span class="line"><span class="hljs-attr">  db:</span></span><br><span class="line">    <span class="hljs-comment"># docker run -itd mysql:5.7</span></span><br><span class="line"><span class="hljs-attr">    image:</span> <span class="hljs-attr">mysql:5.7</span></span><br><span class="line"><span class="hljs-attr">    volumes:</span></span><br><span class="line">      <span class="hljs-comment"># 采用的是卷标的形式挂载(注意:- db_data是参数，可以变，自定义，必须与下面对应)</span></span><br><span class="line"><span class="hljs-attr">      - db_data:</span><span class="hljs-string">/var/lib/mysql</span></span><br><span class="line">    <span class="hljs-comment"># 自动重启，保证服务在线</span></span><br><span class="line"><span class="hljs-attr">    restart:</span> <span class="hljs-string">always</span></span><br><span class="line">    <span class="hljs-comment"># 指定环境变量 docker -itd -e</span></span><br><span class="line"><span class="hljs-attr">    environment:</span></span><br><span class="line"><span class="hljs-attr">      MYSQL_ROOT_PASSWORD:</span> <span class="hljs-string">somewordpress</span></span><br><span class="line"><span class="hljs-attr">      MYSQL_DATABASE:</span> <span class="hljs-string">wordpress</span></span><br><span class="line"><span class="hljs-attr">      MYSQL_USER:</span> <span class="hljs-string">wordpress</span></span><br><span class="line"><span class="hljs-attr">      MYSQL_PASSWORD:</span> <span class="hljs-string">wordpress</span></span><br><span class="line"><span class="hljs-attr">  wordpress:</span></span><br><span class="line"><span class="hljs-attr">    depends_on:</span></span><br><span class="line">      <span class="hljs-comment"># - db 是参数，合起来的意思是只有当上面的mysql数据库安装成功后，这个wordpress才可以被安装，</span></span><br><span class="line">      <span class="hljs-comment"># 还有一个功能，就是docker --link 将上面的mysql数据库，与这个wordpress应用连起来</span></span><br><span class="line"><span class="hljs-bullet">      -</span> <span class="hljs-string">db</span></span><br><span class="line"><span class="hljs-attr">    image:</span> <span class="hljs-attr">wordpress:latest</span></span><br><span class="line"><span class="hljs-attr">    ports:</span></span><br><span class="line"><span class="hljs-bullet">      -</span> <span class="hljs-string">"8000:80"</span></span><br><span class="line"><span class="hljs-attr">    restart:</span> <span class="hljs-string">always</span></span><br><span class="line"><span class="hljs-attr">    environment:</span></span><br><span class="line"><span class="hljs-attr">       WORDPRESS_DB_HOST:</span> <span class="hljs-attr">db:3306</span></span><br><span class="line"><span class="hljs-attr">       WORDPRESS_DB_USER:</span> <span class="hljs-string">wordpress</span></span><br><span class="line"><span class="hljs-attr">       WORDPRESS_DB_PASSWORD:</span> <span class="hljs-string">wordpress</span></span><br><span class="line"><span class="hljs-attr">       WORDPRESS_DB_NAME:</span> <span class="hljs-string">wordpress</span></span><br><span class="line"><span class="hljs-attr">    volumes:</span></span><br><span class="line"><span class="hljs-attr">      db_data:</span> <span class="hljs-string">&#123;&#125;</span></span><br></pre></td></tr></table></figure>
+<h2 id="载入-导出镜像-容器"><a href="#载入-导出镜像-容器" class="headerlink" title="载入/导出镜像/容器"></a>载入/导出镜像/容器</h2><h3 id="镜像"><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h3><ol>
+<li><p>导出</p>
+ <figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker save cd3ed0dfff7e -o /home/mysql.tar</span><br><span class="line">docker save mysql:5.7 &gt; /home/mysql.tar</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>载入</p>
+ <figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker load -i mysql.tar</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h3><ol>
+<li><p>导出</p>
+ <figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker export 974b919e1fdd -o /home/mysql-export.tar</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>载入</p>
+ <figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker import mysql-export.tar</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<blockquote>
+<p>docker容器导入会生成一个新的镜像，这个镜像的镜像ID跟生成打包容器的镜像ID不同</p>
+</blockquote>
+<h2 id="其他常用命令-操作"><a href="#其他常用命令-操作" class="headerlink" title="其他常用命令/操作"></a>其他常用命令/操作</h2><h3 id="镜像-1"><a href="#镜像-1" class="headerlink" title="镜像"></a>镜像</h3><ul>
+<li>查看本地镜像:docker images  </li>
+<li>搜索镜像:docker search centos  </li>
+<li>搜索镜像并过滤是官方的: docker search –filter “is-official=true” centos </li>
+<li>搜索镜像并过滤大于多少颗星星的:docker search –filter stars=10 centos </li>
+<li>下载centos7镜像:docker pull centos:7 </li>
+<li>修改本地镜像名字(小写):docker tag centos:7 mycentos:1 </li>
+<li>本地镜像的删除:docker rmi centos:7 </li>
+</ul>
+<h3 id="容器-1"><a href="#容器-1" class="headerlink" title="容器"></a>容器</h3><ul>
+<li>构建容器:<code>docker run -itd --name=mycentos centos:7</code> <ul>
+<li>-i :表示以交互模式运行容器(让容器的标准输入保持打开) </li>
+<li>-d:表示后台运行容器，并返回容器ID </li>
+<li>-t:为容器重新分配一个伪输入终端 </li>
+<li>–name:为容器指定名称 查看本地所有的容器:<code>docker ps -a</code> </li>
+</ul>
+</li>
+<li>查看本地正在运行的容器:<code>docker ps</code>  </li>
+<li>停止容器:<code>docker stop CONTAINER_ID / CONTAINER_NAME</code> </li>
+<li>一次性停止所有容器:<code>docker stop $(docker ps -a -q)</code>  </li>
+<li>启动容器:<code>docker start CONTAINER_ID / CONTAINER_NAME</code> </li>
+<li>重启容器:<code>docker restart CONTAINER_ID / CONTAINER_NAME</code> </li>
+<li>删除容器:<code>docker rm CONTAINER_ID / CONTAINER_NAME</code> </li>
+<li>强制删除容器:<code>docker rmi -f CONTAINER_ID / CONTAINER_NAME</code> </li>
+<li>查看容器详细信息:<code>docker inspect CONTAINER_ID / CONTAINER_NAME</code> </li>
+<li>进入容器:<code>docker exec -it 0ad5d7b2c3a4 /bin/bash</code> </li>
+</ul>
+<h3 id="文件复制"><a href="#文件复制" class="headerlink" title="文件复制"></a>文件复制</h3><ul>
+<li><p>从宿主机复制到容器:<code>docker cp 宿主机本地路径 容器名字/ID:容器路径</code> </p>
+<ul>
+<li><code>docker cp /root/123.txt mycentos:/home/</code> </li>
+</ul>
+</li>
+<li><p>从容器复制到宿主机:<code>docker cp 容器名字/ID:容器路径 宿主机本地路径</code> </p>
+<ul>
+<li><code>docker cp mycentos:/home/456.txt /root</code> </li>
+</ul>
+</li>
+<li><p>宿主机文件夹挂载到容器里:<code>docker run -itd -v 宿主机路径:容器路径 镜像ID</code> </p>
+<ul>
+<li><code>docker run -itd -v /root/xdclass/:/home centos:7</code> </li>
+</ul>
+</li>
+</ul>
+<h3 id="定义自己的阿里云镜像加速"><a href="#定义自己的阿里云镜像加速" class="headerlink" title="定义自己的阿里云镜像加速"></a>定义自己的阿里云镜像加速</h3><p>到自己阿里云找到对应的地址（每人不一样）修改<code>/etc/docker/daemon.json</code>,重启Docker服务。</p>
+<figure class="highlight json hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="hljs-attr">"registry-mirrors"</span>: [<span class="hljs-string">"&lt;地址&gt;"</span>] </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="私有镜像仓库Https改Http"><a href="#私有镜像仓库Https改Http" class="headerlink" title="私有镜像仓库Https改Http"></a>私有镜像仓库Https改Http</h3><p>修改<code>/etc/docker/daemon.json</code>,重启Docker服务。</p>
+<figure class="highlight json hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123; </span><br><span class="line">    <span class="hljs-attr">"insecure-registries"</span>:[<span class="hljs-string">"http://&lt;host:port&gt;"</span>] </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    <div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-06-16T11:20:41.000Z">2019-06-16</time>
                 
                 <div class="level-item">
@@ -240,7 +466,7 @@ var _hmt = _hmt || [];
                         文章
                     </p>
                     <p class="title has-text-weight-normal">
-                        17
+                        19
                     </p>
                 </div>
             </div>
@@ -250,7 +476,7 @@ var _hmt = _hmt || [];
                         分类
                     </p>
                     <p class="title has-text-weight-normal">
-                        6
+                        7
                     </p>
                 </div>
             </div>
@@ -282,7 +508,7 @@ var _hmt = _hmt || [];
         <h3 class="menu-label">
             标签云
         </h3>
-        <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Hexo/" style="font-size: 12px;">Hexo</a> <a href="/tags/IDEA/" style="font-size: 10px;">IDEA</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Mac/" style="font-size: 14px;">Mac</a> <a href="/tags/Redis/" style="font-size: 18px;">Redis</a> <a href="/tags/Spring-Boot/" style="font-size: 16px;">Spring Boot</a> <a href="/tags/Spring-Cloud/" style="font-size: 14px;">Spring Cloud</a> <a href="/tags/备忘/" style="font-size: 10px;">备忘</a>
+        <a href="/tags/Docker/" style="font-size: 12px;">Docker</a> <a href="/tags/Hexo/" style="font-size: 12px;">Hexo</a> <a href="/tags/IDEA/" style="font-size: 10px;">IDEA</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Mac/" style="font-size: 16px;">Mac</a> <a href="/tags/Redis/" style="font-size: 18px;">Redis</a> <a href="/tags/Spring-Boot/" style="font-size: 16px;">Spring Boot</a> <a href="/tags/Spring-Cloud/" style="font-size: 14px;">Spring Cloud</a> <a href="/tags/备忘/" style="font-size: 10px;">备忘</a>
     </div>
 </div>
 
@@ -297,6 +523,25 @@ var _hmt = _hmt || [];
         <h3 class="menu-label">
             最新文章
         </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/04/04/Docker/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Docker 基础">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-04T08:03:40.000Z">2020-04-04</time></div>
+                    <a href="/2020/04/04/Docker/" class="has-link-black-ter is-size-6">Docker 基础</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Docker/">Docker</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -374,25 +619,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2019/08/13/MabtisPlus/" class="media-left" style="display: none">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="MyBatis-Plus">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-13T05:54:00.000Z">2019-08-13</time></div>
-                    <a href="/2019/08/13/MabtisPlus/" class="has-link-black-ter is-size-6">MyBatis-Plus</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Java/">Java</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -406,6 +632,14 @@ var _hmt = _hmt || [];
             </h3>
             <ul class="menu-list">
             <li>
+        <a class="level is-marginless" href="/categories/Docker/">
+            <span class="level-start">
+                <span class="level-item">Docker</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
         <a class="level is-marginless" href="/categories/Hexo/">
             <span class="level-start">
                 <span class="level-item">Hexo</span>
@@ -427,7 +661,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">MacOS相关</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">3</span>
+                <span class="level-item tag">4</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/Redis/">
@@ -468,6 +702,17 @@ var _hmt = _hmt || [];
         <ul class="menu-list">
         
         <li>
+            <a class="level is-marginless" href="/archives/2020/04/">
+                <span class="level-start">
+                    <span class="level-item">四月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
             <a class="level is-marginless" href="/archives/2019/10/">
                 <span class="level-start">
                     <span class="level-item">十月 2019</span>
@@ -506,7 +751,7 @@ var _hmt = _hmt || [];
                     <span class="level-item">六月 2019</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">4</span>
+                    <span class="level-item tag">5</span>
                 </span>
             </a>
         </li>
@@ -581,6 +826,25 @@ var _hmt = _hmt || [];
         
         <article class="media">
             
+            <a href="/2020/04/04/Docker/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Docker 基础">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-04T08:03:40.000Z">2020-04-04</time></div>
+                    <a href="/2020/04/04/Docker/" class="has-link-black-ter is-size-6">Docker 基础</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Docker/">Docker</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2019/10/24/RedisCluster/" class="media-left" style="display: none">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="Redis Cluster">
@@ -655,25 +919,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2019/08/13/MabtisPlus/" class="media-left" style="display: none">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="MyBatis-Plus">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-13T05:54:00.000Z">2019-08-13</time></div>
-                    <a href="/2019/08/13/MabtisPlus/" class="has-link-black-ter is-size-6">MyBatis-Plus</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Java/">Java</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -687,6 +932,14 @@ var _hmt = _hmt || [];
             </h3>
             <ul class="menu-list">
             <li>
+        <a class="level is-marginless" href="/categories/Docker/">
+            <span class="level-start">
+                <span class="level-item">Docker</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
         <a class="level is-marginless" href="/categories/Hexo/">
             <span class="level-start">
                 <span class="level-item">Hexo</span>
@@ -708,7 +961,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">MacOS相关</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">3</span>
+                <span class="level-item tag">4</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/Redis/">
@@ -749,6 +1002,17 @@ var _hmt = _hmt || [];
         <ul class="menu-list">
         
         <li>
+            <a class="level is-marginless" href="/archives/2020/04/">
+                <span class="level-start">
+                    <span class="level-item">四月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
             <a class="level is-marginless" href="/archives/2019/10/">
                 <span class="level-start">
                     <span class="level-item">十月 2019</span>
@@ -787,7 +1051,7 @@ var _hmt = _hmt || [];
                     <span class="level-item">六月 2019</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">4</span>
+                    <span class="level-item tag">5</span>
                 </span>
             </a>
         </li>
@@ -858,7 +1122,7 @@ var _hmt = _hmt || [];
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2019 MikeCorden&nbsp;
+                &copy; 2020 MikeCorden&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
                 
                 </p>

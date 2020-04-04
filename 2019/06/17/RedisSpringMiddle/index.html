@@ -16,7 +16,7 @@
 <meta property="og:description" content="了解过Spring整合Redis后，我们已经可以使用Redis进行缓存操作了。但在某些业务环境下，我们需要向Redis加载一些既有数据，例如：学员答题竞赛的分数排行，首页的一些缓存。这些数据我们需要在项目初始化阶段加载完毕。在项目运行阶段，我们也可以利用SpringCache进行接口的数据缓存，这样可以改善因为并发导致的缓慢（数据库IO），可以成倍的提升QPS。在分布式环境下的项目，我们也可以利用">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://mikecorden.com/images/og_image.png">
-<meta property="og:updated_time" content="2019-10-03T00:58:32.918Z">
+<meta property="og:updated_time" content="2019-10-03T00:58:32.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring整合Redis进阶">
 <meta name="twitter:description" content="了解过Spring整合Redis后，我们已经可以使用Redis进行缓存操作了。但在某些业务环境下，我们需要向Redis加载一些既有数据，例如：学员答题竞赛的分数排行，首页的一些缓存。这些数据我们需要在项目初始化阶段加载完毕。在项目运行阶段，我们也可以利用SpringCache进行接口的数据缓存，这样可以改善因为并发导致的缓慢（数据库IO），可以成倍的提升QPS。在分布式环境下的项目，我们也可以利用">
@@ -293,7 +293,7 @@ var _hmt = _hmt || [];
                         文章
                     </p>
                     <p class="title has-text-weight-normal">
-                        17
+                        19
                     </p>
                 </div>
             </div>
@@ -303,7 +303,7 @@ var _hmt = _hmt || [];
                         分类
                     </p>
                     <p class="title has-text-weight-normal">
-                        6
+                        7
                     </p>
                 </div>
             </div>
@@ -414,7 +414,7 @@ var _hmt = _hmt || [];
         <h3 class="menu-label">
             标签云
         </h3>
-        <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Hexo/" style="font-size: 12px;">Hexo</a> <a href="/tags/IDEA/" style="font-size: 10px;">IDEA</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Mac/" style="font-size: 14px;">Mac</a> <a href="/tags/Redis/" style="font-size: 18px;">Redis</a> <a href="/tags/Spring-Boot/" style="font-size: 16px;">Spring Boot</a> <a href="/tags/Spring-Cloud/" style="font-size: 14px;">Spring Cloud</a> <a href="/tags/备忘/" style="font-size: 10px;">备忘</a>
+        <a href="/tags/Docker/" style="font-size: 12px;">Docker</a> <a href="/tags/Hexo/" style="font-size: 12px;">Hexo</a> <a href="/tags/IDEA/" style="font-size: 10px;">IDEA</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Mac/" style="font-size: 16px;">Mac</a> <a href="/tags/Redis/" style="font-size: 18px;">Redis</a> <a href="/tags/Spring-Boot/" style="font-size: 16px;">Spring Boot</a> <a href="/tags/Spring-Cloud/" style="font-size: 14px;">Spring Cloud</a> <a href="/tags/备忘/" style="font-size: 10px;">备忘</a>
     </div>
 </div>
 
@@ -429,6 +429,25 @@ var _hmt = _hmt || [];
         <h3 class="menu-label">
             最新文章
         </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/04/04/Docker/" class="media-left" style="display: none">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Docker 基础">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-04T08:03:40.000Z">2020-04-04</time></div>
+                    <a href="/2020/04/04/Docker/" class="has-link-black-ter is-size-6">Docker 基础</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Docker/">Docker</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -506,25 +525,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2019/08/13/MabtisPlus/" class="media-left" style="display: none">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="MyBatis-Plus">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-08-13T05:54:00.000Z">2019-08-13</time></div>
-                    <a href="/2019/08/13/MabtisPlus/" class="has-link-black-ter is-size-6">MyBatis-Plus</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Java/">Java</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -538,6 +538,14 @@ var _hmt = _hmt || [];
             </h3>
             <ul class="menu-list">
             <li>
+        <a class="level is-marginless" href="/categories/Docker/">
+            <span class="level-start">
+                <span class="level-item">Docker</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
         <a class="level is-marginless" href="/categories/Hexo/">
             <span class="level-start">
                 <span class="level-item">Hexo</span>
@@ -559,7 +567,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">MacOS相关</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">3</span>
+                <span class="level-item tag">4</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/Redis/">
@@ -600,6 +608,17 @@ var _hmt = _hmt || [];
         <ul class="menu-list">
         
         <li>
+            <a class="level is-marginless" href="/archives/2020/04/">
+                <span class="level-start">
+                    <span class="level-item">四月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
             <a class="level is-marginless" href="/archives/2019/10/">
                 <span class="level-start">
                     <span class="level-item">十月 2019</span>
@@ -638,7 +657,7 @@ var _hmt = _hmt || [];
                     <span class="level-item">六月 2019</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">4</span>
+                    <span class="level-item tag">5</span>
                 </span>
             </a>
         </li>
@@ -710,7 +729,7 @@ var _hmt = _hmt || [];
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2019 MikeCorden&nbsp;
+                &copy; 2020 MikeCorden&nbsp;
                 Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
                 
                 </p>
