@@ -16,7 +16,7 @@
 <meta property="og:description" content="工作忙了小半年，终于有时间开始更新了！！！！ 为什么使用Docker：开箱即用，快速部署，可移植性强，环境隔离本文主要介绍Docker的基础操作">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://mikecorden.com/images/og_image.png">
-<meta property="og:updated_time" content="2020-04-04T08:17:45.340Z">
+<meta property="og:updated_time" content="2020-04-04T08:20:32.382Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker 基础">
 <meta name="twitter:description" content="工作忙了小半年，终于有时间开始更新了！！！！ 为什么使用Docker：开箱即用，快速部署，可移植性强，环境隔离本文主要介绍Docker的基础操作">
@@ -305,13 +305,13 @@ var _hmt = _hmt || [];
 <p>docker容器导入会生成一个新的镜像，这个镜像的镜像ID跟生成打包容器的镜像ID不同</p>
 </blockquote>
 <h2 id="其他常用命令-操作"><a href="#其他常用命令-操作" class="headerlink" title="其他常用命令/操作"></a>其他常用命令/操作</h2><h3 id="镜像-1"><a href="#镜像-1" class="headerlink" title="镜像"></a>镜像</h3><ul>
-<li>查看本地镜像:docker images  </li>
-<li>搜索镜像:docker search centos  </li>
-<li>搜索镜像并过滤是官方的: docker search –filter “is-official=true” centos </li>
-<li>搜索镜像并过滤大于多少颗星星的:docker search –filter stars=10 centos </li>
-<li>下载centos7镜像:docker pull centos:7 </li>
-<li>修改本地镜像名字(小写):docker tag centos:7 mycentos:1 </li>
-<li>本地镜像的删除:docker rmi centos:7 </li>
+<li>查看本地镜像:<code>docker images</code>  </li>
+<li>搜索镜像:<code>docker search centos</code>  </li>
+<li>搜索镜像并过滤是官方的: <code>docker search --filter &quot;is-official=true&quot; centos</code> </li>
+<li>搜索镜像并过滤大于多少颗星星的:<code>docker search --filter stars=10 centos</code> </li>
+<li>下载centos7镜像:<code>docker pull centos:7</code> </li>
+<li>修改本地镜像名字(小写):<code>docker tag centos:7 mycentos:1</code></li>
+<li>本地镜像的删除:<code>docker rmi centos:7</code> </li>
 </ul>
 <h3 id="容器-1"><a href="#容器-1" class="headerlink" title="容器"></a>容器</h3><ul>
 <li>构建容器:<code>docker run -itd --name=mycentos centos:7</code> <ul>
