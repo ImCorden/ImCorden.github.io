@@ -16,7 +16,7 @@
 <meta property="og:description" content="工作忙了小半年，终于有时间开始更新了！！！！ 为什么使用Docker：开箱即用，快速部署，可移植性强，环境隔离本文主要介绍Docker的基础操作">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://mikecorden.com/images/og_image.png">
-<meta property="og:updated_time" content="2020-04-04T08:20:32.382Z">
+<meta property="og:updated_time" content="2020-04-07T01:04:14.490Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker 基础">
 <meta name="twitter:description" content="工作忙了小半年，终于有时间开始更新了！！！！ 为什么使用Docker：开箱即用，快速部署，可移植性强，环境隔离本文主要介绍Docker的基础操作">
@@ -318,9 +318,10 @@ var _hmt = _hmt || [];
 <li>-i :表示以交互模式运行容器(让容器的标准输入保持打开) </li>
 <li>-d:表示后台运行容器，并返回容器ID </li>
 <li>-t:为容器重新分配一个伪输入终端 </li>
-<li>–name:为容器指定名称 查看本地所有的容器:<code>docker ps -a</code> </li>
+<li>–name:为容器指定名称 </li>
 </ul>
 </li>
+<li>查看本地所有的容器:<code>docker ps -a</code> </li>
 <li>查看本地正在运行的容器:<code>docker ps</code>  </li>
 <li>停止容器:<code>docker stop CONTAINER_ID / CONTAINER_NAME</code> </li>
 <li>一次性停止所有容器:<code>docker stop $(docker ps -a -q)</code>  </li>
