@@ -2,20 +2,24 @@
 <html lang="zh">
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-<title>分类: Spring Boot - MkCorden|个人博客</title>
+<title>软件架构设计原则 - MkCorden|个人博客</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-    <meta name="keywords" content="Mike | mikecorden | Corden | blog | java | scala | Corden Web">
-<meta property="og:type" content="website">
-<meta property="og:title" content="MkCorden|个人博客">
-<meta property="og:url" content="https://mikecorden.com/categories/Spring-Boot/index.html">
+    <meta name="description" content="做开发有一段时间了，没有系统的看过Java的软件设计原则。在实际的工作中，已经对通过合理的软件设架构计来提升编码工作的幸福感深有体会。希望通过本文学习，对Java的软件设计原则有个大体的认识。后续也会结合Spring的源码来证明，软件设计原则的重要性。">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="软件架构设计原则">
+<meta property="og:url" content="https://mikecorden.com/2020/04/07/SoftwarePrincipe/index.html">
 <meta property="og:site_name" content="MkCorden|个人博客">
+<meta property="og:description" content="做开发有一段时间了，没有系统的看过Java的软件设计原则。在实际的工作中，已经对通过合理的软件设架构计来提升编码工作的幸福感深有体会。希望通过本文学习，对Java的软件设计原则有个大体的认识。后续也会结合Spring的源码来证明，软件设计原则的重要性。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://mikecorden.com/images/og_image.png">
+<meta property="og:updated_time" content="2020-04-07T01:01:11.296Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MkCorden|个人博客">
+<meta name="twitter:title" content="软件架构设计原则">
+<meta name="twitter:description" content="做开发有一段时间了，没有系统的看过Java的软件设计原则。在实际的工作中，已经对通过合理的软件设架构计来提升编码工作的幸福感深有体会。希望通过本文学习，对Java的软件设计原则有个大体的认识。后续也会结合Spring的源码来证明，软件设计原则的重要性。">
 <meta name="twitter:image" content="https://mikecorden.com/images/og_image.png">
 
 
@@ -94,7 +98,7 @@ var _hmt = _hmt || [];
 
 <link rel="stylesheet" href="/css/style.css">
 </head>
-<body class="is-3-column">
+<body class="is-2-column">
     <nav class="navbar navbar-main">
     <div class="container">
         <div class="navbar-brand is-flex-center">
@@ -119,6 +123,10 @@ var _hmt = _hmt || [];
             <div class="navbar-end">
                 
                 
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
                 
                 <a class="navbar-item search" title="搜索" href="javascript:;">
                     <i class="fas fa-search"></i>
@@ -132,35 +140,23 @@ var _hmt = _hmt || [];
     <section class="section">
         <div class="container">
             <div class="columns">
-                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main"><div class="card">
-    <div class="card-content">
-        <nav class="breadcrumb" aria-label="breadcrumbs">
-        <ul>
-            <li><a href="/categories">分类</a></li>
-            
-            <li class="is-active"><a href="#" aria-current="page">Spring Boot</a></li>
-        </ul>
-        </nav>
-    </div>
-</div>
-
-    <div class="card">
+                <div class="column is-8-tablet is-9-desktop is-9-widescreen has-order-2 column-main"><div class="card">
     
     <div class="card-content article ">
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-09-11T01:00:00.000Z">2019-09-11</time>
+                <time class="level-item has-text-grey" datetime="2020-04-07T00:45:00.000Z">2020-04-07</time>
                 
                 <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Spring-Boot/">Spring Boot</a>
+                <a class="has-link-grey -link" href="/categories/Java/">Java</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/Java/Spring-读书笔记/">Spring 读书笔记</a>
                 </div>
                 
                 
                 <span class="level-item has-text-grey">
                     
                     
-                    9 分钟 读完 (大约 1375 个字)
+                    12 分钟 读完 (大约 1729 个字)
                 </span>
                 
                 
@@ -169,77 +165,70 @@ var _hmt = _hmt || [];
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2019/09/11/DruidMybatisMybatisPlusVersion/">要了命的版本Druid/Mybatis/MybatisPlus</a>
+                软件架构设计原则
             
         </h1>
         <div class="content">
-            <h2 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h2><p>Druid是alibaba的一款开源数据库连接池。被称为是专门为监控而生的数据库连接池配置，他可以监控sql的执行情况，以及性能，然后根据结果来优化sql或者做性能调优。</p>
-<p>之前自己写项目时候没有用到Druid的监控功能。昨天试了试监控功能就出现了如下错误：<code>java.sql.SQLFeatureNotSupportedException</code>,主要是使用了<code>LocalDateTime</code>类型对应了数据库的<code>timestamp</code>类型字段引发的问题，java8新的时间类都会引发如下问题。<br></p>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/09/11/DruidMybatisMybatisPlusVersion/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-03-03T12:50:23.000Z">2019-03-03</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Spring-Boot/">Spring Boot</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    17 分钟 读完 (大约 2622 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2019/03/03/FreeMarker/">FreeMarker指令常用标签及语法</a>
-            
-        </h1>
-        <div class="content">
-            <p>复习FreeMarker，结合网上资料整理了一下常用的指令与语法，以备日后查看。</p>
-<p>FreeMarker Template Language(FTL),文件一般保存为<code>xxx.ftl</code>。严格依赖MVC模式，不依赖Servlet容器（不占用JVM内存），使用内建函数。</p>
+            <p>做开发有一段时间了，没有系统的看过Java的软件设计原则。在实际的工作中，已经对通过合理的软件设架构计来提升编码工作的幸福感深有体会。希望通过本文学习，对Java的软件设计原则有个大体的认识。后续也会结合Spring的源码来证明，软件设计原则的重要性。</p>
+<a id="more"></a>
+<h2 id="开闭原则"><a href="#开闭原则" class="headerlink" title="开闭原则"></a>开闭原则</h2><p>OCP(Open-Closed Principle)原则，指一个实体（类，模块，函数）应该<strong>对扩展开放，对修改关闭</strong>。即用抽象构建框架（接口），用实现扩展细节（实现类）。</p>
+<h2 id="依赖倒置原则"><a href="#依赖倒置原则" class="headerlink" title="依赖倒置原则"></a>依赖倒置原则</h2><p>DIP(Dependence Inversion Principle)原则，指在设计代码结构，高层模块不应该依赖底层模块，二者都应该依赖其抽象。抽象不依赖细节，细节依赖抽象。作用在于，减少类之间的耦合，利于维护。</p>
+<p>“依赖注入”就是这种方式，通过引用接口（抽象），这时调用方对实现类是无依赖的，调用方依赖的是抽象接口，实现类也依赖于接口（毕竟是实现类么）。这样，通过依赖注入调用方与实现类就解耦了（依赖注入不同的实现类，调用方调用同一接口可以有不同的实现）。</p>
+<h2 id="单一职责原则"><a href="#单一职责原则" class="headerlink" title="单一职责原则"></a>单一职责原则</h2><p>SRP(Simple Responsibility Principle)原则：简单来说就是<strong>一个类、接口、方法只负责一项职责</strong>。因为需求变更改，导致修改其中一个职责逻辑代码，有可能导致另一个职责的功能发生故障。</p>
+<h2 id="接口隔离原则"><a href="#接口隔离原则" class="headerlink" title="接口隔离原则"></a>接口隔离原则</h2><p>ISP(Interface Segregation Principle)原则，指多个专门的接口，而不适用单一的总接口，客户端（实现类）不应该依赖其不需要的接口（或者说实现类有不需要实现的方法）。</p>
+<ul>
+<li>一个类对应一个类的依赖应该建立在最小的接口之上。</li>
+<li>建议单一接口，不要建立庞大臃肿的接口（在之前不相干接口追加方法）。</li>
+<li>尽量细化接口，接口中的方法尽量少（不是越少越好，适量即可）。<br>接口隔离原则符合<strong>高内聚，低耦合</strong>的设计思想，使类有更好的可读性，可扩展性，维护也很方便。对抽象和业务模型的深入理解才能更好地遵循此原则。</li>
+</ul>
+<h2 id="迪米特原则（最少知道原则）"><a href="#迪米特原则（最少知道原则）" class="headerlink" title="迪米特原则（最少知道原则）"></a>迪米特原则（最少知道原则）</h2><p>LoD(Law of Demeter)又叫最少知道原则（LKP,Least Knowledge Principle）：一个对象对于其他对象保持最少的了解。尽量降低类之间的耦合度。强调：</p>
+<p>只与朋友（<strong>成员变量，方法的入参、出参中的类</strong>）交流，不同陌生人（<strong>例如方法体内部的类</strong>）说话</p>
+<p>举个例子，不要将service层代码逻辑写到controller层，controller只需要调用对应接口即可，所有的内部实现，在controller是无感知的。</p>
+<h2 id="里氏原则"><a href="#里氏原则" class="headerlink" title="里氏原则"></a>里氏原则</h2><p>LSP(Liskov Substitution Principle),指每个T1类型的对象O1，都有T2类型的对象O2，使得T1定义的所有程序P中所有对象O1都替换成O2，程序P的行为没有发生变化，那么类型T2是类型T1的子类。</p>
+<p>简单来说：一个程序，适用于父类对象，一定适用于其子类。所有引用父类的地方必须能透明地使用其子类的对象，子类对象能在程序逻辑不变的前提下替换父类对象。或者说：子类可以扩展父类的功能，但不能改变父类原有的功能。</p>
+<ul>
+<li>子类可以实现父类的抽象方法，但不能覆盖父类的非抽象方法。</li>
+<li>子类可以增加自己特有的方法。</li>
+<li>当子类的方法重载父类的方法时，方法的前置条件（方法的入参）要比父类方法的入参更宽松。</li>
+<li>当子类方法实现父类方法时（重写，重载，实现），方法的后置条件（方法的输出、返回值）要比父类更严格或一样。</li>
+</ul>
+<p>优势：</p>
+<ul>
+<li>约束继承泛滥，是开闭原则的一种体现。</li>
+<li>加强程序的健壮性，同时变更时也可以做到非常好的兼容性，提高程序的可维护性，扩展性，降低需求变更时引入的风险。</li>
+</ul>
+<p>LSP是继承复用的基石，只有当子类可以替换掉父类，功能不受到影响时，父类才能真正的被复用，子类也能在父类的基础上增加新行为。LSP是对“开闭原则”的补充，实现“开闭原则”的关键步骤就是抽象化。而父类与子类的继承关系就是抽象化的具体实现，所以LSP是对实现抽象化的具体步骤的规范。</p>
+<h2 id="合成复用原则"><a href="#合成复用原则" class="headerlink" title="合成复用原则"></a>合成复用原则</h2><p>CRP(Composite Reuse Principle)原则，指尽量先使用组合或者聚合等关联关系来实现，其次才考虑使用继承关系来实现。</p>
+<ul>
+<li>组合/聚合：黑箱复用，无法获取到类以外的对象的实现细节的。</li>
+<li>继承：白箱复用，把所有的实现细节暴露给子类。<ul>
+<li>缺点：<ul>
+<li>破坏类的封装性。父类实现细节暴露给子类，即父类对子类的透明的，所以叫白箱复用。</li>
+<li>父类子类耦合度高。父类任何改变都直接影响子类。</li>
+<li>限制了复用的灵活性。继承是静态的，编译时就会定义完毕，运行不能发生变化。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <blockquote>
-<p>注意：使用freemaker，要求所有标签必须闭合，否则会导致freemaker无法解析。<br>freemaker注释:&lt;#– 注释内容 –&gt;格式部分,不会输出<br></p></blockquote>
+<p>对象之间的继承    —转变—&gt;    引用为成员变量</p>
+</blockquote>
+<p>即：将已有对象纳入新对象中，使之成为新对象的一部分，新对象可以调用已有对象的功能。</p>
+<p><a href="https://blog.csdn.net/u012361379/article/details/88605867" target="_blank" rel="noopener">参考例子</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>实际开发中，并不要求所有代码都要遵循设计原则，我们要考虑人力，时间，成本，质量，不能刻意追求完美，但是要在适当的场景遵循设计原则。这是一种平衡取舍，可以帮助我们设计出更加优雅的代码结构。</p>
+
         </div>
         
-        
-        <div class="level is-mobile">
+        <div class="level is-size-7 is-uppercase">
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/03/03/FreeMarker/#more">阅读更多</a>
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/Java/">Java</a>
                 </div>
             </div>
         </div>
+        
         
         
     </div>
@@ -249,7 +238,19 @@ var _hmt = _hmt || [];
 
 
 
-
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/04/04/Docker/">
+                <span class="level-item">Docker 基础</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
 
 
 </div>
@@ -258,7 +259,7 @@ var _hmt = _hmt || [];
 
 
 
-<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+<div class="column is-4-tablet is-3-desktop is-3-widescreen  has-order-1 column-left is-sticky">
     
         
 <div class="card widget">
@@ -332,6 +333,49 @@ var _hmt = _hmt || [];
 </div>
     
         
+<div class="card widget" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                目录
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#开闭原则">
+        <span class="has-mr-6">1</span>
+        <span>开闭原则</span>
+        </a></li><li>
+        <a class="is-flex" href="#依赖倒置原则">
+        <span class="has-mr-6">2</span>
+        <span>依赖倒置原则</span>
+        </a></li><li>
+        <a class="is-flex" href="#单一职责原则">
+        <span class="has-mr-6">3</span>
+        <span>单一职责原则</span>
+        </a></li><li>
+        <a class="is-flex" href="#接口隔离原则">
+        <span class="has-mr-6">4</span>
+        <span>接口隔离原则</span>
+        </a></li><li>
+        <a class="is-flex" href="#迪米特原则（最少知道原则）">
+        <span class="has-mr-6">5</span>
+        <span>迪米特原则（最少知道原则）</span>
+        </a></li><li>
+        <a class="is-flex" href="#里氏原则">
+        <span class="has-mr-6">6</span>
+        <span>里氏原则</span>
+        </a></li><li>
+        <a class="is-flex" href="#合成复用原则">
+        <span class="has-mr-6">7</span>
+        <span>合成复用原则</span>
+        </a></li><li>
+        <a class="is-flex" href="#总结">
+        <span class="has-mr-6">8</span>
+        <span>总结</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
     
         
 <div class="card widget">
@@ -346,7 +390,7 @@ var _hmt = _hmt || [];
     
     
 <!--        <div class="column-right-shadow is-hidden-widescreen ">-->
-        <div class="column-right-shadow is-hidden-widescreen ">
+        <div class="column-right-shadow  ">
         
             
 <div class="card widget">
@@ -645,313 +689,6 @@ var _hmt = _hmt || [];
 </div>
         
         </div>
-    
-</div>
-
-                
-                
-
-
-
-
-<div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
-    
-        
-<div class="card widget">
-    <div class="card-content">
-        <h3 class="menu-label">
-            最新文章
-        </h3>
-        
-        <article class="media">
-            
-            <a href="/2020/04/07/SoftwarePrincipe/" class="media-left" style="display: none">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="软件架构设计原则">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-07T00:45:00.000Z">2020-04-07</time></div>
-                    <a href="/2020/04/07/SoftwarePrincipe/" class="has-link-black-ter is-size-6">软件架构设计原则</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Java/">Java</a> / <a class="has-link-grey -link" href="/categories/Java/Spring-读书笔记/">Spring 读书笔记</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/04/04/Docker/" class="media-left" style="display: none">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Docker 基础">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-04-04T08:03:40.000Z">2020-04-04</time></div>
-                    <a href="/2020/04/04/Docker/" class="has-link-black-ter is-size-6">Docker 基础</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Docker/">Docker</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/10/24/RedisCluster/" class="media-left" style="display: none">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Redis Cluster">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-10-24T07:43:23.000Z">2019-10-24</time></div>
-                    <a href="/2019/10/24/RedisCluster/" class="has-link-black-ter is-size-6">Redis Cluster</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/10/22/RedisSentinelAnalysis/" class="media-left" style="display: none">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Redis Sentinel原理分析">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-10-22T14:23:00.000Z">2019-10-22</time></div>
-                    <a href="/2019/10/22/RedisSentinelAnalysis/" class="has-link-black-ter is-size-6">Redis Sentinel原理分析</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/10/19/RedisSentinel/" class="media-left" style="display: none">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Redis Sentinel模式">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-10-19T07:30:23.000Z">2019-10-19</time></div>
-                    <a href="/2019/10/19/RedisSentinel/" class="has-link-black-ter is-size-6">Redis Sentinel模式</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/Redis/">Redis</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-    </div>
-</div>
-
-    
-        
-<div class="card widget">
-    <div class="card-content">
-        <div class="menu">
-            <h3 class="menu-label">
-                分类
-            </h3>
-            <ul class="menu-list">
-            <li>
-        <a class="level is-marginless" href="/categories/Docker/">
-            <span class="level-start">
-                <span class="level-item">Docker</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">1</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/Hexo/">
-            <span class="level-start">
-                <span class="level-item">Hexo</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">2</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/Java/">
-            <span class="level-start">
-                <span class="level-item">Java</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">3</span>
-            </span>
-        </a><ul><li>
-        <a class="level is-marginless" href="/categories/Java/Spring-读书笔记/">
-            <span class="level-start">
-                <span class="level-item">Spring 读书笔记</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">1</span>
-            </span>
-        </a></li></ul></li><li>
-        <a class="level is-marginless" href="/categories/MacOS相关/">
-            <span class="level-start">
-                <span class="level-item">MacOS相关</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">4</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/Redis/">
-            <span class="level-start">
-                <span class="level-item">Redis</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">6</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/Spring-Boot/">
-            <span class="level-start">
-                <span class="level-item">Spring Boot</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">2</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/Spring-Cloud/">
-            <span class="level-start">
-                <span class="level-item">Spring Cloud</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">2</span>
-            </span>
-        </a></li>
-            </ul>
-        </div>
-    </div>
-</div>
-    
-        <div class="card widget">
-    <div class="card-content">
-        <div class="menu">
-        <h3 class="menu-label">
-            归档
-        </h3>
-        <ul class="menu-list">
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2020/04/">
-                <span class="level-start">
-                    <span class="level-item">四月 2020</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">2</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2019/10/">
-                <span class="level-start">
-                    <span class="level-item">十月 2019</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">3</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2019/09/">
-                <span class="level-start">
-                    <span class="level-item">九月 2019</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">1</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2019/08/">
-                <span class="level-start">
-                    <span class="level-item">八月 2019</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">1</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2019/06/">
-                <span class="level-start">
-                    <span class="level-item">六月 2019</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">5</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2019/05/">
-                <span class="level-start">
-                    <span class="level-item">五月 2019</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">1</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2019/03/">
-                <span class="level-start">
-                    <span class="level-item">三月 2019</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">4</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2019/02/">
-                <span class="level-start">
-                    <span class="level-item">二月 2019</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">2</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2018/07/">
-                <span class="level-start">
-                    <span class="level-item">七月 2018</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">1</span>
-                </span>
-            </a>
-        </li>
-        
-        </ul>
-        </div>
-    </div>
-</div>
-    
     
 </div>
 
